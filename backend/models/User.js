@@ -28,7 +28,8 @@ const userSchema = new mongoose.Schema({
     default: null,
   },
   skills: {
-    type: [String], // Only for freelancers
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Skill",
     default: [],
   },
   createdAt: {
@@ -49,6 +50,10 @@ const userSchema = new mongoose.Schema({
   totalEarnings: {
     type: Number,
     default: 0,
+  },
+  location: {
+    type: String,
+    default: null,
   },
 });
 

@@ -13,12 +13,9 @@ const jobSchema = new mongoose.Schema({
     minlength: 10, // Ensure meaningful descriptions
   },
   category: {
-    type: String,
-    required: true,
-    enum: ["Development", "Design", "Writing", "Marketing", "Other"], // Example categories
-  },
-  subcategory: {
-    type: String, // Optional field for more granularity
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Skill",
+    default: [],
   },
 
   // Budget and Payment Details
@@ -88,7 +85,7 @@ const jobSchema = new mongoose.Schema({
     enum: ["Open", "In Progress", "Completed", "Cancelled"], // Current status of the job
     default: "Open",
   },
-  applicationsCount: {
+  proposalsCount: {
     type: Number,
     default: 0, // Count of freelancer proposals
   },
@@ -122,6 +119,11 @@ const jobSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
+  },
+  receivedProposals: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Proposal",
+    default: [],
   },
 });
 
