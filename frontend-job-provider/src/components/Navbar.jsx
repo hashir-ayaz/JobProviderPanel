@@ -138,14 +138,17 @@ export default function Navbar() {
                 <Button
                   variant="ghost"
                   asChild
-                  className="hidden text-primary md:inline-flex"
+                  className="hidden font-bold text-black md:inline-flex"
                 >
                   <Link to="/login">
-                    <LogIn className="w-4 h-4 mr-2" />
+                    <LogIn className="w-4 h-4 mr-2 text-black " />
                     Log In
                   </Link>
                 </Button>
-                <Button asChild className="hidden text-primary md:inline-flex">
+                <Button
+                  asChild
+                  className="hidden text-white rounded-full bg-primary md:inline-flex"
+                >
                   <Link to="/signup">
                     <UserPlus className="w-4 h-4 mr-2" />
                     Sign Up
