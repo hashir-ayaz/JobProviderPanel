@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["freelancer", "client"],
+    enum: ["freelancer", "client", "admin"],
     required: true,
   },
   profilePicture: {
@@ -54,6 +54,12 @@ const userSchema = new mongoose.Schema({
   location: {
     type: String,
     default: null,
+  },
+  avgRating: {
+    type: Number,
+    default: 1,
+    min: 1,
+    max: 5,
   },
 });
 

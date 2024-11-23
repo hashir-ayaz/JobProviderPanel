@@ -1,8 +1,18 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { registerUser, authUser } = require('../controllers/userController');
+const {
+  login,
+  register,
+  getUserById,
+} = require("../controllers/userController");
+const { protect } = require("../middleware/authMiddleware");
 
-router.post('/register', registerUser);
-router.post('/login', authUser);
+router.post("/register", register);
+router.post("/login", login);
+
+// this can be viewed by guest and logged in user
+router.get("/:id/profile", getUserById);
+
+router.post("/:id/reviews", protect, createReview);
 
 module.exports = router;
