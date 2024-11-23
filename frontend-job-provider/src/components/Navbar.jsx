@@ -51,7 +51,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mx-5 ">
-      <div className="container flex items-center h-14">
+      <div className="container flex items-center mx-auto h-14">
         {/* Desktop Navbar */}
         <div className="hidden mr-4 md:flex">
           <Link to="/" className="flex items-center mr-6 space-x-2">
@@ -138,14 +138,14 @@ export default function Navbar() {
                 <Button
                   variant="ghost"
                   asChild
-                  className="hidden text-red-500 md:inline-flex"
+                  className="hidden text-primary md:inline-flex"
                 >
                   <Link to="/login">
                     <LogIn className="w-4 h-4 mr-2" />
                     Log In
                   </Link>
                 </Button>
-                <Button asChild className="hidden text-red-500 md:inline-flex">
+                <Button asChild className="hidden text-primary md:inline-flex">
                   <Link to="/signup">
                     <UserPlus className="w-4 h-4 mr-2" />
                     Sign Up
