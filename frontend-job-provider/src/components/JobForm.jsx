@@ -55,6 +55,25 @@ const JobForm = () => {
     }));
   };
 
+  const handleAddMilestone = () => {
+    setFormData((prev) => ({
+      ...prev,
+      paymentMilestones: [
+        ...prev.paymentMilestones,
+        { milestoneTitle: "", amount: "", dueDate: "" },
+      ],
+    }));
+  };
+
+  const handleMilestoneChange = (index, field, value) => {
+    const updatedMilestones = [...formData.paymentMilestones];
+    updatedMilestones[index][field] = value;
+    setFormData((prev) => ({
+      ...prev,
+      paymentMilestones: updatedMilestones,
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
@@ -74,7 +93,7 @@ const JobForm = () => {
           htmlFor="title"
           className="block text-sm font-medium text-gray-700"
         >
-          Job Title
+          Job Title *
         </label>
         <Input
           type="text"
@@ -93,7 +112,7 @@ const JobForm = () => {
           htmlFor="description"
           className="block text-sm font-medium text-gray-700"
         >
-          Job Description
+          Job Description *
         </label>
         <Textarea
           id="description"
@@ -112,7 +131,7 @@ const JobForm = () => {
           htmlFor="category"
           className="block text-sm font-medium text-gray-700"
         >
-          Category
+          Category *
         </label>
         <Select
           onValueChange={(value) => handleSelectChange("category", value)}
@@ -134,7 +153,7 @@ const JobForm = () => {
         </Select>
       </div>
 
-      {/* Budget Type */}
+      {/* Budget Details */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label
@@ -160,7 +179,6 @@ const JobForm = () => {
             </SelectContent>
           </Select>
         </div>
-
         <div>
           <label
             htmlFor="budgetAmount"
@@ -178,6 +196,79 @@ const JobForm = () => {
             required={formData.budgetType === "Fixed"}
           />
         </div>
+      </div>
+
+      {/* Deadline */}
+      <div className="space-y-2">
+        <label
+          htmlFor="deadline"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Deadline
+        </label>
+        <Input
+          type="date"
+          id="deadline"
+          name="deadline"
+          value={formData.deadline}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      {/* Required Skills */}
+      <div className="space-y-2">
+        <label
+          htmlFor="requiredSkills"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Required Skills
+        </label>
+        <Input
+          type="text"
+          id="requiredSkills"
+          name="requiredSkills"
+          value={formData.requiredSkills.join(", ")}
+          onChange={(e) =>
+            setFormData((prev) => ({
+              ...prev,
+              requiredSkills: e.target.value
+                .split(",")
+                .map((skill) => skill.trim()),
+            }))
+          }
+          placeholder="Enter skills, separated by commas"
+          required
+        />
+      </div>
+
+      {/* Experience Level */}
+      <div className="space-y-2">
+        <label
+          htmlFor="experienceLevel"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Experience Level
+        </label>
+        <Select
+          onValueChange={(value) =>
+            handleSelectChange("experienceLevel", value)
+          }
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue
+              placeholder="Select experience level"
+              value={formData.experienceLevel}
+            />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="Entry">Entry</SelectItem>
+              <SelectItem value="Intermediate">Intermediate</SelectItem>
+              <SelectItem value="Expert">Expert</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Attachments */}
