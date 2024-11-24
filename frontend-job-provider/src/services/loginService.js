@@ -1,8 +1,6 @@
 // loginService.js
-import axios from "axios";
+import api from "./api";
 import Cookies from "js-cookie";
-
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export const login = async (email, password, setIsLoggedIn, setUser) => {
   try {
@@ -12,10 +10,7 @@ export const login = async (email, password, setIsLoggedIn, setUser) => {
       throw new Error("Invalid configuration: missing callbacks");
     }
 
-    const response = await axios.post(`${BASE_URL}/users/login`, {
-      email,
-      password,
-    });
+    const response = await api.post("/users/login", { email, password });
 
     const { user, token } = response.data;
 
@@ -25,7 +20,7 @@ export const login = async (email, password, setIsLoggedIn, setUser) => {
       throw new Error("Invalid response from server");
     }
 
-    // Store token
+    // Store token in cookies
     Cookies.set("authToken", token, { expires: 7 });
 
     // Update context (wrapped in try-catch for debugging)
@@ -61,13 +56,10 @@ export const storeToken = (token) => {
 // Optional: Function to remove the token (for logout)
 export const removeToken = () => {
   localStorage.removeItem("token");
-
-  //   remove token from cookies
+  Cookies.remove("authToken");
 };
 
 // Optional: Function to retrieve the token
 export const getToken = () => {
   return localStorage.getItem("token");
-
-  //
 };

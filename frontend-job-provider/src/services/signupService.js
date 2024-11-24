@@ -1,8 +1,6 @@
-import axios from "axios";
-import Cookies from "js-cookie"; // Assuming you're using js-cookie for token storage
-
-// Define the base API URL (use environment variables for flexibility)
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+// signupService.js
+import api from "./api"; // Update the path to the correct location of your api.js file
+import Cookies from "js-cookie";
 
 // Function to handle signup
 export const signup = async (
@@ -15,11 +13,11 @@ export const signup = async (
 ) => {
   try {
     // Logging request details
-    console.log(`Attempting signup request to ${BASE_URL}/users/signup`);
+    console.log("Attempting signup request to /users/signup");
     console.log(`Email: ${email}, Full Name: ${firstName} ${lastName}`);
 
     // Sending API request
-    const response = await axios.post(`${BASE_URL}/users/signup`, {
+    const response = await api.post("/users/signup", {
       email,
       password,
       firstName,
@@ -32,13 +30,13 @@ export const signup = async (
     // Extract user and token from the response
     const { user, token } = response.data;
 
-    // Save the token in cookies or localStorage
+    // Save the token in cookies
     Cookies.set("authToken", token, { expires: 7 }); // Token expires in 7 days
     console.log("Auth token stored in cookies");
 
     // Update the auth context
-    setIsLoggedIn(true);
-    setUser(user);
+    if (setIsLoggedIn) setIsLoggedIn(true);
+    if (setUser) setUser(user);
     console.log("Auth context updated with user data");
 
     // Return the user data for further use
