@@ -4,15 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import guyPic from "../assets/why-skillconnect-man.png";
+import heroPic from "../assets/hero-section.png";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="flex min-h-screen font-custom">
+    <div className="flex min-h-screen">
       {/* Left Column */}
-      <div className="flex-col justify-between hidden p-12 lg:flex lg:w-1/2 bg-gradient-to-r from-primary to-white ">
+      <div className="relative flex flex-col justify-between p-12 overflow-hidden lg:flex lg:w-1/2 bg-gradient-to-r from-primary-light to-white">
+        {/* Text Content */}
         <div>
           <h1 className="mb-4 text-4xl font-bold">SkillConnect.</h1>
           <h2 className="mb-6 font-serif text-5xl leading-tight">
@@ -24,7 +25,17 @@ export default function LoginPage() {
             professional growth opportunities.
           </p>
         </div>
-        <img src={guyPic} className="w-auto h-28" />
+
+        {/* Image Section */}
+        <div className="mt-8">
+          <img
+            src={heroPic}
+            alt="Person Illustration"
+            className="object-contain w-full max-w-xs mx-auto md:max-w-md"
+          />
+        </div>
+
+        {/* Footer */}
         <div className="text-sm text-gray-500">
           © 2024 SkillConnect. All rights reserved.
         </div>
@@ -111,27 +122,30 @@ export default function LoginPage() {
               <Checkbox id="terms" />
               <label htmlFor="terms" className="text-sm text-gray-600">
                 I agree to the{" "}
-                <Link href="/terms" className="text-secondary hover:underline">
+                <Link
+                  href="/terms"
+                  className="text-emerald-600 hover:underline"
+                >
                   Terms of Service
                 </Link>{" "}
                 and{" "}
                 <Link
                   href="/privacy"
-                  className="text-secondary hover:underline"
+                  className="text-emerald-600 hover:underline"
                 >
                   Privacy Policy
                 </Link>
               </label>
             </div>
 
-            <Button className="w-full bg-primary hover:bg-secondary">
+            <Button className="w-full bg-primary hover:bg-primary-dark">
               Create your account
             </Button>
           </form>
 
           <p className="mt-6 text-sm text-center text-gray-600">
             Already have an account?{" "}
-            <Link href="/login" className="text-primary hover:underline">
+            <Link href="/login" className="text-emerald-600 hover:underline">
               Sign in
             </Link>
           </p>

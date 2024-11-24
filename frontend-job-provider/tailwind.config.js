@@ -16,19 +16,19 @@ export default {
       },
       colors: {
         primary: {
-          DEFAULT: "#3575E2",
-          light: "#3575E2",
-          dark: "#6D28D9",
+          DEFAULT: "#3575E2", // Main primary color
+          light: "#74A9F7", // Lighter shade of primary
+          dark: "#2A5DB7", // Darker shade of primary
         },
         secondary: {
-          DEFAULT: "#0D2550",
-          light: "#0D2550",
-          dark: "#10B981",
+          DEFAULT: "#0D2550", // Main secondary color
+          light: "#3B4F71", // Lighter shade of secondary
+          dark: "#091A38", // Darker shade of secondary
         },
         accent: {
-          DEFAULT: "#20242C",
-          light: "#20242C",
-          dark: "#F59E0B",
+          DEFAULT: "#20242C", // Main accent color
+          light: "#40454F", // Lighter shade of accent
+          dark: "#101217", // Darker shade of accent
         },
       },
       borderRadius: {
