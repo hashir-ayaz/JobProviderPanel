@@ -27,7 +27,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"; // Sheet (mobile menu) components
-import logo from "@/assets/placeholder.png"; // Logo import
+import logo from "@/assets/logo.png"; // Logo import
 import AuthContext from "../context/AuthContext"; // Context for auth state
 
 export default function Navbar() {
@@ -55,10 +55,10 @@ export default function Navbar() {
         {/* Desktop Navbar */}
         <div className="hidden mr-4 md:flex">
           <Link to="/" className="flex items-center mr-6 space-x-2">
-            <img src={logo} alt="Logo" className="w-6 h-6" />
-            <span className="hidden font-bold text-primary sm:inline-block">
+            <img src={logo} alt="Logo" className="h-auto w-36" />
+            {/* <span className="hidden font-bold text-primary sm:inline-block">
               SkillConnect
-            </span>
+            </span> */}
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             {navItems.map((item) => (
