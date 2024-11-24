@@ -1,16 +1,41 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import heroPic from "../assets/hero-section.png";
+import { signup } from "../services/signupService"; // Use the Signup service
+import AuthContext from "../context/AuthContext";
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const { setIsLoggedIn, setUser } = useContext(AuthContext);
+  const [error, setError] = useState("");
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      await signup(
+        email,
+        password,
+        `${firstName} ${lastName}`,
+        setIsLoggedIn,
+        setUser
+      );
+      alert("Signed up successfully!");
+      window.location.href = "/";
+    } catch (err) {
+      alert(err.message);
+      setError(err.message || "Something went wrong. Please try again.");
+    }
+  };
 
   return (
-    <div className="flex min-h-screen font-custom">
+    <div className="flex min-h-screen">
       {/* Left Column */}
       <div className="relative flex flex-col justify-between p-12 overflow-hidden lg:flex lg:w-1/2 bg-gradient-to-r from-primary-light to-white">
         {/* Text Content */}
@@ -45,10 +70,11 @@ export default function SignUpPage() {
       <div className="flex items-center justify-center w-full p-8 lg:w-1/2">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
-            <h3 className="mb-2 text-3xl font-bold">Get started free</h3>
-            <p className="text-gray-600">No credit card required</p>
+            <h3 className="mb-2 text-3xl font-bold">Create your account</h3>
+            <p className="text-gray-600">Join SkillConnect and start now</p>
           </div>
 
+          {/* Google Sign-up */}
           <Button variant="outline" className="w-full mb-6">
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
               <path
@@ -71,6 +97,7 @@ export default function SignUpPage() {
             Sign up with Google
           </Button>
 
+          {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200" />
@@ -82,28 +109,58 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          <form className="space-y-4">
+          {/* Sign-up Form */}
+          <form onSubmit={handleSignUp} className="space-y-4">
+            {/* First and Last Name */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Input placeholder="First Name" />
+                <Input
+                  type="text"
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                    setError("");
+                  }}
+                  required
+                />
               </div>
               <div>
-                <Input placeholder="Last Name" />
+                <Input
+                  type="text"
+                  placeholder="Last Name"
+                  value={lastName}
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                    setError("");
+                  }}
+                  required
+                />
               </div>
             </div>
 
+            {/* Email Input */}
             <div>
-              <Input placeholder="Company (optional)" />
+              <Input
+                type="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setError("");
+                }}
+                required
+              />
             </div>
 
-            <div>
-              <Input type="email" placeholder="Work email" />
-            </div>
-
+            {/* Password Input */}
             <div className="relative">
               <Input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <button
                 type="button"
@@ -118,34 +175,22 @@ export default function SignUpPage() {
               </button>
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" />
-              <label htmlFor="terms" className="text-sm text-gray-600">
-                I agree to the{" "}
-                <Link
-                  href="/terms"
-                  className="text-emerald-600 hover:underline"
-                >
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link
-                  href="/privacy"
-                  className="text-emerald-600 hover:underline"
-                >
-                  Privacy Policy
-                </Link>
-              </label>
-            </div>
-
-            <Button className="w-full bg-primary hover:bg-primary-dark">
+            {/* Sign Up Button */}
+            <Button
+              type="submit"
+              className="w-full bg-primary hover:bg-primary-dark"
+            >
               Create your account
             </Button>
           </form>
 
+          {/* Error Display */}
+          {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
+
+          {/* Footer Links */}
           <p className="mt-6 text-sm text-center text-gray-600">
             Already have an account?{" "}
-            <Link to="/login" className="text-emerald-600 hover:underline">
+            <Link to="/login" className="text-primary hover:underline">
               Log in
             </Link>
           </p>

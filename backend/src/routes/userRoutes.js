@@ -7,12 +7,12 @@ const {
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
 
-router.post("/register", register);
+router.post("/signup", register);
 router.post("/login", login);
 
 // this can be viewed by guest and logged in user
 router.get("/:id/profile", getUserById);
 
-router.post("/:id/reviews", protect, createReview);
+// router.post("/:id/reviews", protect, createReview);
 
 module.exports = router;

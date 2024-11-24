@@ -4,9 +4,27 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import heroPic from "../assets/hero-section.png";
+import { login } from "../services/loginService";
+import AuthContext from "../context/AuthContext";
+import { useContext } from "react";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { setIsLoggedin, setUser } = useContext(AuthContext);
+  const [error, setError] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      await login(email, password, setIsLoggedin, setUser);
+      alert("Logged in successfully :)");
+      window.location.href = "/";
+    } catch (err) {
+      alert(err.message);
+      setError(err.message || "Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -47,10 +65,25 @@ export default function LoginPage() {
             <p className="text-gray-600">Access your SkillConnect dashboard</p>
           </div>
 
-          <form className="space-y-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+            className="space-y-4"
+          >
             {/* Email Input */}
             <div>
-              <Input type="email" placeholder="Email address" required />
+              <Input
+                type="email"
+                placeholder="Email address"
+                required
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setError("");
+                }}
+              />
             </div>
 
             {/* Password Input */}
@@ -59,6 +92,8 @@ export default function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <button
                 type="button"
@@ -74,7 +109,11 @@ export default function LoginPage() {
             </div>
 
             {/* Login Button */}
-            <Button className="w-full bg-primary hover:bg-primary-dark">
+            <Button
+              //   onClick={handleLogin}
+              type="submit"
+              className="w-full bg-primary hover:bg-primary-dark"
+            >
               Log In
             </Button>
             <Button variant="outline" className="w-full mb-6">

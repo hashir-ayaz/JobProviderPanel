@@ -1,13 +1,20 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const connectDB = require("./config/db");
-const errorHandler = require("./middleware/errorHandler");
-const userRoutes = require("./routes/userRoutes");
-
+const connectDB = require("./src/config/db");
+const errorHandler = require("./src/middleware/errorHandler");
+const userRoutes = require("./src/routes/userRoutes");
+const CORS = require("cors");
 const app = express();
 dotenv.config();
 
 connectDB(); // Connect to database
+
+app.use(
+  CORS({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use(express.json()); // Body parser
 

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"; // Custom button component
 import HeroSectionImage from "../assets/hero-section.png";
+import { Link } from "react-router-dom";
 const HeroSection = () => {
   return (
     <section className="flex items-center justify-between max-w-screen-xl px-5 py-10 mx-auto font-custom bg-background md:py-20">
@@ -16,7 +17,7 @@ const HeroSection = () => {
           variant="primary"
           className="px-6 py-3 text-lg text-white rounded-full bg-primary"
         >
-          Get Started
+          <Link to="/signup">Get Started</Link>{" "}
         </Button>
       </div>
 

@@ -1,22 +1,45 @@
 const User = require("../models/User");
+const { handleError } = require("../utils/handleError");
+const authUtils = require("../utils/authUtils");
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
-  try {
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+  console.log("Login attempt started");
+  console.log("Received email:", email);
 
+  try {
+    // Find the user by email
+    console.log("Searching for user in the database...");
+    const user = await User.findOne({ email });
+    if (!user) {
+      console.log("User not found");
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+    console.log("User found:", user);
+
+    // Check if the provided password matches
+    console.log("Verifying password...");
     const isPasswordCorrect = await auth.comparePassword(
       password,
       user.password
     );
-    if (!isPasswordCorrect)
+    if (!isPasswordCorrect) {
+      console.log("Password verification failed");
       return res.status(400).json({ message: "Invalid credentials" });
+    }
+    console.log("Password verification successful");
 
-    const token = auth.generateToken({ userId: user._id });
+    // Generate a token for the authenticated user
+    console.log("Generating authentication token...");
+    const token = authUtils.generateToken({ userId: user._id });
+    console.log("Token generated:", token);
+
+    // Respond with user and token
+    console.log("Login successful, sending response...");
     return res.status(200).json({ user, token });
   } catch (error) {
+    console.error("Error during login:", error.message);
     handleError(res, error);
   }
 };
@@ -38,7 +61,7 @@ exports.register = async (req, res) => {
 
     const newUser = new User({
       email,
-      password: await auth.hashPassword(password),
+      password: await authUtils.hashPassword(password),
       username,
       profilePhoto,
       moviePreferences,
@@ -49,6 +72,7 @@ exports.register = async (req, res) => {
     const token = auth.generateToken({ userId: newUser._id });
     return res.status(200).json({ user: newUser, token });
   } catch (error) {
+    console.error("Error during registration:", error.message);
     handleError(res, error);
   }
 };
@@ -114,11 +138,9 @@ exports.getUserById = async (req, res) => {
 
 exports.createReview = async (req, res) => {
   if (req.user.role === "guest") {
-    return res
-      .status(401)
-      .json({
-        message: "You are a guest, you need to be logged in to leave a rev",
-      });
+    return res.status(401).json({
+      message: "You are a guest, you need to be logged in to leave a rev",
+    });
   }
   const { id } = req.params;
   const { reviewText, rating, title } = req.body;
