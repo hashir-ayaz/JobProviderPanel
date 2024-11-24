@@ -1,10 +1,15 @@
+import CategorySection from "../components/CategorySection";
+import HeroSection from "../components/HeroSection";
 import Navbar from "../components/Navbar";
+import WhySkillConnect from "../components/WhySkillConnect";
+// import Footer from "../components/Footer";
 
 const LandingPage = () => {
   return (
-    <div className="">
-      <h1>Welcome to the Job Portal</h1>
-      <p>Find the best job that suits you</p>
+    <div className="font-custom">
+      <HeroSection />
+      <CategorySection />
+      <WhySkillConnect />
     </div>
   );
 };

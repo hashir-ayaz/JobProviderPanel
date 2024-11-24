@@ -7,6 +7,13 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+        custom: ["Raleway", "sans-serif"],
+      },
+      fontWeight: {
+        "extra-extrabold": "1000",
+      },
       colors: {
         primary: {
           DEFAULT: "#3575E2",

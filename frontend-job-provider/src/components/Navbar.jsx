@@ -50,7 +50,7 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mx-5 ">
+    <header className="font-custom sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mx-5 ">
       <div className="container flex items-center mx-auto h-14">
         {/* Desktop Navbar */}
         <div className="hidden mr-4 md:flex">
