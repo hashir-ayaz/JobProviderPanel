@@ -1,18 +1,15 @@
-import { Input } from "../components/ui/input";
-import { Button } from "../components/ui/button";
-import { Textarea } from "../components/ui/textarea"; // Assuming you have a Textarea component
+import postJobAuntyImage from "../assets/post-job-aunty.png";
 import JobForm from "../components/JobForm";
-// import { AttachmentIcon } from "lucide-react"; // Icon for attachment
 
 const PostJobPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-5 space-y-8 lg:flex-row lg:space-y-0 lg:space-x-10 lg:px-20">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 space-y-8 lg:flex-row lg:space-y-0 lg:space-x-10 lg:px-20">
       {/* Left Section */}
-      <div className="flex flex-col items-start max-w-md space-y-4">
-        <h1 className="text-4xl font-bold text-gray-900">
+      <div className="flex flex-col items-start w-full space-y-4 lg:w-1/3">
+        <h1 className="text-4xl font-extrabold text-secondary lg:text-6xl">
           Time to Post your Job/Project
         </h1>
-        <p className="text-gray-600">
+        <p className="text-xl text-gray-600 lg:text-3xl">
           This is where you fill us in on the big picture.
         </p>
         <a
@@ -22,14 +19,14 @@ const PostJobPage = () => {
           How can I optimize my job?
         </a>
         <img
-          src="/assets/illustration.png" // Replace with your illustration path
+          src={postJobAuntyImage}
           alt="Illustration"
-          className="w-48 mt-6 lg:w-60"
+          className="mt-6 w-60 md:w-72 lg:w-96"
         />
       </div>
 
       {/* Right Section */}
-      <div className="w-full max-w-lg p-6 space-y-6 bg-white rounded-lg shadow-lg">
+      <div className="w-full max-w-3xl p-6 space-y-6 bg-white rounded-lg shadow-lg lg:w-2/3">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium text-blue-600">
             Are you a freelancer?

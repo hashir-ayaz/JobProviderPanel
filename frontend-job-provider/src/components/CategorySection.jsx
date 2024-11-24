@@ -16,7 +16,7 @@ const CategorySection = () => {
   return (
     <section className="max-w-screen-xl py-10 mx-auto">
       <header className="mb-6">
-        <h2 className="text-2xl font-extrabold text-foreground">
+        <h2 className="text-2xl font-extrabold text-foreground text-secondary">
           Browse Talent by Category
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">

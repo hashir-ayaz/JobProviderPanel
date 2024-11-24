@@ -11,42 +11,42 @@ const WhySkillConnect = () => {
         </h2>
         <ul className="space-y-4">
           <li className="flex items-start space-x-4">
-            <span className="flex items-center justify-center w-6 h-6 text-white rounded-full bg-primary">
+            <span className="flex items-center justify-center w-6 h-6 text-white rounded-full bg-secondary">
               ✦
             </span>
             <div>
-              <h3 className="text-lg font-bold text-foreground">
+              <h3 className="text-xl font-bold text-foreground">
                 Proof of quality
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-md text-muted-foreground">
                 Check any pro’s work samples, client reviews, and identity
                 verification.
               </p>
             </div>
           </li>
           <li className="flex items-start space-x-4">
-            <span className="flex items-center justify-center w-6 h-6 text-white rounded-full bg-primary">
+            <span className="flex items-center justify-center w-6 h-6 text-white rounded-full bg-secondary">
               ✦
             </span>
             <div>
-              <h3 className="text-lg font-bold text-foreground">
+              <h3 className="text-xl font-bold text-foreground">
                 No cost until you hire
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-md text-muted-foreground">
                 Interview potential fits for your job, negotiate rates, and only
                 pay for work you approve.
               </p>
             </div>
           </li>
           <li className="flex items-start space-x-4">
-            <span className="flex items-center justify-center w-6 h-6 text-white rounded-full bg-primary">
+            <span className="flex items-center justify-center w-6 h-6 text-white rounded-full bg-secondary">
               ✦
             </span>
             <div>
-              <h3 className="text-lg font-bold text-foreground">
+              <h3 className="text-xl font-bold text-foreground">
                 Safe and secure
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-md text-muted-foreground">
                 Focus on your work knowing we help protect your data and
                 privacy. We’re here with 24/7 support if you need it.
               </p>
@@ -64,7 +64,7 @@ const WhySkillConnect = () => {
 
       {/* Right Section */}
       <div className="relative z-10 flex flex-col items-center justify-center p-6 space-y-4 text-white rounded-lg shadow-lg bg-primary md:w-1/3">
-        <h3 className="text-2xl font-bold">
+        <h3 className="text-4xl font-bold">
           We’re the world’s work marketplace
         </h3>
         <div className="flex items-center space-x-2">

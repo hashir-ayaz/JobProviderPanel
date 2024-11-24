@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
@@ -15,6 +15,7 @@ export default function SignUpPage() {
   const [lastName, setLastName] = useState("");
   const { setIsLoggedIn, setUser } = useContext(AuthContext);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -28,7 +29,7 @@ export default function SignUpPage() {
         setUser
       );
       alert("Signed up successfully!");
-      window.location.href = "/";
+      navigate("/");
     } catch (err) {
       alert(err.message);
       setError(err.message || "Something went wrong. Please try again.");
@@ -71,7 +72,9 @@ export default function SignUpPage() {
       <div className="flex items-center justify-center w-full p-8 lg:w-1/2">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
-            <h3 className="mb-2 text-3xl font-bold">Create your account</h3>
+            <h3 className="mb-2 text-3xl font-bold text-secondary">
+              Create your account
+            </h3>
             <p className="text-gray-600">Join SkillConnect and start now</p>
           </div>
 

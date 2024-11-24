@@ -105,7 +105,7 @@ export default function Navbar() {
                   key={item.href}
                   to={item.href}
                   className={cn(
-                    "flex items-center py-2 text-sm font-medium",
+                    "flex items-center text-secondary py-2 text-sm font-medium ",
                     activePath === item.href
                       ? "text-foreground font-bold"
                       : "text-foreground/60"
@@ -115,7 +115,7 @@ export default function Navbar() {
                     setIsMobileMenuOpen(false); // Close mobile menu
                   }}
                 >
-                  <item.icon className="w-4 h-4 mr-2" />
+                  <item.icon className="w-4 h-4 mr-2 " />
                   {item.name}
                 </Link>
               ))}
@@ -140,10 +140,10 @@ export default function Navbar() {
                 <Button
                   variant="ghost"
                   asChild
-                  className="hidden font-bold text-black md:inline-flex"
+                  className="hidden font-bold text-secondary md:inline-flex"
                 >
                   <Link to="/login">
-                    <LogIn className="w-4 h-4 mr-2 text-black " />
+                    <LogIn className="w-4 h-4 mr-2 text-secondary " />
                     Log In
                   </Link>
                 </Button>

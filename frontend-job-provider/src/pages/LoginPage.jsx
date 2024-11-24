@@ -63,7 +63,9 @@ export default function LoginPage() {
       <div className="flex items-center justify-center w-full p-8 lg:w-1/2">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
-            <h3 className="mb-2 text-3xl font-bold">Log in to your account</h3>
+            <h3 className="mb-2 text-3xl font-bold text-secondary">
+              Log in to your account
+            </h3>
             <p className="text-gray-600">Access your SkillConnect dashboard</p>
           </div>
 

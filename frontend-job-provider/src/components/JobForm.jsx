@@ -2,12 +2,21 @@ import { useState } from "react";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const JobForm = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    category: [],
+    category: "",
     budgetType: "Fixed",
     budgetAmount: "",
     hourlyRate: "",
@@ -28,12 +37,10 @@ const JobForm = () => {
     }));
   };
 
-  const handleMilestones = (index, field, value) => {
-    const updatedMilestones = [...formData.paymentMilestones];
-    updatedMilestones[index][field] = value;
+  const handleSelectChange = (name, value) => {
     setFormData((prev) => ({
       ...prev,
-      paymentMilestones: updatedMilestones,
+      [name]: value,
     }));
   };
 
@@ -48,16 +55,6 @@ const JobForm = () => {
     }));
   };
 
-  const handleAddMilestone = () => {
-    setFormData((prev) => ({
-      ...prev,
-      paymentMilestones: [
-        ...prev.paymentMilestones,
-        { milestoneTitle: "", amount: "", dueDate: "" },
-      ],
-    }));
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
@@ -66,10 +63,10 @@ const JobForm = () => {
 
   return (
     <form
-      className="max-w-3xl p-6 mx-auto space-y-6 bg-white rounded shadow"
+      className="max-w-3xl p-6 mx-auto space-y-6 font-semibold bg-white rounded shadow font-custom"
       onSubmit={handleSubmit}
     >
-      <h1 className="mb-4 text-2xl font-bold">Post a New Job</h1>
+      <h1 className="mb-4 text-2xl font-bold text-secondary">Post a New Job</h1>
 
       {/* Title */}
       <div className="space-y-2">
@@ -117,24 +114,27 @@ const JobForm = () => {
         >
           Category
         </label>
-        <select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={(e) =>
-            setFormData({ ...formData, category: [e.target.value] })
-          }
-          className="w-full border-gray-300 rounded-md"
-          required
+        <Select
+          onValueChange={(value) => handleSelectChange("category", value)}
         >
-          <option value="">Select a category</option>
-          <option value="web-development">Web Development</option>
-          <option value="graphic-design">Graphic Design</option>
-          <option value="content-writing">Content Writing</option>
-        </select>
+          <SelectTrigger className="w-full">
+            <SelectValue
+              placeholder="Select a category"
+              value={formData.category}
+            />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Categories</SelectLabel>
+              <SelectItem value="web-development">Web Development</SelectItem>
+              <SelectItem value="graphic-design">Graphic Design</SelectItem>
+              <SelectItem value="content-writing">Content Writing</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
 
-      {/* Budget Details */}
+      {/* Budget Type */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label
@@ -143,17 +143,22 @@ const JobForm = () => {
           >
             Budget Type
           </label>
-          <select
-            id="budgetType"
-            name="budgetType"
-            value={formData.budgetType}
-            onChange={handleChange}
-            className="w-full border-gray-300 rounded-md"
-            required
+          <Select
+            onValueChange={(value) => handleSelectChange("budgetType", value)}
           >
-            <option value="Fixed">Fixed</option>
-            <option value="Hourly">Hourly</option>
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue
+                placeholder="Select budget type"
+                value={formData.budgetType}
+              />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Fixed">Fixed</SelectItem>
+                <SelectItem value="Hourly">Hourly</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
 
         <div>
@@ -173,47 +178,6 @@ const JobForm = () => {
             required={formData.budgetType === "Fixed"}
           />
         </div>
-      </div>
-
-      {/* Payment Milestones */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">
-          Payment Milestones
-        </label>
-        {formData.paymentMilestones.map((milestone, index) => (
-          <div key={index} className="grid grid-cols-3 gap-4">
-            <Input
-              type="text"
-              placeholder="Milestone Title"
-              value={milestone.milestoneTitle}
-              onChange={(e) =>
-                handleMilestones(index, "milestoneTitle", e.target.value)
-              }
-              required
-            />
-            <Input
-              type="number"
-              placeholder="Amount"
-              value={milestone.amount}
-              onChange={(e) =>
-                handleMilestones(index, "amount", e.target.value)
-              }
-              required
-            />
-            <Input
-              type="date"
-              placeholder="Due Date"
-              value={milestone.dueDate}
-              onChange={(e) =>
-                handleMilestones(index, "dueDate", e.target.value)
-              }
-              required
-            />
-          </div>
-        ))}
-        <Button variant="outline" onClick={handleAddMilestone} type="button">
-          Add Milestone
-        </Button>
       </div>
 
       {/* Attachments */}
@@ -244,7 +208,10 @@ const JobForm = () => {
 
       {/* Submit Button */}
       <div>
-        <Button type="submit" className="w-full">
+        <Button
+          type="submit"
+          className="w-full bg-primary hover:bg-primary-dark"
+        >
           Post Job
         </Button>
       </div>
