@@ -160,19 +160,19 @@ export default function Navbar() {
             ) : (
               <>
                 {/* If the user IS logged in */}
-                <Button asChild>
-                  <Link to="/addListing">
+                <Button className="bg-primary hover:bg-primary-dark" asChild>
+                  <Link to="/post-job">
                     <PlusCircle className="w-4 h-4 mr-2" />
-                    Add Listing
+                    Post Job
                   </Link>
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="relative w-8 h-8 rounded-full"
+                      className="relative w-12 h-12 mx-2 border-2 border-solid rounded-full text-primary border-primary"
                     >
-                      <User className="w-4 h-4" />
+                      <User className="h-6 w-7" />
                       <span className="sr-only">Open user menu</span>
                     </Button>
                   </DropdownMenuTrigger>
