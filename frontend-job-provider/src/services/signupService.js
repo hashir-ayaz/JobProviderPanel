@@ -8,20 +8,22 @@ const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 export const signup = async (
   email,
   password,
-  fullName,
+  firstName,
+  lastName,
   setIsLoggedIn,
   setUser
 ) => {
   try {
     // Logging request details
     console.log(`Attempting signup request to ${BASE_URL}/users/signup`);
-    console.log(`Email: ${email}, Full Name: ${fullName}`);
+    console.log(`Email: ${email}, Full Name: ${firstName} ${lastName}`);
 
     // Sending API request
     const response = await axios.post(`${BASE_URL}/users/signup`, {
       email,
       password,
-      fullName,
+      firstName,
+      lastName,
     });
 
     // Log the successful response

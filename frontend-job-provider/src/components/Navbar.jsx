@@ -28,14 +28,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"; // Sheet (mobile menu) components
 import logo from "@/assets/logo.png"; // Logo import
-import AuthContext from "../context/AuthContext"; // Context for auth state
+// import AuthContext from "../context/AuthContext"; // Context for auth state
+import useAuth from "../hooks/useAuth.js";
 
 export default function Navbar() {
-  const { isLoggedIn } = useContext(AuthContext); // Access AuthContext
+  const { isLoggedIn, user } = useAuth(); // Access AuthContext
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activePath, setActivePath] = useState(window.location.pathname); // Track active path
   const navigate = useNavigate();
-
+  console.log("isLoggedIn", isLoggedIn);
+  console.log("user", user);
   // Handle Logout Function
   const handleLogout = () => {
     localStorage.removeItem("token"); // Clear token

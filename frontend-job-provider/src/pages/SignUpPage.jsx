@@ -22,7 +22,8 @@ export default function SignUpPage() {
       await signup(
         email,
         password,
-        `${firstName} ${lastName}`,
+        firstName,
+        lastName,
         setIsLoggedIn,
         setUser
       );

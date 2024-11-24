@@ -20,7 +20,7 @@ exports.login = async (req, res) => {
 
     // Check if the provided password matches
     console.log("Verifying password...");
-    const isPasswordCorrect = await auth.comparePassword(
+    const isPasswordCorrect = await authUtils.comparePassword(
       password,
       user.password
     );
@@ -48,7 +48,8 @@ exports.register = async (req, res) => {
   const {
     email,
     password,
-    username,
+    firstName,
+    lastName,
     profilePhoto,
     moviePreferences,
     personalWishlist,
@@ -62,14 +63,15 @@ exports.register = async (req, res) => {
     const newUser = new User({
       email,
       password: await authUtils.hashPassword(password),
-      username,
+      firstName,
+      lastName,
       profilePhoto,
       moviePreferences,
       personalWishlist,
     });
 
     await newUser.save();
-    const token = auth.generateToken({ userId: newUser._id });
+    const token = authUtils.generateToken({ userId: newUser._id });
     return res.status(200).json({ user: newUser, token });
   } catch (error) {
     console.error("Error during registration:", error.message);

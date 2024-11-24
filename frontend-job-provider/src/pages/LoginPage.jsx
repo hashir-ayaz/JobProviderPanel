@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import heroPic from "../assets/hero-section.png";
+import { useNavigate } from "react-router-dom";
 import { login } from "../services/loginService";
 import AuthContext from "../context/AuthContext";
 import { useContext } from "react";
@@ -12,14 +13,15 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setIsLoggedin, setUser } = useContext(AuthContext);
+  const { setIsLoggedIn, setUser } = useContext(AuthContext);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      await login(email, password, setIsLoggedin, setUser);
+      await login(email, password, setIsLoggedIn, setUser);
       alert("Logged in successfully :)");
-      window.location.href = "/";
+      navigate("/");
     } catch (err) {
       alert(err.message);
       setError(err.message || "Something went wrong. Please try again.");
