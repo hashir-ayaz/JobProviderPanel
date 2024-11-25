@@ -56,7 +56,10 @@ export default function Navbar() {
       <div className="container flex items-center mx-auto h-14">
         {/* Desktop Navbar */}
         <div className="hidden mr-4 md:flex">
-          <Link to="/" className="flex items-center mr-6 space-x-2">
+          <Link
+            to={isLoggedIn ? "/dashboard" : "/"}
+            className="flex items-center mr-6 space-x-2"
+          >
             <img src={logo} alt="Logo" className="h-auto w-36" />
             {/* <span className="hidden font-bold text-primary sm:inline-block">
               SkillConnect

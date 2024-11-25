@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Clock, DollarSign, MapPin, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -18,6 +19,8 @@ export default function JobCard({ job }) {
     );
   }
 
+  const [showFullDescription, setShowFullDescription] = useState(false);
+
   // Fallback values for missing fields
   const {
     title = "No title provided",
@@ -33,14 +36,33 @@ export default function JobCard({ job }) {
     deadline = "No deadline provided",
   } = job;
 
+  // Helper to truncate description
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ") + "...";
+    }
+    return text;
+  };
+
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md transition-transform transform hover:scale-103 hover:shadow-lg">
       <CardHeader>
         <CardTitle className="text-xl font-bold text-secondary">
           {title}
         </CardTitle>
         {description && (
-          <CardDescription className="mt-2">{description}</CardDescription>
+          <CardDescription className="mt-2">
+            {showFullDescription ? description : truncateText(description, 35)}
+            {description.split(" ").length > 35 && (
+              <button
+                className="ml-2 text-blue-600 hover:underline"
+                onClick={() => setShowFullDescription(!showFullDescription)}
+              >
+                {showFullDescription ? "Show Less" : "Read More"}
+              </button>
+            )}
+          </CardDescription>
         )}
       </CardHeader>
       <CardContent className="space-y-4">
@@ -104,7 +126,7 @@ export default function JobCard({ job }) {
         </div>
       </CardContent>
       <CardFooter>
-        <button className="w-full px-4 py-2 text-white rounded bg-primary text-primary-foreground hover:bg-primary/90">
+        <button className="self-end w-full px-4 py-2 text-white rounded bg-primary text-primary-foreground hover:bg-primary/90">
           View Proposals
         </button>
       </CardFooter>
