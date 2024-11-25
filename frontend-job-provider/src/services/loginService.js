@@ -20,8 +20,14 @@ export const login = async (email, password, setIsLoggedIn, setUser) => {
       throw new Error("Invalid response from server");
     }
 
+    console.log("User logged in successfully:", user);
+    console.log("Token received:", token);
+
     // Store token in cookies
-    Cookies.set("authToken", token, { expires: 7 });
+    console.log("Storing token in cookies...");
+    storeToken(token);
+
+    console.log("cookies now are", Cookies.get());
 
     // Update context (wrapped in try-catch for debugging)
     try {
@@ -48,18 +54,18 @@ export const login = async (email, password, setIsLoggedIn, setUser) => {
   }
 };
 
-// Optional: Function to store the token
+// Optional: Function to store the token in cookies
 export const storeToken = (token) => {
-  localStorage.setItem("token", token);
+  Cookies.set("token", token, { expires: 7, sameSite: "None", secure: true });
 };
 
 // Optional: Function to remove the token (for logout)
 export const removeToken = () => {
   localStorage.removeItem("token");
-  Cookies.remove("authToken");
+  Cookies.remove("token");
 };
 
 // Optional: Function to retrieve the token
 export const getToken = () => {
-  return localStorage.getItem("token");
+  return Cookies.get("token");
 };

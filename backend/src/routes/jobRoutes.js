@@ -6,11 +6,12 @@ const {
   updateJob,
   deleteJob,
 } = require("../controllers/jobController");
+const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 // Route to create a new job
-router.post("/", createJob);
+router.post("/", protect, createJob);
 
 // Route to get a specific job by ID
 router.get("/:id", getJobById);
@@ -24,7 +25,7 @@ router.patch("/:id", updateJob);
 // Route to delete a job by ID
 router.delete("/:id", deleteJob);
 
-// route to get all proposals for a job
-router.get("/:id/proposals", getProposals);
+// // route to get all proposals for a job
+// router.get("/:id/proposals", getProposals);
 
 module.exports = router;

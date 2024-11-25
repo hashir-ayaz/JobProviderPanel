@@ -2,29 +2,43 @@ const express = require("express");
 const Job = require("../models/Job");
 
 exports.createJob = async (req, res) => {
+  // check if user is client
+
+  console.log(
+    "Request received in createJob:",
+    JSON.stringify(req.body, null, 2)
+  );
+  console.log("User info from request:", req.user);
+
   try {
     // Extract fields from the request body
     const {
       title,
       description,
-      category,
       budgetType,
       budgetAmount,
+      hourlyRate,
+      estimatedTime,
+      paymentMilestones,
       deadline,
+      attachments,
+      requiredSkills,
       experienceLevel,
       preferredLocation,
     } = req.body;
 
-    // Check required fields
+    // Validate required fields
+    console.log("Validating required fields...");
     if (
       !title ||
       !description ||
-      !category ||
       !budgetType ||
-      !budgetAmount ||
+      (!budgetAmount && budgetType === "Fixed") ||
+      (!hourlyRate && budgetType === "Hourly") ||
       !deadline ||
       !experienceLevel
     ) {
+      console.error("Validation failed: Missing required fields");
       return res.status(400).json({
         success: false,
         message: "All required fields must be provided.",
@@ -33,6 +47,7 @@ exports.createJob = async (req, res) => {
 
     // Validate budgetType
     if (!["Fixed", "Hourly"].includes(budgetType)) {
+      console.error("Validation failed: Invalid budget type");
       return res.status(400).json({
         success: false,
         message: "Invalid budget type. Must be 'Fixed' or 'Hourly'.",
@@ -41,6 +56,7 @@ exports.createJob = async (req, res) => {
 
     // Validate experienceLevel
     if (!["Entry", "Intermediate", "Expert"].includes(experienceLevel)) {
+      console.error("Validation failed: Invalid experience level");
       return res.status(400).json({
         success: false,
         message:
@@ -49,28 +65,56 @@ exports.createJob = async (req, res) => {
     }
 
     // Validate deadline
+    console.log("Validating deadline...");
     const parsedDeadline = new Date(deadline);
     if (isNaN(parsedDeadline.getTime()) || parsedDeadline < new Date()) {
+      console.error("Validation failed: Invalid or past deadline");
       return res
         .status(400)
         .json({ success: false, message: "Invalid or past deadline." });
     }
 
+    // Validate and format payment milestones (if provided)
+    if (paymentMilestones && !Array.isArray(paymentMilestones)) {
+      console.error("Validation failed: Payment milestones must be an array");
+      return res.status(400).json({
+        success: false,
+        message: "Payment milestones must be an array.",
+      });
+    }
+
+    // Validate and format required skills (if provided)
+    if (requiredSkills && !Array.isArray(requiredSkills)) {
+      console.error("Validation failed: Required skills must be an array");
+      return res.status(400).json({
+        success: false,
+        message: "Required skills must be an array.",
+      });
+    }
+
+    console.log("Creating new job in the database...");
+
     // Create a new job
     const job = new Job({
       title,
       description,
-      category,
       budgetType,
-      budgetAmount,
+      budgetAmount: budgetType === "Fixed" ? budgetAmount : null,
+      hourlyRate: budgetType === "Hourly" ? hourlyRate : null,
+      estimatedTime,
+      paymentMilestones,
       deadline: parsedDeadline,
+      attachments,
+      requiredSkills,
       experienceLevel,
       preferredLocation,
-      jobProviderId: req.user.id, // Assuming job provider info is in `req.user`
+      jobProviderId: req.user?.id || null, // Assuming job provider info is in `req.user`
     });
 
     // Save to database
     const savedJob = await job.save();
+
+    console.log("Job created successfully:", savedJob);
 
     // Respond with the created job
     res.status(201).json({
@@ -79,7 +123,26 @@ exports.createJob = async (req, res) => {
       data: savedJob,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error creating job:", error);
+
+    // Handle specific errors
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error occurred.",
+        details: error.errors,
+      });
+    }
+
+    if (error.name === "MongoError" && error.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        message: "Duplicate entry detected.",
+        details: error.keyValue,
+      });
+    }
+
+    // General error response
     res.status(500).json({
       success: false,
       message: "An error occurred while creating the job.",

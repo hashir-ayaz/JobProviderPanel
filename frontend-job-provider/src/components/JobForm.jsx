@@ -11,16 +11,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { postJob } from "../services/jobService";
 
-const JobForm = () => {
+const estimatedTimeOptions = [
+  "Less than a week",
+  "Less than a month",
+  "1 to 3 months",
+  "1 to 6 months",
+];
+
+const JobForm = ({ skills = [] }) => {
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      description: "",
+      budgetType: "Fixed",
+      budgetAmount: "",
+      hourlyRate: "",
+      estimatedTime: "",
+      paymentMilestones: [],
+      deadline: "",
+      attachments: [],
+      requiredSkills: [],
+      experienceLevel: "Entry",
+      preferredLocation: "",
+    });
+  };
+
+  console.log("skills in job form", skills);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    category: "",
     budgetType: "Fixed",
     budgetAmount: "",
     hourlyRate: "",
-    estimatedHours: "",
+    estimatedTime: "",
     paymentMilestones: [],
     deadline: "",
     attachments: [],
@@ -35,13 +60,31 @@ const JobForm = () => {
       ...prev,
       [name]: value,
     }));
+    console.log("formData is now", formData);
   };
 
   const handleSelectChange = (name, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [name]: value };
+      console.log("Updated formData:", updatedFormData);
+      return updatedFormData;
+    });
+  };
+
+  const handleSkillChange = (value) => {
+    setFormData((prev) => {
+      const updatedSkills = [...prev.requiredSkills];
+      if (!updatedSkills.includes(value)) {
+        updatedSkills.push(value);
+        // Log inside the setState callback to see the new state
+        console.log("Skill added:", value);
+        console.log("Updated skills:", updatedSkills);
+      }
+      return {
+        ...prev,
+        requiredSkills: updatedSkills,
+      };
+    });
   };
 
   const handleFileUpload = (e) => {
@@ -55,29 +98,15 @@ const JobForm = () => {
     }));
   };
 
-  const handleAddMilestone = () => {
-    setFormData((prev) => ({
-      ...prev,
-      paymentMilestones: [
-        ...prev.paymentMilestones,
-        { milestoneTitle: "", amount: "", dueDate: "" },
-      ],
-    }));
-  };
-
-  const handleMilestoneChange = (index, field, value) => {
-    const updatedMilestones = [...formData.paymentMilestones];
-    updatedMilestones[index][field] = value;
-    setFormData((prev) => ({
-      ...prev,
-      paymentMilestones: updatedMilestones,
-    }));
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
     // Send `formData` to backend API here.
+    const response = postJob(formData);
+    console.log("Response from API:", response);
+
+    // Reset the form after submission
+    resetForm();
   };
 
   return (
@@ -125,29 +154,37 @@ const JobForm = () => {
         />
       </div>
 
-      {/* Category */}
+      {/* Skill */}
       <div className="space-y-2">
         <label
           htmlFor="category"
           className="block text-sm font-medium text-gray-700"
         >
-          Category *
+          Required Skills *
         </label>
         <Select
-          onValueChange={(value) => handleSelectChange("category", value)}
+          value={formData.skill}
+          onValueChange={(value) => handleSkillChange(value)}
         >
           <SelectTrigger className="w-full">
-            <SelectValue
-              placeholder="Select a category"
-              value={formData.category}
-            />
+            <SelectValue placeholder="Select a skill/category" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Categories</SelectLabel>
-              <SelectItem value="web-development">Web Development</SelectItem>
-              <SelectItem value="graphic-design">Graphic Design</SelectItem>
-              <SelectItem value="content-writing">Content Writing</SelectItem>
+              {Array.isArray(skills) && skills.length > 0 ? (
+                skills.map((skill) => (
+                  <SelectItem
+                    key={skill._id}
+                    value={skill._id}
+                    className="cursor-pointer hover:bg-gray-100"
+                  >
+                    {skill.name}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem disabled>No skills available</SelectItem>
+              )}
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -216,32 +253,6 @@ const JobForm = () => {
         />
       </div>
 
-      {/* Required Skills */}
-      <div className="space-y-2">
-        <label
-          htmlFor="requiredSkills"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Required Skills
-        </label>
-        <Input
-          type="text"
-          id="requiredSkills"
-          name="requiredSkills"
-          value={formData.requiredSkills.join(", ")}
-          onChange={(e) =>
-            setFormData((prev) => ({
-              ...prev,
-              requiredSkills: e.target.value
-                .split(",")
-                .map((skill) => skill.trim()),
-            }))
-          }
-          placeholder="Enter skills, separated by commas"
-          required
-        />
-      </div>
-
       {/* Experience Level */}
       <div className="space-y-2">
         <label
@@ -269,6 +280,73 @@ const JobForm = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
+      </div>
+
+      {/* Preferred Location */}
+
+      <div className="grid grid-cols-2 gap-4">
+        {/* Preferred Location */}
+        <div>
+          <label
+            htmlFor="preferredLocation"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Preferred Location
+          </label>
+          <Select
+            onValueChange={(value) =>
+              handleSelectChange("preferredLocation", value)
+            }
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a preferred location">
+                {formData.preferredLocation || "Select a preferred location"}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem id="location-america" value="America">
+                  America
+                </SelectItem>
+                <SelectItem id="location-pakistan" value="Pakistan">
+                  Pakistan
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Estimated Time */}
+        <div>
+          <label
+            htmlFor="estimatedTime"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Estimated Time
+          </label>
+          <Select
+            onValueChange={(value) =>
+              handleSelectChange("estimatedTime", value)
+            }
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue>
+                {formData.estimatedTime ||
+                  "Select estimated time for project completion"}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem id="time-1-3-months" value="1-3 months">
+                  1-3 months
+                </SelectItem>
+                <SelectItem id="time-1-month" value="1 month">
+                  1 month
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Attachments */}

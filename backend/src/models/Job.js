@@ -33,9 +33,9 @@ const jobSchema = new mongoose.Schema({
     type: Number, // Only applicable for hourly jobs
     min: 1,
   },
-  estimatedHours: {
-    type: Number, // Estimated hours for hourly jobs
-    min: 1,
+  estimatedTime: {
+    type: String, // Estimated hours for hourly jobs
+    default: "Less than 1 month",
   },
   paymentMilestones: {
     type: [

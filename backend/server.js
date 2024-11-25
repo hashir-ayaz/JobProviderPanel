@@ -5,6 +5,8 @@ const errorHandler = require("./src/middleware/errorHandler");
 const userRoutes = require("./src/routes/userRoutes");
 const CORS = require("cors");
 const app = express();
+const jobRoutes = require("./src/routes/jobRoutes");
+const skillRoutes = require("./src/routes/skillRoutes");
 dotenv.config();
 
 connectDB(); // Connect to database
@@ -20,8 +22,10 @@ app.use(express.json()); // Body parser
 
 // Routes
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/jobs", jobRoutes);
+app.use("/api/v1/skills", skillRoutes);
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT} 🚀`));

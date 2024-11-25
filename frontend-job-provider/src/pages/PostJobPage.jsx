@@ -1,7 +1,27 @@
+import { useEffect, useState } from "react";
 import postJobAuntyImage from "../assets/post-job-aunty.png";
 import JobForm from "../components/JobForm";
+import { fetchSkills } from "../services/jobService";
 
 const PostJobPage = () => {
+  const [skills, setSkills] = useState([]);
+  console.log("fetching skills from backend");
+
+  useEffect(() => {
+    const getSkills = async () => {
+      try {
+        console.log("Fetching skills from backend...");
+        const fetchedSkills = await fetchSkills(); // Wait for the response
+        setSkills(fetchedSkills); // Set the skills in the state
+        console.log("Skills fetched:", fetchedSkills);
+      } catch (error) {
+        console.error("Failed to fetch skills:", error);
+      }
+    };
+
+    getSkills();
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 space-y-8 lg:flex-row lg:space-y-0 lg:space-x-10 lg:px-20">
       {/* Left Section */}
@@ -38,7 +58,7 @@ const PostJobPage = () => {
             Become a seller
           </a>
         </div>
-        <JobForm />
+        <JobForm skills={skills} />
       </div>
     </div>
   );

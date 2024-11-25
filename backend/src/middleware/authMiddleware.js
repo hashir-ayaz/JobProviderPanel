@@ -3,6 +3,7 @@ const { extractToken, verifyTokenAndGetUser } = require("../utils/authUtils");
 exports.protect = async (req, res, next) => {
   try {
     console.log("Protect middleware triggered");
+    console.log("req cookies are ", req.cookies);
 
     // Extract token from request
     const token = extractToken(req);
@@ -10,9 +11,9 @@ exports.protect = async (req, res, next) => {
 
     if (!token) {
       // If no token, treat the user as a guest
-      console.log("No token provided. Setting user role to 'guest'.");
-      req.user = { role: "guest" };
-      return next(); // Allow the request to proceed as a guest
+      console.log("No token provided.");
+
+      return res.status(401).json({ message: "Not authorized" });
     }
 
     // Verify token and get user
@@ -71,6 +72,19 @@ exports.adminProtect = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("Error in adminProtect middleware:", error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const guestProtect = async (req, res, next) => {
+  try {
+    // check if no token the user.role is set to guest
+    if (!token) {
+      req.user = { role: "guest" };
+      next();
+    }
+  } catch (error) {
+    console.error("Error in guestProtect middleware:", error.message);
     return res.status(500).json({ message: error.message });
   }
 };
