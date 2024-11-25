@@ -28,3 +28,13 @@ export const fetchSkills = async () => {
     throw error;
   }
 };
+
+export const fetchPostedJobs = async () => {
+  try {
+    const response = await api.get("/jobs/me");
+    return response;
+  } catch (error) {
+    console.error("Error fetching posted jobs:", error);
+    throw error;
+  }
+};

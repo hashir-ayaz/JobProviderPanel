@@ -21,7 +21,7 @@ export default function LoginPage() {
     try {
       await login(email, password, setIsLoggedIn, setUser);
       alert("Logged in successfully :)");
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       alert(err.message);
       setError(err.message || "Something went wrong. Please try again.");

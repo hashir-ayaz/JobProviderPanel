@@ -56,6 +56,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  totalJobs: {
+    type: Number,
+    default: 0,
+  },
   location: {
     type: String,
     default: null,

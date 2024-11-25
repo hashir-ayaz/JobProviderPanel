@@ -5,6 +5,7 @@ const {
   getAllJobs,
   updateJob,
   deleteJob,
+  getJobsPostedByUser,
 } = require("../controllers/jobController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -24,6 +25,8 @@ router.patch("/:id", updateJob);
 
 // Route to delete a job by ID
 router.delete("/:id", deleteJob);
+
+router.get("/me", protect, getJobsPostedByUser);
 
 // // route to get all proposals for a job
 // router.get("/:id/proposals", getProposals);

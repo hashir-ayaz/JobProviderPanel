@@ -307,3 +307,12 @@ exports.getProposals = async (req, res) => {
    * The user(freelancer) should be able to view proposals they have submitted
    */
 };
+
+exports.getJobsPostedByUser = async (req, res) => {
+  try {
+    const jobs = await Job.find({ jobProviderId: req.user.id });
+    res.status(200).json(jobs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

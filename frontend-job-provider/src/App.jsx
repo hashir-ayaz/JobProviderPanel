@@ -8,6 +8,7 @@ import { LogIn } from "lucide-react";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import PostJobPage from "./pages/PostJobPage";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/post-job" element={<PostJobPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer />

@@ -29,7 +29,7 @@ export default function SignUpPage() {
         setUser
       );
       alert("Signed up successfully!");
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       alert(err.message);
       setError(err.message || "Something went wrong. Please try again.");
