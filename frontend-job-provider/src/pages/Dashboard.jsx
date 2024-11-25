@@ -32,6 +32,7 @@ const Dashboard = () => {
         {jobs.map((job) => (
           <JobCard key={job._id} job={job} />
         ))}
+        <PostJobCard />
       </div>
     </div>
   );

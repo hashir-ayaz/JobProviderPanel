@@ -1,6 +1,7 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 export default function PostJobCard() {
   return (
@@ -15,12 +16,14 @@ export default function PostJobCard() {
             Create a new job post and get proposals from talent.
           </p>
         </div>
-        <Button
-          variant="outline"
-          className="text-primary border-primary hover:bg-green-50 hover:text-primary-dark"
-        >
-          Post a new job
-        </Button>
+        <Link to="/post-job">
+          <Button
+            variant="outline"
+            className="text-primary border-primary hover:bg-blue-50 hover:text-primary-dark"
+          >
+            Post a new job
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );

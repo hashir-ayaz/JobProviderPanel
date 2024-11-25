@@ -311,9 +311,9 @@ exports.getProposals = async (req, res) => {
 exports.getJobsPostedByUser = async (req, res) => {
   console.log("Request received in getJobsPostedByUser:", req.user);
   try {
-    const jobs = await Job.find({ jobProviderId: req.user.id }).populate(
-      "requiredSkills"
-    );
+    const jobs = await Job.find({ jobProviderId: req.user.id })
+      .populate("requiredSkills")
+      .populate("jobProviderId");
     res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json({ message: error.message });
