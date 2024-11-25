@@ -13,6 +13,7 @@ export const postJob = async (formData) => {
   } catch (error) {
     // Handle errors and log them
     console.error("Error posting the job:", error);
+    alert("Failed to post the job. Please try again.");
 
     // Throw the error to notify the caller
     throw error;

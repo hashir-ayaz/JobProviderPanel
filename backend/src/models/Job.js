@@ -67,7 +67,8 @@ const jobSchema = new mongoose.Schema({
 
   // Job Requirements
   requiredSkills: {
-    type: [String], // Array of skills (e.g., "React", "Node.js", "Photoshop")
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Skill", // Array of skills (e.g., "React", "Node.js", "Photoshop")
     default: [],
   },
   experienceLevel: {

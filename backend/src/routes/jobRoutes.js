@@ -14,6 +14,7 @@ const router = express.Router();
 // Route to create a new job
 router.post("/", protect, createJob);
 
+router.get("/me", protect, getJobsPostedByUser);
 // Route to get a specific job by ID
 router.get("/:id", getJobById);
 
@@ -25,8 +26,6 @@ router.patch("/:id", updateJob);
 
 // Route to delete a job by ID
 router.delete("/:id", deleteJob);
-
-router.get("/me", protect, getJobsPostedByUser);
 
 // // route to get all proposals for a job
 // router.get("/:id/proposals", getProposals);

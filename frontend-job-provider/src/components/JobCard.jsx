@@ -10,43 +10,97 @@ import {
 } from "@/components/ui/card";
 
 export default function JobCard({ job }) {
+  if (!job) {
+    return (
+      <div className="text-red-500">
+        Error: Job data is missing or undefined.
+      </div>
+    );
+  }
+
+  // Fallback values for missing fields
+  const {
+    title = "No title provided",
+    description = "No description available",
+    budgetType = "Budget type not specified",
+    budgetAmount = "Budget not specified",
+    hourlyRate = "Not applicable",
+    estimatedTime = "Not specified",
+    preferredLocation = "Location not provided",
+    experienceLevel = "Experience level not specified",
+    requiredSkills = [],
+    status = "Status not specified",
+    deadline = "No deadline provided",
+  } = job;
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle className="text-xl font-bold text-secondary ">
-          {job.title}
+        <CardTitle className="text-xl font-bold text-secondary">
+          {title}
         </CardTitle>
-        <CardDescription className="mt-2">{job.description}</CardDescription>
+        {description && (
+          <CardDescription className="mt-2">{description}</CardDescription>
+        )}
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Skills Section */}
         <div className="flex items-center space-x-2">
           <Briefcase className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm text-muted-foreground">Skills:</span>
           <div className="flex flex-wrap gap-2">
-            {job.skills.map((skill, index) => (
-              <Badge key={index} variant="secondary">
-                {skill}
-              </Badge>
-            ))}
+            {Array.isArray(requiredSkills) && requiredSkills.length > 0 ? (
+              requiredSkills.map((skill) => (
+                <Badge key={skill._id} variant="secondary">
+                  {skill.name}
+                </Badge>
+              ))
+            ) : (
+              <span className="text-sm text-muted-foreground">
+                No skills provided
+              </span>
+            )}
           </div>
         </div>
+
+        {/* Budget Section */}
         <div className="flex items-center space-x-2">
           <DollarSign className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm text-muted-foreground">Budget:</span>
-          <span>{job.budget}</span>
+          <span>
+            {budgetType === "Fixed" ? `$${budgetAmount}` : `$${hourlyRate}/hr`}
+          </span>
         </div>
+
+        {/* Estimated Time Section */}
         <div className="flex items-center space-x-2">
           <Clock className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm text-muted-foreground">Estimated Time:</span>
-          <span>{job.estimatedTime}</span>
+          <span>{estimatedTime}</span>
         </div>
+
+        {/* Experience Level Section */}
         <div className="flex items-center space-x-2">
-          <Badge variant="outline">{job.paymentType}</Badge>
+          <Badge variant="outline">{experienceLevel}</Badge>
         </div>
+
+        {/* Status Section */}
+        <div className="flex items-center space-x-2">
+          <Badge variant="outline">{status}</Badge>
+        </div>
+
+        {/* Location Section */}
         <div className="flex items-center space-x-2">
           <MapPin className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm text-muted-foreground">Location:</span>
-          <span>{job.location}</span>
+          <span>{preferredLocation}</span>
+        </div>
+
+        {/* Deadline Section */}
+        <div className="flex items-center space-x-2">
+          <Clock className="w-4 h-4 text-muted-foreground" />
+          <span className="text-sm text-muted-foreground">Deadline:</span>
+          <span>{new Date(deadline).toLocaleDateString()}</span>
         </div>
       </CardContent>
       <CardFooter>
