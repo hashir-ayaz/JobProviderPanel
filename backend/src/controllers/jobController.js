@@ -179,7 +179,7 @@ exports.getJobById = async (req, res) => {
     // Return the job details
     res.status(200).json({
       success: true,
-      data: job,
+      job: job,
     });
   } catch (error) {
     // Log the error to the server console

@@ -19,12 +19,14 @@ const DetailedJobPage = () => {
     const fetchJob = async () => {
       try {
         const response = await fetchJobById(jobId);
-        console.log("Job fetched:", response.data);
-        setJob(response.data);
+        console.log("job response is ", response);
+        const fetchedJob = response.data.job; // Extract `job` directly
+        console.log("Job fetched:", fetchedJob);
+        setJob(fetchedJob); // Set only the actual job object in the state
       } catch (error) {
         console.error("Error fetching job:", error);
       } finally {
-        setLoading(false); // Set loading to false regardless of success or failure
+        setLoading(false);
       }
     };
 
@@ -77,10 +79,10 @@ const DetailedJobPage = () => {
     jobProviderId = {},
   } = job;
 
-  console.log("Rendered Job:", job); // Debugging: Check if `job` is populated properly
+  console.log("Rendered Job isss:", job.data); // Debugging: Check if `job` is populated properly
 
   return (
-    <div className="container px-4 py-8 mx-auto">
+    <div className="container px-4 py-8 mx-auto font-custom">
       <div className="overflow-hidden bg-white rounded-lg shadow-sm">
         <div className="p-6">
           <h1 className="mb-2 text-3xl font-bold text-gray-800">{title}</h1>

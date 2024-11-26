@@ -29,13 +29,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen font-custom">
       {/* Left Column */}
       <div className="relative flex flex-col justify-between p-12 overflow-hidden lg:flex lg:w-1/2 bg-gradient-to-r from-primary-light to-white">
         {/* Text Content */}
         <div>
-          <h1 className="mb-4 text-4xl font-bold">SkillConnect.</h1>
-          <h2 className="mb-6 font-serif text-5xl leading-tight">
+          <h1 className="mb-4 text-4xl font-bold text-secondary">
+            SkillConnect.
+          </h1>
+          <h2 className="mb-6 text-5xl font-bold leading-tight text-secondary">
             Welcome back to SkillConnect
           </h2>
           <p className="text-lg text-gray-600">

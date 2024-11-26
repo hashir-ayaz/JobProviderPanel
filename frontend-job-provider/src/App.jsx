@@ -3,7 +3,6 @@ import LandingPage from "./pages/LandingPage";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Routes, Route, Navigate } from "react-router-dom";
-// import { AuthProvider } from "./context/AuthContext"; // Import the AuthProvider
 import { LogIn } from "lucide-react";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
