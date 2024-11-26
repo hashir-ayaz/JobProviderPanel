@@ -7,8 +7,9 @@ import {
   MapPinIcon,
   CurrencyDollarIcon,
   UserIcon,
-  BriefcaseIcon,
 } from "@heroicons/react/24/outline";
+import AboutClient from "../components/AboutClient"; // Import the new component
+import JobProposalCard from "../components/JobProposalCard";
 
 const DetailedJobPage = () => {
   const { jobId } = useParams();
@@ -19,9 +20,8 @@ const DetailedJobPage = () => {
     const fetchJob = async () => {
       try {
         const response = await fetchJobById(jobId);
-        console.log("job response is ", response);
         const fetchedJob = response.data.job; // Extract `job` directly
-        console.log("Job fetched:", fetchedJob);
+        console.log("Fetched job:", fetchedJob);
         setJob(fetchedJob); // Set only the actual job object in the state
       } catch (error) {
         console.error("Error fetching job:", error);
@@ -77,16 +77,15 @@ const DetailedJobPage = () => {
     createdAt = "Not available",
     status = "Status not specified",
     jobProviderId = {},
+    receivedProposals = [],
   } = job;
 
-  console.log("Rendered Job isss:", job.data); // Debugging: Check if `job` is populated properly
-
   return (
-    <div className="container px-4 py-8 mx-auto font-custom">
+    <div className="container px-4 py-8 mx-auto text-secondary font-custom">
       <div className="overflow-hidden bg-white rounded-lg shadow-sm">
         <div className="p-6">
-          <h1 className="mb-2 text-3xl font-bold text-gray-800">{title}</h1>
-          <div className="flex items-center mb-4 text-gray-600">
+          <h1 className="mb-2 text-3xl font-bold ">{title}</h1>
+          <div className="flex items-center mb-4 ">
             <CalendarIcon className="w-5 h-5 mr-2" />
             <span>Posted on {formatDate(createdAt)}</span>
           </div>
@@ -126,32 +125,10 @@ const DetailedJobPage = () => {
             </h2>
             <p className="mb-6 text-gray-600">{description}</p>
           </div>
-          <div className="pt-6 border-t border-gray-200">
-            <h2 className="mb-4 text-xl font-semibold text-gray-800">
-              About the Client
-            </h2>
-            <div className="flex items-center mb-2">
-              <BriefcaseIcon className="w-5 h-5 mr-2 text-gray-600" />
-              <span className="text-gray-700">
-                {jobProviderId?.firstName || "N/A"}{" "}
-                {jobProviderId?.lastName || "N/A"}
-              </span>
-            </div>
-            <div className="flex items-center">
-              <svg
-                className="w-5 h-5 mr-1 text-yellow-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <span className="text-gray-700">
-                {(jobProviderId?.avgRating || 0).toFixed(1)} Average Rating
-              </span>
-            </div>
-          </div>
+          <AboutClient jobProviderId={jobProviderId} />{" "}
+          {/* Use the new component */}
         </div>
-        <div className="px-6 py-4 bg-gray-50">
+        <div className="px-6 py-4 mb-5 bg-gray-50">
           <div className="flex items-center justify-between">
             <span className="text-gray-600">
               Deadline: {formatDate(deadline)}
@@ -168,6 +145,13 @@ const DetailedJobPage = () => {
           </div>
         </div>
       </div>
+      {receivedProposals.length > 0 ? (
+        receivedProposals.map((proposal) => (
+          <JobProposalCard key={proposal._id} proposal={proposal} />
+        ))
+      ) : (
+        <p className="mt-4 text-lg text-gray-600">No proposals received yet.</p>
+      )}
     </div>
   );
 };
