@@ -7,6 +7,7 @@ const CORS = require("cors");
 const app = express();
 const jobRoutes = require("./src/routes/jobRoutes");
 const skillRoutes = require("./src/routes/skillRoutes");
+const proposalRoutes = require("./src/routes/proposalRoutes");
 dotenv.config();
 
 connectDB(); // Connect to database
@@ -24,6 +25,7 @@ app.use(express.json()); // Body parser
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/jobs", jobRoutes);
 app.use("/api/v1/skills", skillRoutes);
+app.use("/api/v1/proposals", proposalRoutes);
 
 app.use(errorHandler);
 

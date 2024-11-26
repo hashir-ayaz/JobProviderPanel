@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Clock, DollarSign, MapPin, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -126,9 +127,12 @@ export default function JobCard({ job }) {
         </div>
       </CardContent>
       <CardFooter>
-        <button className="self-end w-full px-4 py-2 text-white rounded bg-primary text-primary-foreground hover:bg-primary/90">
-          View Proposals
-        </button>
+        <Link to={`/job/${job._id}`}>
+          {" "}
+          <button className="self-end w-full px-4 py-2 text-white rounded bg-primary text-primary-foreground hover:bg-primary/90">
+            View Proposals
+          </button>
+        </Link>
       </CardFooter>
     </Card>
   );

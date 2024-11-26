@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const jobSchema = new mongoose.Schema({
   // Basic Job Information
   title: {

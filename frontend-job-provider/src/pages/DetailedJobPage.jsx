@@ -1,139 +1,161 @@
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { fetchJobById } from "../services/jobService";
 import {
-  Calendar,
-  Clock,
-  DollarSign,
-  MapPin,
-  Briefcase,
-  User,
-  Star,
-  FileText,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { format } from "date-fns";
+  CalendarIcon,
+  ClockIcon,
+  MapPinIcon,
+  CurrencyDollarIcon,
+  UserIcon,
+  BriefcaseIcon,
+} from "@heroicons/react/24/outline";
 
-export default function DetailedJobPage({ job }) {
+const DetailedJobPage = () => {
+  const { jobId } = useParams();
+  const [job, setJob] = useState(null); // Start with `null` to indicate loading state
+
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const response = await fetchJobById(jobId);
+        console.log("Job fetched:", response.data);
+        setJob(response.data);
+      } catch (error) {
+        console.error("Error fetching job:", error);
+      }
+    };
+
+    fetchJob();
+  }, [jobId]);
+
+  if (!job) {
+    // Render loading spinner while fetching data
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-32 h-32 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "Not available";
+    try {
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
+  };
+
+  const {
+    title = "No title provided",
+    description = "No description available",
+    budgetAmount = "Budget not specified",
+    budgetType = "Type not specified",
+    preferredLocation = "Location not specified",
+    experienceLevel = "Experience level not specified",
+    estimatedTime = "Duration not specified",
+    deadline = "Deadline not specified",
+    createdAt = "Not available",
+    status = "Status not specified",
+    jobProviderId = {},
+  } = job;
+
+  console.log("Rendered Job:", job); // Debugging: Check if `job` is populated properly
+
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader className="space-y-4">
-        <div className="flex items-start justify-between">
-          <CardTitle className="text-2xl font-bold">{job.title}</CardTitle>
-          <Badge
-            variant={job.status === "Open" ? "success" : "secondary"}
-            className="ml-2"
-          >
-            {job.status}
-          </Badge>
+    <div className="container px-4 py-8 mx-auto">
+      <div className="overflow-hidden bg-white rounded-lg shadow-lg">
+        <div className="p-6">
+          <h1 className="mb-2 text-3xl font-bold text-gray-800">{title}</h1>
+          <div className="flex items-center mb-4 text-gray-600">
+            <CalendarIcon className="w-5 h-5 mr-2" />
+            <span>Posted on {formatDate(createdAt)}</span>
+          </div>
+          <div className="flex flex-wrap mb-6 -mx-2">
+            <div className="w-full px-2 mb-4 md:w-1/2">
+              <div className="flex items-center">
+                <MapPinIcon className="w-5 h-5 mr-2 text-gray-600" />
+                <span className="text-gray-700">{preferredLocation}</span>
+              </div>
+            </div>
+            <div className="w-full px-2 mb-4 md:w-1/2">
+              <div className="flex items-center">
+                <CurrencyDollarIcon className="w-5 h-5 mr-2 text-gray-600" />
+                <span className="text-gray-700">
+                  {budgetAmount} USD ({budgetType})
+                </span>
+              </div>
+            </div>
+            <div className="w-full px-2 mb-4 md:w-1/2">
+              <div className="flex items-center">
+                <UserIcon className="w-5 h-5 mr-2 text-gray-600" />
+                <span className="text-gray-700">{experienceLevel} Level</span>
+              </div>
+            </div>
+            <div className="w-full px-2 mb-4 md:w-1/2">
+              <div className="flex items-center">
+                <ClockIcon className="w-5 h-5 mr-2 text-gray-600" />
+                <span className="text-gray-700">
+                  Est. Time: {estimatedTime}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="pt-6 border-t border-gray-200">
+            <h2 className="mb-4 text-xl font-semibold text-gray-800">
+              Job Description
+            </h2>
+            <p className="mb-6 text-gray-600">{description}</p>
+          </div>
+          <div className="pt-6 border-t border-gray-200">
+            <h2 className="mb-4 text-xl font-semibold text-gray-800">
+              About the Client
+            </h2>
+            <div className="flex items-center mb-2">
+              <BriefcaseIcon className="w-5 h-5 mr-2 text-gray-600" />
+              <span className="text-gray-700">
+                {jobProviderId?.firstName || "N/A"}{" "}
+                {jobProviderId?.lastName || "N/A"}
+              </span>
+            </div>
+            <div className="flex items-center">
+              <svg
+                className="w-5 h-5 mr-1 text-yellow-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <span className="text-gray-700">
+                {(jobProviderId?.avgRating || 0).toFixed(1)} Average Rating
+              </span>
+            </div>
+          </div>
         </div>
-        <CardDescription className="text-base">
-          {job.description}
-        </CardDescription>
-      </CardHeader>
-
-      <CardContent className="space-y-6">
-        {/* Budget and Time Section */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="flex items-center space-x-2">
-            <DollarSign className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Budget:</span>
-            <span className="font-medium">
-              {job.budgetAmount} ({job.budgetType})
+        <div className="px-6 py-4 bg-gray-50">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600">
+              Deadline: {formatDate(deadline)}
+            </span>
+            <span
+              className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                status === "Open"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }`}
+            >
+              {status}
             </span>
           </div>
-          <div className="flex items-center space-x-2">
-            <Clock className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Duration:</span>
-            <span className="font-medium">{job.estimatedTime}</span>
-          </div>
         </div>
-
-        {/* Experience and Location */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="flex items-center space-x-2">
-            <Star className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Experience:</span>
-            <span className="font-medium">{job.experienceLevel}</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <MapPin className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Location:</span>
-            <span className="font-medium">{job.preferredLocation}</span>
-          </div>
-        </div>
-
-        {/* Required Skills */}
-        {job.requiredSkills && job.requiredSkills.length > 0 && (
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Briefcase className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">
-                Required Skills:
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {job.requiredSkills.map((skill, index) => (
-                <Badge key={index} variant="secondary">
-                  {skill}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Proposals Count */}
-        <div className="flex items-center space-x-2">
-          <User className="w-4 h-4 text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">Proposals:</span>
-          <span className="font-medium">{job.proposalsCount}</span>
-        </div>
-
-        {/* Dates */}
-        <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2 text-muted-foreground">
-          <div className="flex items-center space-x-2">
-            <Calendar className="w-4 h-4" />
-            <span>Posted: {format(new Date(job.createdAt), "PPP")}</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Calendar className="w-4 h-4" />
-            <span>Deadline: {format(new Date(job.deadline), "PPP")}</span>
-          </div>
-        </div>
-
-        {/* Attachments */}
-        {job.attachments && job.attachments.length > 0 && (
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <FileText className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">
-                Attachments:
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {job.attachments.map((attachment, index) => (
-                <Badge key={index} variant="outline">
-                  {attachment}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
-      </CardContent>
-
-      <CardFooter className="flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">
-          Job ID: {job._id.slice(0, 8)}...
-        </div>
-        <button className="px-6 py-2 rounded bg-primary text-primary-foreground hover:bg-primary/90">
-          Submit Proposal
-        </button>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
-}
+};
+
+export default DetailedJobPage;

@@ -30,12 +30,23 @@ export const fetchSkills = async () => {
   }
 };
 
+// gets all the jobs posted by the specific user (must be logged in)
 export const fetchPostedJobs = async () => {
   try {
     const response = await api.get("/jobs/me");
     return response;
   } catch (error) {
     console.error("Error fetching posted jobs:", error);
+    throw error;
+  }
+};
+
+export const fetchJobById = async (jobId) => {
+  try {
+    const response = await api.get(`/jobs/${jobId}`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching job by ID:", error);
     throw error;
   }
 };
