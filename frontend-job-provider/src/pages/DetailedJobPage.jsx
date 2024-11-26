@@ -13,6 +13,7 @@ import {
 const DetailedJobPage = () => {
   const { jobId } = useParams();
   const [job, setJob] = useState(null); // Start with `null` to indicate loading state
+  const [loading, setLoading] = useState(true); // Add explicit loading state
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -22,17 +23,28 @@ const DetailedJobPage = () => {
         setJob(response.data);
       } catch (error) {
         console.error("Error fetching job:", error);
+      } finally {
+        setLoading(false); // Set loading to false regardless of success or failure
       }
     };
 
     fetchJob();
   }, [jobId]);
 
-  if (!job) {
+  if (loading) {
     // Render loading spinner while fetching data
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="w-32 h-32 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!job) {
+    // Render an error message if job data is not available
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-xl text-red-500">Failed to load job details.</p>
       </div>
     );
   }
@@ -69,7 +81,7 @@ const DetailedJobPage = () => {
 
   return (
     <div className="container px-4 py-8 mx-auto">
-      <div className="overflow-hidden bg-white rounded-lg shadow-lg">
+      <div className="overflow-hidden bg-white rounded-lg shadow-sm">
         <div className="p-6">
           <h1 className="mb-2 text-3xl font-bold text-gray-800">{title}</h1>
           <div className="flex items-center mb-4 text-gray-600">

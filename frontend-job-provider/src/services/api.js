@@ -1,19 +1,30 @@
 import axios from "axios";
-
 import Cookies from "js-cookie";
-
-const token = Cookies.get("token");
 
 const BASE_URL =
   import.meta.env.VITE_APP_API_URL || "http://localhost:3000/api/v1";
+
 const api = axios.create({
   baseURL: BASE_URL, // Use environment variables
   timeout: 10000, // Set timeout
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, // Send token
   },
   withCredentials: true, // Send cookies
 });
+
+// Add a request interceptor to dynamically include the token
+api.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get("token"); // Fetch the token dynamically
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`; // Set Authorization header
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error); // Handle errors here
+  }
+);
 
 export default api;

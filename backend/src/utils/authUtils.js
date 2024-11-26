@@ -28,6 +28,7 @@ const comparePassword = async (password, hashedPassword) => {
 // Extract token from headers or cookies
 const extractToken = (req) => {
   console.log("Extracting token from request...");
+  console.log("Request headers:", req.headers);
   let token = req.headers.authorization;
   if (token && token.startsWith("Bearer ")) {
     token = token.split(" ")[1]; // Remove 'Bearer' prefix

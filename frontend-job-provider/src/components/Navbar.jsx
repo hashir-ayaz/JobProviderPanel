@@ -30,18 +30,20 @@ import {
 import logo from "@/assets/logo.png"; // Logo import
 // import AuthContext from "../context/AuthContext"; // Context for auth state
 import useAuth from "../hooks/useAuth.js";
+import { logout } from "../services/loginService";
 
 export default function Navbar() {
-  const { isLoggedIn, user } = useAuth(); // Access AuthContext
+  const { isLoggedIn, user, setUser, setIsLoggedIn } = useAuth(); // Access AuthContext
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activePath, setActivePath] = useState(window.location.pathname); // Track active path
   const navigate = useNavigate();
   console.log("isLoggedIn", isLoggedIn);
   console.log("user", user);
   // Handle Logout Function
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // Clear token
-    window.location.reload(); // Reload to clear state and redirect
+  const handleLogout = async () => {
+    const response = await logout(setIsLoggedIn, setUser);
+    console.log("response", response);
+    navigate("/");
   };
 
   // Define navigation items

@@ -1,6 +1,6 @@
 // loginService.js
-import api from "./api";
 import Cookies from "js-cookie";
+import api from "./api";
 
 export const login = async (email, password, setIsLoggedIn, setUser) => {
   try {
@@ -68,4 +68,32 @@ export const removeToken = () => {
 // Optional: Function to retrieve the token
 export const getToken = () => {
   return Cookies.get("token");
+};
+
+export const logout = async (setIsLoggedIn, setUser) => {
+  try {
+    // Clear token from cookies
+    removeToken();
+
+    // Update context (wrapped in try-catch for debugging)
+    try {
+      console.log("Attempting to update isLoggedIn state...");
+      setIsLoggedIn(false);
+
+      console.log("Attempting to update user state...");
+      setUser(null);
+
+      console.log("Context updates completed successfully");
+    } catch (contextError) {
+      console.error("Error updating context:", contextError);
+      throw new Error("Failed to update authentication state");
+    }
+  } catch (error) {
+    console.error("Logout error:", {
+      message: error.message,
+      response: error.response?.data,
+      stack: error.stack,
+    });
+    throw error;
+  }
 };
