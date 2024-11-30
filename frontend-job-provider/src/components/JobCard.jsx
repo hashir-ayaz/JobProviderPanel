@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Clock, DollarSign, MapPin, Briefcase } from "lucide-react";
+import {
+  Clock,
+  DollarSign,
+  MapPin,
+  Briefcase,
+  MoreVertical,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import {
@@ -10,8 +16,15 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
-export default function JobCard({ job }) {
+export default function JobCard({ job, onDelete }) {
   if (!job) {
     return (
       <div className="text-red-500">
@@ -48,7 +61,22 @@ export default function JobCard({ job }) {
 
   return (
     <Card className="w-full max-w-md transition-transform transform hover:scale-103 hover:shadow-lg">
-      <CardHeader>
+      <CardHeader className="relative">
+        <div className="absolute top-4 right-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="w-8 h-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreVertical className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onDelete(job._id)}>
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         <CardTitle className="text-xl font-bold text-secondary">
           {title}
         </CardTitle>
@@ -127,9 +155,8 @@ export default function JobCard({ job }) {
         </div>
       </CardContent>
       <CardFooter>
-        <Link to={`/job/${job._id}`}>
-          {" "}
-          <button className="self-end w-full px-4 py-2 text-white rounded bg-primary text-primary-foreground hover:bg-primary/90">
+        <Link to={`/job/${job._id}`} className="w-full">
+          <button className="w-full px-4 py-2 text-white rounded bg-primary text-primary-foreground hover:bg-primary/90">
             View Proposals
           </button>
         </Link>

@@ -50,3 +50,13 @@ export const fetchJobById = async (jobId) => {
     throw error;
   }
 };
+
+export const deleteJob = async (jobId) => {
+  try {
+    const response = await api.delete(`/jobs/${jobId}`);
+    return response;
+  } catch (error) {
+    console.error("Error deleting job:", error);
+    throw error;
+  }
+};

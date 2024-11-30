@@ -2,8 +2,23 @@ import { useEffect, useState } from "react";
 import JobCard from "../components/JobCard";
 import PostJobCard from "../components/PostJobCard";
 import { fetchPostedJobs } from "../services/jobService";
+import { deleteJob } from "../services/jobService";
 
 const Dashboard = () => {
+  const deleteHandler = async (jobId) => {
+    try {
+      // Delete the job by ID
+      await deleteJob(jobId);
+      console.log("Job deleted successfully:", jobId);
+      // Fetch the updated list of jobs
+      const response = await fetchPostedJobs();
+      setJobs(response.data);
+      console.log("Jobs fetched:", response.data);
+    } catch (error) {
+      console.error("Failed to delete the job:", error.message);
+    }
+  };
+
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
@@ -30,7 +45,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 lg:grid-cols-4">
         {/* Render the job cards */}
         {jobs.map((job) => (
-          <JobCard key={job._id} job={job} />
+          <JobCard key={job._id} job={job} onDelete={deleteHandler} />
         ))}
         <PostJobCard />
       </div>
