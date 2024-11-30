@@ -164,9 +164,14 @@ exports.getJobById = async (req, res) => {
     }
 
     // Attempt to find the job by ID
-    const job = await Job.findById(jobId).populate(
-      "jobProviderId receivedProposals"
-    );
+    const job = await Job.findById(jobId)
+      .populate("jobProviderId")
+      .populate({
+        path: "receivedProposals", // Populate the proposals
+        populate: {
+          path: "freelancerId", // Nested populate for the freelancer in each proposal
+        },
+      });
 
     // If the job doesn't exist, return a 404 error
     if (!job) {

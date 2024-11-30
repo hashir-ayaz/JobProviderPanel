@@ -13,6 +13,8 @@ const JobProposalCard = ({ proposal }) => {
     updatedAt = "No update date provided",
   } = proposal;
 
+  console.log("proposal", proposal);
+
   return (
     <div className="p-4 mb-4 bg-white border rounded-lg shadow-sm">
       <h2 className="mb-2 text-xl font-bold text-gray-800">Job Proposal</h2>
