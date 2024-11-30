@@ -2,9 +2,23 @@ import { useEffect, useState } from "react";
 import JobCard from "../components/JobCard";
 import PostJobCard from "../components/PostJobCard";
 import { fetchPostedJobs } from "../services/jobService";
-import { deleteJob } from "../services/jobService";
+import { deleteJob, editJob } from "../services/jobService";
 
 const Dashboard = () => {
+  const markCompletedHandler = async (jobId) => {
+    try {
+      // Mark the job as completed
+      await editJob(jobId, { status: "Completed" });
+      console.log("Job marked as completed successfully:", jobId);
+      // Fetch the updated list of jobs
+      const response = await fetchPostedJobs();
+      setJobs(response.data);
+      console.log("Jobs fetched:", response.data);
+    } catch (error) {
+      console.error("Failed to mark the job as completed:", error.message);
+    }
+  };
+
   const deleteHandler = async (jobId) => {
     try {
       // Delete the job by ID
@@ -45,7 +59,12 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 lg:grid-cols-4">
         {/* Render the job cards */}
         {jobs.map((job) => (
-          <JobCard key={job._id} job={job} onDelete={deleteHandler} />
+          <JobCard
+            key={job._id}
+            job={job}
+            onDelete={deleteHandler}
+            onMarkCompleted={markCompletedHandler}
+          />
         ))}
         <PostJobCard />
       </div>

@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-export default function JobCard({ job, onDelete }) {
+export default function JobCard({ job, onDelete, onMarkCompleted }) {
   if (!job) {
     return (
       <div className="text-red-500">
@@ -73,6 +73,9 @@ export default function JobCard({ job, onDelete }) {
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onDelete(job._id)}>
                 Delete
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onMarkCompleted(job._id)}>
+                Mark as Completed
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

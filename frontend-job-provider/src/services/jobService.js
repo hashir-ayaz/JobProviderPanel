@@ -60,3 +60,13 @@ export const deleteJob = async (jobId) => {
     throw error;
   }
 };
+
+export const editJob = async (jobId, formData) => {
+  try {
+    const response = await api.patch(`/jobs/${jobId}`, formData);
+    return response;
+  } catch (error) {
+    console.error("Error editing job:", error);
+    throw error;
+  }
+};

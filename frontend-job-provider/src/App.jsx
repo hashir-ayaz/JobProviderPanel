@@ -9,6 +9,7 @@ import SignUpPage from "./pages/SignUpPage";
 import PostJobPage from "./pages/PostJobPage";
 import Dashboard from "./pages/Dashboard";
 import DetailedJobPage from "./pages/DetailedJobPage";
+import DetailedProposalPage from "./pages/DetailedProposalPage";
 
 function App() {
   return (
@@ -25,6 +26,11 @@ function App() {
           path="/job/:jobId"
           element={<DetailedJobPage></DetailedJobPage>}
         />
+        <Route
+          path="/proposal/:proposalId"
+          element={<DetailedProposalPage></DetailedProposalPage>}
+        />
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer />

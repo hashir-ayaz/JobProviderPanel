@@ -1,5 +1,6 @@
 const Proposal = require("../models/Proposal");
 const Job = require("../models/Job"); // Assuming Job model is used to validate jobId
+const mongoose = require("mongoose");
 
 exports.createProposal = async (req, res) => {
   try {
@@ -73,6 +74,28 @@ exports.createProposal = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "An error occurred while creating the proposal.",
+      error: error.message,
+    });
+  }
+};
+
+exports.getProposalById = async (req, res) => {
+  try {
+    // make sure the id is a valid ObjectId before querying the database
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid proposal ID." });
+    }
+
+    const proposalId = req.params.id;
+    const proposal = await Proposal.findById(proposalId);
+    res.status(200).json({ proposal });
+  } catch (error) {
+    console.error("Error fetching proposal:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching the proposal.",
       error: error.message,
     });
   }

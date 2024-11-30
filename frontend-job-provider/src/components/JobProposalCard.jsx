@@ -1,5 +1,5 @@
-import React from "react";
-
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 const JobProposalCard = ({ proposal }) => {
   const {
     freelancerId = "No freelancer provided",
@@ -72,10 +72,15 @@ const JobProposalCard = ({ proposal }) => {
           {new Date(createdAt).toLocaleDateString("en-US")}
         </p>
         <p>
-          <strong>Updated At:</strong>{" "}
+          <strong>Updated Att:</strong>{" "}
           {new Date(updatedAt).toLocaleDateString("en-US")}
         </p>
       </div>
+      <Link to={`/proposal/${proposal._id}`}>
+        <Button className="self-end my-5 bg-secondary hover:bg-secondary-light">
+          View Details
+        </Button>
+      </Link>
     </div>
   );
 };
