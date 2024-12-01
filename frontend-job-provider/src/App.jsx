@@ -3,7 +3,7 @@ import LandingPage from "./pages/LandingPage";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { LogIn } from "lucide-react";
+// import { LogIn } from "lucide-react";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import PostJobPage from "./pages/PostJobPage";
@@ -14,7 +14,6 @@ import DetailedProposalPage from "./pages/DetailedProposalPage";
 function App() {
   return (
     <>
-      {/* <AuthProvider> */}
       <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />
@@ -34,7 +33,6 @@ function App() {
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <Footer />
-      {/* </AuthProvider> */}
     </>
   );
 }

@@ -123,7 +123,9 @@ const DetailedJobPage = () => {
             <h2 className="mb-4 text-xl font-semibold text-gray-800">
               Job Description
             </h2>
-            <p className="mb-6 text-gray-600">{description}</p>
+            <p className="mb-6 text-gray-600 whitespace-pre-line">
+              {description}
+            </p>
           </div>
           <AboutClient jobProviderId={jobProviderId} />{" "}
           {/* Use the new component */}
