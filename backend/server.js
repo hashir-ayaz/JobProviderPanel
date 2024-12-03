@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const passport = require("passport");
+require("./src/middleware/googleAuth");
 const connectDB = require("./src/config/db");
 const errorHandler = require("./src/middleware/errorHandler");
 const userRoutes = require("./src/routes/userRoutes");
@@ -25,7 +26,7 @@ app.use(
 app.use(express.json()); // Body parser
 
 // Routes
-app.use("/api/v1/auth/google", googleAuthRoutes);
+app.use("/api/v1/auth/", googleAuthRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/jobs", jobRoutes);
 app.use("/api/v1/skills", skillRoutes);
