@@ -49,8 +49,20 @@ const Dashboard = () => {
     fetchJobs();
   }, []);
 
-  if (!jobs || jobs.length === 0) {
+  if (!jobs) {
     return <div className="py-12 text-lg text-center">Loading Jobs...</div>;
+  }
+
+  if (jobs.length === 0) {
+    return (
+      <div className="px-16 py-12 font-custom">
+        <h1 className="mb-6 text-2xl font-bold text-secondary">Your Jobs</h1>
+        <div className="text-lg text-center">
+          No jobs found. Post a job to get started.
+        </div>
+        <PostJobCard />
+      </div>
+    );
   }
 
   return (

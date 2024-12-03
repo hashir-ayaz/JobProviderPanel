@@ -20,7 +20,7 @@ router.get(
 
       // Ensure _id is converted to a string
       const payload = {
-        _id: user._id.toString(),
+        userId: user._id.toString(),
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
@@ -34,10 +34,11 @@ router.get(
 
       // Set token as an HTTP-only cookie
       res.cookie("token", token, {
-        httpOnly: true, // Prevent client-side JavaScript access
-        secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+        secure: false, // Use HTTPS in production
         sameSite: "strict", // CSRF protection
         maxAge: 3600000, // 1 hour in milliseconds
+        path: "/",
+        httpOnly: false,
       });
 
       // Redirect with token

@@ -16,7 +16,9 @@ const api = axios.create({
 // Add a request interceptor to dynamically include the token
 api.interceptors.request.use(
   (config) => {
+    console.log("All cookies:", document.cookie); // Log all cookies
     const token = Cookies.get("token"); // Fetch the token dynamically
+    console.log("Fetched token from cookies:", token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`; // Set Authorization header
     }
