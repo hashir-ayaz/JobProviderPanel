@@ -11,7 +11,7 @@ router.post("/signup", register);
 router.post("/login", login);
 
 // this can be viewed by guest and logged in user
-router.get("/:id/profile", getUserById);
+router.get("/profile/:id", getUserById);
 
 // router.post("/:id/reviews", protect, createReview);
 

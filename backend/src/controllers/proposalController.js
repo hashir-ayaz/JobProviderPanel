@@ -89,7 +89,9 @@ exports.getProposalById = async (req, res) => {
     }
 
     const proposalId = req.params.id;
-    const proposal = await Proposal.findById(proposalId);
+    const proposal = await Proposal.findById(proposalId).populate(
+      "freelancerId"
+    );
     res.status(200).json({ proposal });
   } catch (error) {
     console.error("Error fetching proposal:", error);

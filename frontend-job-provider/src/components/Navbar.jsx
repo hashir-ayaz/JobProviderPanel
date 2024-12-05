@@ -184,12 +184,20 @@ export default function Navbar() {
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem
                       onClick={() => {
-                        navigate("/profile");
+                        navigate("/me");
                       }}
                     >
                       Profile
                     </DropdownMenuItem>
                     <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        navigate("/dashboard");
+                      }}
+                    >
+                      Dashboard
+                    </DropdownMenuItem>
+
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout}>
                       Log out

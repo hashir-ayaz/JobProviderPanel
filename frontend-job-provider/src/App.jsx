@@ -10,6 +10,8 @@ import PostJobPage from "./pages/PostJobPage";
 import Dashboard from "./pages/Dashboard";
 import DetailedJobPage from "./pages/DetailedJobPage";
 import DetailedProposalPage from "./pages/DetailedProposalPage";
+import UserProfile from "./pages/user-profile";
+import FreelancerProfile from "./pages/FreelancerProfile";
 
 function App() {
   return (
@@ -25,9 +27,14 @@ function App() {
           path="/job/:jobId"
           element={<DetailedJobPage></DetailedJobPage>}
         />
+        <Route path="/me" element={<UserProfile />} />
         <Route
           path="/proposal/:proposalId"
           element={<DetailedProposalPage></DetailedProposalPage>}
+        />
+        <Route
+          path="/freelancer/:freelancerId"
+          element={<FreelancerProfile></FreelancerProfile>}
         />
 
         <Route path="*" element={<Navigate to="/" />} />

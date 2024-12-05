@@ -11,6 +11,8 @@ const jobRoutes = require("./src/routes/jobRoutes");
 const skillRoutes = require("./src/routes/skillRoutes");
 const proposalRoutes = require("./src/routes/proposalRoutes");
 const googleAuthRoutes = require("./src/routes/googleAuthRoutes");
+const reviewRoutes = require("./src/routes/reviewRoutes");
+
 dotenv.config();
 app.use(passport.initialize());
 
@@ -31,6 +33,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/jobs", jobRoutes);
 app.use("/api/v1/skills", skillRoutes);
 app.use("/api/v1/proposals", proposalRoutes);
+app.use("/api/v1/review", reviewRoutes);
 
 app.use(errorHandler);
 

@@ -10,15 +10,14 @@ router.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
+// Callback for Google OAuth
 router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
   (req, res) => {
     try {
-      // Extract user info and transform for JWT
       const user = req.user.toObject ? req.user.toObject() : req.user;
 
-      // Ensure _id is converted to a string
       const payload = {
         userId: user._id.toString(),
         firstName: user.firstName,
@@ -27,22 +26,24 @@ router.get(
         role: user.role,
       };
 
-      // Sign JWT
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "1h",
       });
 
-      // Set token as an HTTP-only cookie
       res.cookie("token", token, {
-        secure: false, // Use HTTPS in production
-        sameSite: "strict", // CSRF protection
-        maxAge: 3600000, // 1 hour in milliseconds
+        secure: false,
+        sameSite: "strict",
+        maxAge: 3600000,
         path: "/",
-        httpOnly: false,
+        httpOnly: true,
       });
 
-      // Redirect with token
-      res.redirect(`http://localhost:5173/dashboard`);
+      // Return user and token as JSON
+      res.status(200).json({
+        message: "Google login successful",
+        token,
+        user: payload,
+      });
     } catch (error) {
       console.error("Error generating JWT:", error);
       res.status(500).json({ error: "Failed to generate token" });
