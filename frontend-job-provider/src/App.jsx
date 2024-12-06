@@ -27,6 +27,7 @@ function App() {
           path="/freelancer/:freelancerId"
           element={<FreelancerProfile></FreelancerProfile>}
         />
+        <Route path="/dashboard" element={<Dashboard />} />
 
         {/* protected routes here */}
         <Route element={<ProtectedRoute />}>
@@ -34,7 +35,6 @@ function App() {
             path="/proposal/:proposalId"
             element={<DetailedProposalPage></DetailedProposalPage>}
           />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/post-job" element={<PostJobPage />} />
           <Route
             path="/job/:jobId"

@@ -12,11 +12,22 @@ const skillRoutes = require("./src/routes/skillRoutes");
 const proposalRoutes = require("./src/routes/proposalRoutes");
 const googleAuthRoutes = require("./src/routes/googleAuthRoutes");
 const reviewRoutes = require("./src/routes/reviewRoutes");
+const cookieSession = require("cookie-session");
 
 dotenv.config();
-app.use(passport.initialize());
 
 connectDB(); // Connect to database
+
+app.use(express.json()); // Body parser
+app.use(
+  cookieSession({
+    name: "session",
+    keys: [process.env.COOKIE_KEY],
+    maxAge: 24 * 60 * 60 * 100,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(
   CORS({
@@ -24,8 +35,6 @@ app.use(
     credentials: true,
   })
 );
-
-app.use(express.json()); // Body parser
 
 // Routes
 app.use("/api/v1/auth/", googleAuthRoutes);

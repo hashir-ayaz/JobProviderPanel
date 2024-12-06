@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,13 +14,46 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setIsLoggedIn, setUser } = useContext(AuthContext);
+  const { setIsLoggedIn, setUser, user } = useContext(AuthContext);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
+    // Redirect to the backend's Google OAuth endpoint
     window.location.href = "http://localhost:3000/api/v1/auth/google";
   };
+
+  // useEffect(() => {
+  //   const getGoogleAuthData = async () => {
+  //     const params = new URLSearchParams(window.location.search);
+  //     const token = params.get("token");
+  //     const user = params.get("user");
+
+  //     if (token && user) {
+  //       try {
+  //         // Store the JWT and user data in local storage
+  //         localStorage.setItem("jwt", token);
+
+  //         // set jwt in cookie
+  //         document.cookie = `jwt=${token}; path=/`;
+
+  //         localStorage.setItem("user", user);
+
+  //         // Update the context
+  //         setIsLoggedIn(true);
+  //         setUser(JSON.parse(decodeURIComponent(user)));
+
+  //         // Clear the query params and navigate to the dashboard
+  //         window.history.replaceState({}, document.title, "/dashboard");
+  //         navigate("/dashboard");
+  //       } catch (err) {
+  //         console.error("Error parsing user data:", err);
+  //       }
+  //     }
+  //   };
+
+  //   getGoogleAuthData();
+  // }, [setIsLoggedIn, setUser, navigate]);
 
   const handleLogin = async () => {
     try {
@@ -37,7 +70,6 @@ export default function LoginPage() {
     <div className="flex min-h-screen font-custom">
       {/* Left Column */}
       <div className="relative flex flex-col justify-between p-12 overflow-hidden lg:flex lg:w-1/2 bg-gradient-to-r from-primary-light to-white">
-        {/* Text Content */}
         <div>
           <h1 className="mb-4 text-4xl font-bold text-secondary">
             SkillConnect.
@@ -50,8 +82,6 @@ export default function LoginPage() {
             clients or freelancers.
           </p>
         </div>
-
-        {/* Image Section */}
         <div className="mt-8">
           <img
             src={heroPic}
@@ -59,8 +89,6 @@ export default function LoginPage() {
             className="object-contain w-full max-w-xs mx-auto md:max-w-md"
           />
         </div>
-
-        {/* Footer */}
         <div className="text-sm text-gray-500">
           © 2024 SkillConnect. All rights reserved.
         </div>
@@ -83,7 +111,6 @@ export default function LoginPage() {
             }}
             className="space-y-4"
           >
-            {/* Email Input */}
             <div>
               <Input
                 type="email"
@@ -97,7 +124,6 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Password Input */}
             <div className="relative">
               <Input
                 type={showPassword ? "text" : "password"}
@@ -119,9 +145,7 @@ export default function LoginPage() {
               </button>
             </div>
 
-            {/* Login Button */}
             <Button
-              //   onClick={handleLogin}
               type="submit"
               className="w-full bg-primary hover:bg-primary-dark"
             >
@@ -139,7 +163,7 @@ export default function LoginPage() {
           <p className="mt-4 text-sm text-center text-gray-600">
             Forgot your password?{" "}
             <Link
-              href="/forgot-password"
+              to="/forgot-password"
               className="text-primary hover:underline"
             >
               Reset it here

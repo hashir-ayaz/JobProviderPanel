@@ -1,41 +1,41 @@
 import { useEffect, useState } from "react";
 import JobCard from "../components/JobCard";
 import PostJobCard from "../components/PostJobCard";
-import { fetchPostedJobs } from "../services/jobService";
-import { deleteJob, editJob } from "../services/jobService";
+import { fetchPostedJobs, deleteJob, editJob } from "../services/jobService";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Dashboard = () => {
-  const markCompletedHandler = async (jobId) => {
-    try {
-      // Mark the job as completed
-      await editJob(jobId, { status: "Completed" });
-      console.log("Job marked as completed successfully:", jobId);
-      // Fetch the updated list of jobs
-      const response = await fetchPostedJobs();
-      setJobs(response.data);
-      console.log("Jobs fetched:", response.data);
-    } catch (error) {
-      console.error("Failed to mark the job as completed:", error.message);
-    }
-  };
-
-  const deleteHandler = async (jobId) => {
-    try {
-      // Delete the job by ID
-      await deleteJob(jobId);
-      console.log("Job deleted successfully:", jobId);
-      // Fetch the updated list of jobs
-      const response = await fetchPostedJobs();
-      setJobs(response.data);
-      console.log("Jobs fetched:", response.data);
-    } catch (error) {
-      console.error("Failed to delete the job:", error.message);
-    }
-  };
-
   const [jobs, setJobs] = useState([]);
+  const { setIsLoggedIn, setUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const handleAuthentication = () => {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+      const user = params.get("user");
+      console.log("token", token);
+      console.log("user", user);
+
+      if (token && user) {
+        try {
+          // Store token and user in localStorage
+          localStorage.setItem("jwt", token);
+          localStorage.setItem("user", user);
+
+          // Update AuthContext
+          setIsLoggedIn(true);
+          setUser(JSON.parse(decodeURIComponent(user)));
+
+          // Clear query parameters
+          window.history.replaceState({}, document.title, "/dashboard");
+        } catch (err) {
+          console.error("Error parsing user data:", err);
+        }
+      }
+    };
+
     const fetchJobs = async () => {
       try {
         const response = await fetchPostedJobs();
@@ -46,8 +46,31 @@ const Dashboard = () => {
       }
     };
 
+    handleAuthentication();
     fetchJobs();
-  }, []);
+  }, [setIsLoggedIn, setUser]);
+
+  const markCompletedHandler = async (jobId) => {
+    try {
+      await editJob(jobId, { status: "Completed" });
+      console.log("Job marked as completed successfully:", jobId);
+      const response = await fetchPostedJobs();
+      setJobs(response.data);
+    } catch (error) {
+      console.error("Failed to mark the job as completed:", error.message);
+    }
+  };
+
+  const deleteHandler = async (jobId) => {
+    try {
+      await deleteJob(jobId);
+      console.log("Job deleted successfully:", jobId);
+      const response = await fetchPostedJobs();
+      setJobs(response.data);
+    } catch (error) {
+      console.error("Failed to delete the job:", error.message);
+    }
+  };
 
   if (!jobs) {
     return <div className="py-12 text-lg text-center">Loading Jobs...</div>;
@@ -69,7 +92,6 @@ const Dashboard = () => {
     <div className="px-16 py-12 font-custom">
       <h1 className="mb-6 text-2xl font-bold text-secondary">Your Jobs</h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 lg:grid-cols-4">
-        {/* Render the job cards */}
         {jobs.map((job) => (
           <JobCard
             key={job._id}

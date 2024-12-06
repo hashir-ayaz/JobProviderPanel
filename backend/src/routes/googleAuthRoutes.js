@@ -10,44 +10,64 @@ router.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
+router.get("/login/failed", (req, res) => {
+  res.status(401).json({
+    success: false,
+    message: "Google login failed",
+  });
+});
+
+router.get("/login/success", (req, res) => {
+  if (req.user) {
+    res.status(200).json({
+      success: true,
+      message: "User has successfully authenticated",
+      user: req.user,
+      // TODO send jwt token
+    });
+  } else {
+    res.status(401).json({
+      success: false,
+      message: "User authentication failed",
+    });
+  }
+});
+
+router.get("/logout", (req, res) => {
+  req.logout();
+  res.status(200).json({
+    success: true,
+    message: "User has been logged out",
+  });
+});
+
 // Callback for Google OAuth
+// router.get(
+//   "/google/callback",
+//   passport.authenticate("google", {
+//     session: false,
+//     failureRedirect: "/login/failed",
+//     successRedirect: "http://localhost:5173/dashboard",
+//   })
+// );
+
 router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
   (req, res) => {
-    try {
-      const user = req.user.toObject ? req.user.toObject() : req.user;
+    const token = jwt.sign(
+      { id: req.user._id, email: req.user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
-      const payload = {
-        userId: user._id.toString(),
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        role: user.role,
-      };
-
-      const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "1h",
-      });
-
-      res.cookie("token", token, {
-        secure: false,
-        sameSite: "strict",
-        maxAge: 3600000,
-        path: "/",
-        httpOnly: true,
-      });
-
-      // Return user and token as JSON
-      res.status(200).json({
-        message: "Google login successful",
-        token,
-        user: payload,
-      });
-    } catch (error) {
-      console.error("Error generating JWT:", error);
-      res.status(500).json({ error: "Failed to generate token" });
-    }
+    // Redirect to frontend with token and user data
+    const frontendURL = "http://localhost:5173/dashboard";
+    res.redirect(
+      `${frontendURL}?token=${encodeURIComponent(
+        token
+      )}&user=${encodeURIComponent(JSON.stringify(req.user))}`
+    );
   }
 );
 

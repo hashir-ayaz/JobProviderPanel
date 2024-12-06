@@ -23,7 +23,6 @@ import PreviousReviews from "../components/PreviousReviews";
 
 export default function UserProfile() {
   const [showFullBio, setShowFullBio] = useState(false);
-
   const { user } = useAuth();
 
   useEffect(() => {}, [user]);
@@ -54,7 +53,7 @@ export default function UserProfile() {
 
   const truncateBio = (text, wordLimit) => {
     if (!text || typeof text !== "string") {
-      return "No bio available";
+      return "No bio available"; // Fallback in case `text` is null or not a string
     }
     const words = text.split(" ");
     if (words.length > wordLimit) {
@@ -102,7 +101,7 @@ export default function UserProfile() {
             <h3 className="text-xl font-semibold text-gray-700">About Me</h3>
             <p className="text-gray-600">
               {showFullBio ? bio : truncateBio(bio, 50)}
-              {bio.split(" ").length > 50 && (
+              {bio && bio.split(" ").length > 50 && (
                 <button
                   className="ml-2 text-blue-500 transition-colors hover:text-blue-700"
                   onClick={() => setShowFullBio(!showFullBio)}
