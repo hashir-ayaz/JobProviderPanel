@@ -61,6 +61,13 @@ router.get(
       { expiresIn: "1d" }
     );
 
+    // put jwt in cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
     // Redirect to frontend with token and user data
     const frontendURL = "http://localhost:5173/dashboard";
     res.redirect(

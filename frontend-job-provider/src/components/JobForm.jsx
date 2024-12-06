@@ -165,6 +165,7 @@ const JobForm = ({ skills = [] }) => {
         <Select
           value={formData.skill}
           onValueChange={(value) => handleSkillChange(value)}
+          required
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a skill/category" />
@@ -201,6 +202,7 @@ const JobForm = ({ skills = [] }) => {
           </label>
           <Select
             onValueChange={(value) => handleSelectChange("budgetType", value)}
+            required
           >
             <SelectTrigger className="w-full">
               <SelectValue

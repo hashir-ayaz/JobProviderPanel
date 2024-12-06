@@ -94,6 +94,8 @@ exports.createJob = async (req, res) => {
 
     console.log("Creating new job in the database...");
 
+    console.log("req.user is ", req.user);
+
     // Create a new job
     const job = new Job({
       title,
@@ -108,7 +110,7 @@ exports.createJob = async (req, res) => {
       requiredSkills,
       experienceLevel,
       preferredLocation,
-      jobProviderId: req.user?.id || null, // Assuming job provider info is in `req.user`
+      jobProviderId: req.user?._id || null, // Assuming job provider info is in `req.user`
     });
 
     // Save to database

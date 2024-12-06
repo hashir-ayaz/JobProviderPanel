@@ -7,6 +7,7 @@ export const postJob = async (formData) => {
 
     // Log the response for debugging
     console.log("Job successfully posted:", response.data);
+    alert("Job posted successfully!");
 
     // Return the response data for further use
     return response.data;

@@ -13,12 +13,14 @@ const proposalRoutes = require("./src/routes/proposalRoutes");
 const googleAuthRoutes = require("./src/routes/googleAuthRoutes");
 const reviewRoutes = require("./src/routes/reviewRoutes");
 const cookieSession = require("cookie-session");
+const cookieParser = require("cookie-parser");
 
 dotenv.config();
 
 connectDB(); // Connect to database
 
 app.use(express.json()); // Body parser
+app.use(cookieParser());
 app.use(
   cookieSession({
     name: "session",

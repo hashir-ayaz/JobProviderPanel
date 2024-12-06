@@ -13,15 +13,15 @@ const Dashboard = () => {
   useEffect(() => {
     const handleAuthentication = () => {
       const params = new URLSearchParams(window.location.search);
-      const token = params.get("token");
+      // const token = params.get("token");
       const user = params.get("user");
-      console.log("token", token);
+      // console.log("token", token);
       console.log("user", user);
 
-      if (token && user) {
+      if (user) {
         try {
           // Store token and user in localStorage
-          localStorage.setItem("jwt", token);
+          // localStorage.setItem("jwt", token);
           localStorage.setItem("user", user);
 
           // Update AuthContext
