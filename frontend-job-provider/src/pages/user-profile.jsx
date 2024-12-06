@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Mail, MapPin, Star, DollarSign, Calendar, Edit } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Mail, MapPin, Star, Calendar, Edit } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
