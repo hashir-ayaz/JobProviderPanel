@@ -11,7 +11,7 @@ exports.login = async (req, res) => {
   try {
     // Find the user by email
     console.log("Searching for user in the database...");
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).populate("skills");
     if (!user) {
       console.log("User not found");
       return res.status(400).json({ message: "Invalid credentials" });
