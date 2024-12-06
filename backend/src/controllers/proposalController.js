@@ -157,8 +157,6 @@ exports.acceptProposal = async (req, res) => {
 
     // Send an email to the freelancer
     const emailContent = generateProposalAcceptedEmail({
-      clientName:
-        job.jobProviderId.firstName + " " + job.jobProviderId.lastName,
       jobTitle: job.title,
       freelancerName:
         proposal.freelancerId.firstName + " " + proposal.freelancerId.lastName,

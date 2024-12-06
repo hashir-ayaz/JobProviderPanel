@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { toast } from "../hooks/use-toast.js";
 import {
   CalendarIcon,
-  ClockIcon,
   CurrencyDollarIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";

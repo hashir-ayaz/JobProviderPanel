@@ -1,5 +1,4 @@
 // this maps through the reviews and displays them in a list
-import React from "react";
 import ReviewCard from "./ReviewCard";
 
 const PreviousReviews = ({ reviews }) => {

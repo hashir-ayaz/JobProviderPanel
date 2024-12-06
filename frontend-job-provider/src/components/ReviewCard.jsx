@@ -1,6 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { StarIcon, UserIcon, CalendarIcon } from "@heroicons/react/24/outline";
+import { StarIcon, CalendarIcon } from "@heroicons/react/24/outline";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
