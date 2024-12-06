@@ -4,6 +4,7 @@ import PostJobCard from "../components/PostJobCard";
 import { fetchPostedJobs, deleteJob, editJob } from "../services/jobService";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
   const [jobs, setJobs] = useState([]);
@@ -13,22 +14,13 @@ const Dashboard = () => {
   useEffect(() => {
     const handleAuthentication = () => {
       const params = new URLSearchParams(window.location.search);
-      // const token = params.get("token");
       const user = params.get("user");
-      // console.log("token", token);
-      console.log("user", user);
 
       if (user) {
         try {
-          // Store token and user in localStorage
-          // localStorage.setItem("jwt", token);
           localStorage.setItem("user", user);
-
-          // Update AuthContext
           setIsLoggedIn(true);
           setUser(JSON.parse(decodeURIComponent(user)));
-
-          // Clear query parameters
           window.history.replaceState({}, document.title, "/dashboard");
         } catch (err) {
           console.error("Error parsing user data:", err);
@@ -91,17 +83,47 @@ const Dashboard = () => {
   return (
     <div className="px-16 py-12 font-custom">
       <h1 className="mb-6 text-2xl font-bold text-secondary">Your Jobs</h1>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+      <motion.div
+        className="grid grid-cols-1 gap-6 sm:grid-cols-3 lg:grid-cols-4"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0, scale: 0.8 },
+          visible: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+              staggerChildren: 0.2, // Stagger the animations of the children
+            },
+          },
+        }}
+      >
         {jobs.map((job) => (
-          <JobCard
+          <motion.div
             key={job._id}
-            job={job}
-            onDelete={deleteHandler}
-            onMarkCompleted={markCompletedHandler}
-          />
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.5 }}
+          >
+            <JobCard
+              job={job}
+              onDelete={deleteHandler}
+              onMarkCompleted={markCompletedHandler}
+            />
+          </motion.div>
         ))}
-        <PostJobCard />
-      </div>
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.5 }}
+        >
+          <PostJobCard />
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

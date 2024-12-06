@@ -34,7 +34,7 @@ exports.createJob = async (req, res) => {
       !description ||
       !budgetType ||
       (!budgetAmount && budgetType === "Fixed") ||
-      (!hourlyRate && budgetType === "Hourly") ||
+      (!budgetAmount && budgetType === "Hourly") ||
       !deadline ||
       !experienceLevel
     ) {
@@ -67,7 +67,7 @@ exports.createJob = async (req, res) => {
     // Validate deadline
     console.log("Validating deadline...");
     const parsedDeadline = new Date(deadline);
-    if (isNaN(parsedDeadline.getTime()) || parsedDeadline < new Date()) {
+    if (isNaN(parsedDeadline.getTime()) || parsedDeadline <= new Date()) {
       console.error("Validation failed: Invalid or past deadline");
       return res
         .status(400)

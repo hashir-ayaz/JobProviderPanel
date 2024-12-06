@@ -98,15 +98,17 @@ const JobForm = ({ skills = [] }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
     // Send `formData` to backend API here.
-    const response = postJob(formData);
-    console.log("Response from API:", response);
-
-    // Reset the form after submission
-    resetForm();
+    try {
+      const response = await postJob(formData);
+      console.log("Response from API:", response);
+      resetForm();
+    } catch (error) {
+      console.error("Failed to post job:", error.message);
+    }
   };
 
   return (
@@ -232,7 +234,7 @@ const JobForm = ({ skills = [] }) => {
             value={formData.budgetAmount}
             onChange={handleChange}
             placeholder="Enter amount"
-            required={formData.budgetType === "Fixed"}
+            required
           />
         </div>
       </div>

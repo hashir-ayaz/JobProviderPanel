@@ -20,6 +20,7 @@ import {
 import useAuth from "../hooks/useAuth";
 import pfp from "../assets/logo.png";
 import PreviousReviews from "../components/PreviousReviews";
+import { motion } from "framer-motion";
 
 export default function UserProfile() {
   const [showFullBio, setShowFullBio] = useState(false);
@@ -63,10 +64,15 @@ export default function UserProfile() {
   };
 
   return (
-    <div>
-      <Card className="w-full max-w-4xl p-6 mx-auto border border-gray-200 rounded-lg shadow-lg font-custom bg-gradient-to-r from-white to-gray-100">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="px-4 sm:px-8 lg:px-16"
+    >
+      <Card className="w-full p-6 mx-auto my-4 border border-gray-200 rounded-lg shadow-lg max-w-screen-2xl font-custom">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between">
             <div className="flex items-center space-x-4">
               <Avatar className="w-24 h-24 border-2 border-blue-500 shadow-md">
                 <AvatarImage
@@ -79,7 +85,7 @@ export default function UserProfile() {
                 </AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle className="text-3xl font-extrabold text-gray-800">
+                <CardTitle className="text-2xl font-extrabold text-gray-800 sm:text-3xl">
                   {firstName} {lastName}
                 </CardTitle>
                 <CardDescription className="text-lg text-blue-600">
@@ -89,7 +95,7 @@ export default function UserProfile() {
             </div>
             <Button
               variant="outline"
-              className="text-white transition-all bg-blue-500 shadow-lg hover:bg-blue-600"
+              className="mt-4 text-white transition-all shadow-lg bg-primary hover:bg-primary-dark sm:mt-0"
             >
               <Edit className="w-5 h-5 mr-2" />
               Edit Profile
@@ -97,7 +103,12 @@ export default function UserProfile() {
           </div>
         </CardHeader>
         <CardContent className="mt-4 space-y-6">
-          <div className="space-y-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-2"
+          >
             <h3 className="text-xl font-semibold text-gray-700">About Me</h3>
             <p className="text-gray-600">
               {showFullBio ? bio : truncateBio(bio, 50)}
@@ -110,9 +121,14 @@ export default function UserProfile() {
                 </button>
               )}
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+          >
             <div className="flex items-center space-x-3 text-gray-600">
               <Mail className="w-5 h-5 text-blue-500" />
               <span>{email}</span>
@@ -131,9 +147,14 @@ export default function UserProfile() {
                 {avgRating.toFixed(1)} ({reviews.length} reviews)
               </span>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="space-y-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-2"
+          >
             <h3 className="text-xl font-semibold text-gray-700">Skills</h3>
             <div className="flex flex-wrap gap-3">
               {skills.length > 0 ? (
@@ -150,9 +171,14 @@ export default function UserProfile() {
                 <span className="text-gray-600">No skills listed</span>
               )}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2"
+          >
             <Card className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardHeader>
                 <CardTitle className="text-sm font-medium text-gray-500">
@@ -177,14 +203,18 @@ export default function UserProfile() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         </CardContent>
       </Card>
 
-      {/* Render reviews using PreviousReviews */}
-      <div className="mt-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="mt-8"
+      >
         <PreviousReviews reviews={reviews} />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
