@@ -1,6 +1,11 @@
 const Proposal = require("../models/Proposal");
 const Job = require("../models/Job"); // Assuming Job model is used to validate jobId
 const mongoose = require("mongoose");
+const {
+  sendEmail,
+  generateProposalAcceptedEmail,
+  generateProposalRejectedEmail,
+} = require("../email/sendgrid");
 
 exports.createProposal = async (req, res) => {
   try {
@@ -132,6 +137,11 @@ exports.acceptProposal = async (req, res) => {
     // Assign the freelancer to the job
     job.freelancerId = proposal.freelancerId._id;
     job.status = "In Progress"; // Update job status to "In Progress"
+
+    // Remove the proposal from the job's receivedProposals array
+    job.receivedProposals = job.receivedProposals.filter(
+      (id) => id.toString() !== proposalId
+    );
     await job.save();
 
     res.status(200).json({
@@ -145,9 +155,20 @@ exports.acceptProposal = async (req, res) => {
       },
     });
 
-    // Optionally, send notifications here
-    // Notify the freelancer
-    // Notify other freelancers that their proposals were not accepted
+    // Send an email to the freelancer
+    const emailContent = generateProposalAcceptedEmail({
+      clientName:
+        job.jobProviderId.firstName + " " + job.jobProviderId.lastName,
+      jobTitle: job.title,
+      freelancerName:
+        proposal.freelancerId.firstName + " " + proposal.freelancerId.lastName,
+    });
+
+    await sendEmail({
+      to: proposal.freelancerId.email,
+      subject: `Congratulations! Your proposal for "${job.title}" has been accepted`,
+      html: emailContent,
+    });
   } catch (error) {
     console.error("Error accepting proposal:", error);
     res.status(500).json({
@@ -158,13 +179,14 @@ exports.acceptProposal = async (req, res) => {
   }
 };
 
-// TODO send emails to the freelancer and the client
 exports.rejectProposal = async (req, res) => {
   try {
     const proposalId = req.params.id;
 
     // Fetch the proposal and populate the job details
-    const proposal = await Proposal.findById(proposalId).populate("jobId");
+    const proposal = await Proposal.findById(proposalId)
+      .populate("jobId")
+      .populate("freelancerId");
 
     if (!proposal) {
       return res.status(404).json({
@@ -197,7 +219,18 @@ exports.rejectProposal = async (req, res) => {
       data: job,
     });
 
-    // Optionally, send a notification to the freelancer about the rejection
+    // Send an email to the freelancer
+    const emailContent = generateProposalRejectedEmail({
+      candidateName:
+        proposal.freelancerId.firstName + " " + proposal.freelancerId.lastName,
+      jobTitle: job.title,
+    });
+
+    await sendEmail({
+      to: proposal.freelancerId.email,
+      subject: `Your proposal for "${job.title}" was not accepted`,
+      html: emailContent,
+    });
   } catch (error) {
     console.error("Error rejecting proposal:", error);
     res.status(500).json({
