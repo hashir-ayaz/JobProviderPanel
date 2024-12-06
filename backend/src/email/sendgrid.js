@@ -1,6 +1,3 @@
-// using Twilio SendGrid's v3 Node.js Library
-// https://github.com/sendgrid/sendgrid-nodejs
-// javascript;
 const sgMail = require("@sendgrid/mail");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -28,11 +25,7 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 //     console.error(error);
 //   });
 
-const generateProposalAcceptedEmail = ({
-  clientName,
-  jobTitle,
-  freelancerName,
-}) => `
+const generateProposalAcceptedEmail = ({ jobTitle, freelancerName }) => `
   <!DOCTYPE html>
   <html>
     <head>
@@ -77,19 +70,19 @@ const generateProposalAcceptedEmail = ({
     </head>
     <body>
       <div class="container">
-        <h1>Congratulations, ${clientName}!</h1>
+        <h1>Congratulations, ${freelancerName}!</h1>
         <p>
           We are excited to inform you that your proposal for the job titled <strong>"${jobTitle}"</strong> has been accepted.
         </p>
         <p>
-          The freelancer <strong>${freelancerName}</strong> has been assigned to your job and is ready to start working on it.
+          You have been assigned to the Job and can start communicating with the client.
         </p>
         <p>
-          You can view the job details and communicate with the freelancer through the link below:
+          You can view the job details and communicate with the client through the link below:
         </p>
        
         <p>
-          Thank you for choosing our platform. If you have any questions, feel free to contact our support team.
+          Thank you for choosing Skill Connect. If you have any questions, feel free to contact our support team.
         </p>
         <p>
           Best regards, <br />
