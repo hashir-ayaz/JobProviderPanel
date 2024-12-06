@@ -9,6 +9,7 @@ import {
   CurrencyDollarIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
+import { acceptProposal, rejectProposal } from "../services/proposalService";
 
 const DetailedProposalPage = () => {
   const { proposalId } = useParams();
@@ -39,6 +40,19 @@ const DetailedProposalPage = () => {
   }, [proposalId]);
 
   const handleAcceptProposal = () => {
+    try {
+      // Call the API to accept the proposal
+      const response = acceptProposal(proposalId);
+      console.log("Accepted proposal:", response);
+      alert("Proposal accepted");
+    } catch (error) {
+      console.error("Error accepting proposal:", error);
+      toast({
+        title: "Error",
+        description: "Failed to accept proposal.",
+        variant: "destructive",
+      });
+    }
     toast({
       title: "Proposal Accepted",
       description: "You have accepted this proposal.",
@@ -46,11 +60,19 @@ const DetailedProposalPage = () => {
   };
 
   const handleRejectProposal = () => {
-    toast({
-      title: "Proposal Rejected",
-      description: "You have rejected this proposal.",
-      variant: "destructive",
-    });
+    try {
+      // Call the API to reject the proposal
+      const response = rejectProposal(proposalId);
+      console.log("Rejected proposal:", response);
+      alert("Proposal rejected");
+    } catch (error) {
+      console.error("Error rejecting proposal:", error);
+      toast({
+        title: "Error",
+        description: "Failed to reject proposal.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleViewProfile = () => {

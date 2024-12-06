@@ -171,7 +171,8 @@ exports.getJobById = async (req, res) => {
         populate: {
           path: "freelancerId", // Nested populate for the freelancer in each proposal
         },
-      });
+      })
+      .populate("freelancerId");
 
     // If the job doesn't exist, return a 404 error
     if (!job) {

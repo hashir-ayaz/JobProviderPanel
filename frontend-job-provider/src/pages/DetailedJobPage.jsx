@@ -8,21 +8,21 @@ import {
   CurrencyDollarIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import AboutClient from "../components/AboutClient"; // Import the new component
+import AboutClient from "../components/AboutClient";
 import JobProposalCard from "../components/JobProposalCard";
 
 const DetailedJobPage = () => {
   const { jobId } = useParams();
-  const [job, setJob] = useState(null); // Start with `null` to indicate loading state
-  const [loading, setLoading] = useState(true); // Add explicit loading state
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchJob = async () => {
       try {
         const response = await fetchJobById(jobId);
-        const fetchedJob = response.data.job; // Extract `job` directly
+        const fetchedJob = response.data.job;
         console.log("Fetched job:", fetchedJob);
-        setJob(fetchedJob); // Set only the actual job object in the state
+        setJob(fetchedJob);
       } catch (error) {
         console.error("Error fetching job:", error);
       } finally {
@@ -34,7 +34,6 @@ const DetailedJobPage = () => {
   }, [jobId]);
 
   if (loading) {
-    // Render loading spinner while fetching data
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="w-32 h-32 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
@@ -43,7 +42,6 @@ const DetailedJobPage = () => {
   }
 
   if (!job) {
-    // Render an error message if job data is not available
     return (
       <div className="flex items-center justify-center h-screen">
         <p className="text-xl text-red-500">Failed to load job details.</p>
@@ -79,6 +77,7 @@ const DetailedJobPage = () => {
     jobProviderId = {},
     receivedProposals = [],
     location = "Location not specified",
+    freelancerId = null, // Check if a freelancer is assigned
   } = job;
 
   return (
@@ -128,8 +127,7 @@ const DetailedJobPage = () => {
               {description}
             </p>
           </div>
-          <AboutClient jobProviderId={jobProviderId} />{" "}
-          {/* Use the new component */}
+          <AboutClient jobProviderId={jobProviderId} />
         </div>
         <div className="px-6 py-4 mb-5 bg-gray-50">
           <div className="flex items-center justify-between">
@@ -140,7 +138,9 @@ const DetailedJobPage = () => {
               className={`px-3 py-1 rounded-full text-sm font-semibold ${
                 status === "Open"
                   ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
+                  : status === "Closed"
+                  ? "bg-red-100 text-red-800"
+                  : "bg-yellow-100 text-yellow-800"
               }`}
             >
               {status}
@@ -148,6 +148,39 @@ const DetailedJobPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Render assigned freelancer details if present */}
+      {freelancerId ? (
+        <div className="mt-6 overflow-hidden bg-white rounded-lg shadow-sm">
+          <div className="p-6">
+            <h2 className="mb-4 text-xl font-semibold text-gray-800">
+              Assigned Freelancer
+            </h2>
+            <div className="flex items-center space-x-4">
+              <div className="flex-shrink-0">
+                <img
+                  src={freelancerId.profilePicture || "/default-avatar.png"}
+                  alt={freelancerId.firstName}
+                  className="w-16 h-16 rounded-full"
+                />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-800">
+                  {freelancerId.firstName} {freelancerId.lastName}
+                </h3>
+                <p className="text-gray-600">{freelancerId.email}</p>
+                <p className="text-gray-600">{freelancerId.location}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-6">
+          <p className="text-gray-600">No freelancer has been assigned yet.</p>
+        </div>
+      )}
+
+      {/* Render proposals */}
       {receivedProposals.length > 0 ? (
         receivedProposals.map((proposal) => (
           <JobProposalCard key={proposal._id} proposal={proposal} />
