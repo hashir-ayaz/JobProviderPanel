@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import AboutClient from "../components/AboutClient";
 import JobProposalCard from "../components/JobProposalCard";
+import { motion } from "framer-motion";
 
 const DetailedJobPage = () => {
   const { jobId } = useParams();
@@ -81,15 +82,42 @@ const DetailedJobPage = () => {
   } = job;
 
   return (
-    <div className="container px-4 py-8 mx-auto text-secondary font-custom">
-      <div className="overflow-hidden bg-white rounded-lg shadow-sm">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="container px-4 py-8 mx-auto text-secondary font-custom"
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="overflow-hidden bg-white rounded-lg shadow-sm"
+      >
         <div className="p-6">
-          <h1 className="mb-2 text-3xl font-bold ">{title}</h1>
-          <div className="flex items-center mb-4 ">
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mb-2 text-3xl font-bold "
+          >
+            {title}
+          </motion.h1>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="flex items-center mb-4 "
+          >
             <CalendarIcon className="w-5 h-5 mr-2" />
             <span>Posted on {formatDate(createdAt)}</span>
-          </div>
-          <div className="flex flex-wrap mb-6 -mx-2">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="flex flex-wrap mb-6 -mx-2"
+          >
             <div className="w-full px-2 mb-4 md:w-1/2">
               <div className="flex items-center">
                 <MapPinIcon className="w-5 h-5 mr-2 text-gray-600" />
@@ -118,18 +146,28 @@ const DetailedJobPage = () => {
                 </span>
               </div>
             </div>
-          </div>
-          <div className="pt-6 border-t border-gray-200">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="pt-6 border-t border-gray-200"
+          >
             <h2 className="mb-4 text-xl font-semibold text-gray-800">
               Job Description
             </h2>
             <p className="mb-6 text-gray-600 whitespace-pre-line">
               {description}
             </p>
-          </div>
+          </motion.div>
           <AboutClient jobProviderId={jobProviderId} />
         </div>
-        <div className="px-6 py-4 mb-5 bg-gray-50">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="px-6 py-4 mb-5 bg-gray-50"
+        >
           <div className="flex items-center justify-between">
             <span className="text-gray-600">
               Deadline: {formatDate(deadline)}
@@ -146,49 +184,63 @@ const DetailedJobPage = () => {
               {status}
             </span>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Render assigned freelancer details if present */}
-      {freelancerId ? (
-        <div className="mt-6 overflow-hidden bg-white rounded-lg shadow-sm">
-          <div className="p-6">
-            <h2 className="mb-4 text-xl font-semibold text-gray-800">
-              Assigned Freelancer
-            </h2>
-            <div className="flex items-center space-x-4">
-              <div className="flex-shrink-0">
-                <img
-                  src={freelancerId.profilePicture || "/default-avatar.png"}
-                  alt={freelancerId.firstName}
-                  className="w-16 h-16 rounded-full"
-                />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-gray-800">
-                  {freelancerId.firstName} {freelancerId.lastName}
-                </h3>
-                <p className="text-gray-600">{freelancerId.email}</p>
-                <p className="text-gray-600">{freelancerId.location}</p>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+      >
+        {freelancerId ? (
+          <div className="mt-6 overflow-hidden bg-white rounded-lg shadow-sm">
+            <div className="p-6">
+              <h2 className="mb-4 text-xl font-semibold text-gray-800">
+                Assigned Freelancer
+              </h2>
+              <div className="flex items-center space-x-4">
+                <div className="flex-shrink-0">
+                  <img
+                    src={freelancerId.profilePicture || "/default-avatar.png"}
+                    alt={freelancerId.firstName}
+                    className="w-16 h-16 rounded-full"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-800">
+                    {freelancerId.firstName} {freelancerId.lastName}
+                  </h3>
+                  <p className="text-gray-600">{freelancerId.email}</p>
+                  <p className="text-gray-600">{freelancerId.location}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="mt-6">
-          <p className="text-gray-600">No freelancer has been assigned yet.</p>
-        </div>
-      )}
+        ) : (
+          <p className="mt-6 text-lg text-gray-600">
+            No freelancer has been assigned yet.
+          </p>
+        )}
 
-      {/* Render proposals */}
-      {receivedProposals.length > 0 ? (
-        receivedProposals.map((proposal) => (
-          <JobProposalCard key={proposal._id} proposal={proposal} />
-        ))
-      ) : (
-        <p className="mt-4 text-lg text-gray-600">No proposals received yet.</p>
-      )}
-    </div>
+        {/* Render proposals */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9 }}
+        >
+          {receivedProposals.length > 0 ? (
+            receivedProposals.map((proposal) => (
+              <JobProposalCard key={proposal._id} proposal={proposal} />
+            ))
+          ) : (
+            <p className="mt-4 text-lg text-gray-600">
+              No proposals received yet.
+            </p>
+          )}
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import CategoryCard from "./CategoryCard";
 
 const CategorySection = () => {
@@ -13,30 +14,64 @@ const CategorySection = () => {
     { title: "Legal", rating: "4.85/5", skills: 145 },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1, // Stagger animation for each child
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
   return (
-    <section className="max-w-screen-xl py-10 mx-auto">
+    <motion.section
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="max-w-screen-xl py-10 mx-auto"
+    >
       <header className="mb-6">
-        <h2 className="text-2xl font-extrabold text-foreground text-secondary">
+        <motion.h2
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-2xl font-extrabold text-foreground text-secondary"
+        >
           Browse Talent by Category
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mt-1 text-sm text-muted-foreground"
+        >
           Looking for work?{" "}
           <a href="#" className="text-blue-500 underline">
             Browse jobs
           </a>
-        </p>
+        </motion.p>
       </header>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <motion.div
+        variants={containerVariants}
+        className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
         {categories.map((category, index) => (
-          <CategoryCard
-            key={index}
-            title={category.title}
-            rating={category.rating}
-            skills={category.skills}
-          />
+          <motion.div key={index} variants={itemVariants}>
+            <CategoryCard
+              title={category.title}
+              rating={category.rating}
+              skills={category.skills}
+            />
+          </motion.div>
         ))}
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 };
 
