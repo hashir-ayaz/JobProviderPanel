@@ -111,7 +111,8 @@ exports.getUserById = async (req, res) => {
 
     // Otherwise, return only public information
     const publicInfo = {
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       profilePicture: user.profilePicture,
       bio: user.bio,
       skills: user.skills,

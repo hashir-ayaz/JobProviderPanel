@@ -6,11 +6,9 @@ import { toast } from "../hooks/use-toast.js";
 import {
   CalendarIcon,
   ClockIcon,
-  CurrencyIcon as CurrencyDollarIcon,
-  PaperclipIcon as PaperClipIcon,
+  CurrencyDollarIcon,
   UserIcon,
-  BriefcaseIcon,
-} from "lucide-react";
+} from "@heroicons/react/24/outline";
 
 const DetailedProposalPage = () => {
   const { proposalId } = useParams();
@@ -41,7 +39,6 @@ const DetailedProposalPage = () => {
   }, [proposalId]);
 
   const handleAcceptProposal = () => {
-    // Implement accept proposal logic here
     toast({
       title: "Proposal Accepted",
       description: "You have accepted this proposal.",
@@ -49,7 +46,6 @@ const DetailedProposalPage = () => {
   };
 
   const handleRejectProposal = () => {
-    // Implement reject proposal logic here
     toast({
       title: "Proposal Rejected",
       description: "You have rejected this proposal.",
@@ -58,7 +54,6 @@ const DetailedProposalPage = () => {
   };
 
   const handleViewProfile = () => {
-    // Navigate to freelancer's profile page
     if (proposal && proposal.freelancerId) {
       navigate(`/freelancer/${proposal.freelancerId._id}`);
     } else {
@@ -81,9 +76,7 @@ const DetailedProposalPage = () => {
   if (!proposal) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p className="text-xl text-destructive">
-          Failed to load proposal details.
-        </p>
+        <p className="text-xl text-red-500">Failed to load proposal details.</p>
       </div>
     );
   }
@@ -115,51 +108,56 @@ const DetailedProposalPage = () => {
   } = proposal;
 
   return (
-    <div className="container px-4 py-8 mx-auto">
-      <div className="overflow-hidden rounded-lg shadow-sm bg-card text-card-foreground">
+    <div className="container px-4 py-8 mx-auto font-custom">
+      <div className="overflow-hidden bg-white rounded-lg shadow-sm">
         <div className="p-6">
-          <h1 className="mb-2 text-3xl font-bold">Proposal Details</h1>
+          <h1 className="mb-2 text-3xl font-bold text-gray-800">
+            Proposal Details
+          </h1>
           <div className="flex items-center mb-4">
-            <CalendarIcon className="w-5 h-5 mr-2" />
+            <CalendarIcon className="w-5 h-5 mr-2 text-gray-600" />
             <span>Submitted on {formatDate(createdAt)}</span>
           </div>
           <div className="flex flex-wrap mb-6 -mx-2">
             <div className="w-full px-2 mb-4 md:w-1/2">
               <div className="flex items-center">
-                <CurrencyDollarIcon className="w-5 h-5 mr-2" />
-                <span>
+                <CurrencyDollarIcon className="w-5 h-5 mr-2 text-gray-600" />
+                <span className="text-gray-700">
                   {budgetType === "Fixed"
-                    ? `${budgetAmount} USD (Fixed)`
-                    : `${budgetHourlyRate} USD/hour (Hourly)`}
+                    ? `$${budgetAmount} (Fixed)`
+                    : `$${budgetHourlyRate}/hour (Hourly)`}
                 </span>
               </div>
             </div>
             <div className="w-full px-2 mb-4 md:w-1/2">
               <div className="flex items-center">
-                <UserIcon className="w-5 h-5 mr-2" />
-                <span>
+                <UserIcon className="w-5 h-5 mr-2 text-gray-600" />
+                <span className="text-gray-700">
                   Submitted by {freelancerId?.firstName || "N/A"}{" "}
                   {freelancerId?.lastName || "N/A"}
                 </span>
               </div>
             </div>
           </div>
-          <div className="pt-6 border-t border-border">
-            <h2 className="mb-4 text-xl font-semibold">Cover Letter</h2>
-            <p className="mb-6">{coverLetterText}</p>
+          <div className="pt-6 border-t border-gray-200">
+            <h2 className="mb-4 text-xl font-semibold text-gray-800">
+              Cover Letter
+            </h2>
+            <p className="mb-6 text-gray-600">{coverLetterText}</p>
           </div>
           {attachments.length > 0 && (
-            <div className="pt-6 border-t border-border">
-              <h2 className="mb-4 text-xl font-semibold">Attachments</h2>
+            <div className="pt-6 border-t border-gray-200">
+              <h2 className="mb-4 text-xl font-semibold text-gray-800">
+                Attachments
+              </h2>
               <ul className="list-disc list-inside">
                 {attachments.map((attachment, index) => (
                   <li key={index} className="flex items-center space-x-2">
-                    <PaperClipIcon className="w-5 h-5" />
                     <a
                       href={attachment.fileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-primary hover:underline"
+                      className="text-blue-500 hover:underline"
                     >
                       {attachment.fileName}
                     </a>
@@ -169,9 +167,9 @@ const DetailedProposalPage = () => {
             </div>
           )}
         </div>
-        <div className="px-6 py-4 mb-5 bg-muted">
+        <div className="px-6 py-4 mb-5 bg-gray-50">
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">
+            <span className="text-gray-600">
               Last Updated: {formatDate(updatedAt)}
             </span>
             <span className="px-3 py-1 text-sm font-semibold rounded-full text-primary-foreground bg-primary">
@@ -179,7 +177,7 @@ const DetailedProposalPage = () => {
             </span>
           </div>
         </div>
-        <div className="flex justify-between px-6 py-4 bg-card">
+        <div className="flex justify-between px-6 py-4 bg-gray-100">
           <Button
             onClick={handleAcceptProposal}
             className="bg-green-500 hover:bg-green-600"
