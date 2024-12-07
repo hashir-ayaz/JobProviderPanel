@@ -169,3 +169,55 @@ exports.createReview = async (req, res) => {
     next(error);
   }
 };
+
+// Update own profile
+exports.updateOwnProfile = async (req, res) => {
+  const userId = req.user.id; // Get the logged-in user's ID from req.user
+  const updates = req.body;
+
+  try {
+    // Validate incoming updates
+    const allowedUpdates = [
+      "firstName",
+      "lastName",
+      "email",
+      "bio",
+      "location",
+      "skills",
+      "profilePicture",
+    ];
+    const keysToUpdate = Object.keys(updates);
+    const isValidUpdate = keysToUpdate.every((key) =>
+      allowedUpdates.includes(key)
+    );
+
+    if (!isValidUpdate) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid fields in update request.",
+      });
+    }
+
+    // Find and update the user's profile
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updates },
+      { new: true, runValidators: true }
+    ).populate("skills", "name"); // Populate skills if necessary
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.error(`Error updating profile for user ID ${userId}:`, error);
+    handleError(res, error);
+  }
+};

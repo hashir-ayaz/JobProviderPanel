@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Mail, MapPin, Star, Calendar, Edit } from "lucide-react";
+import { Mail, MapPin, Star, Calendar, Edit, Save, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import Cookies from "js-cookie";
+
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -17,16 +18,40 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+// import AuthContext from "../context/AuthContext";
 import useAuth from "../hooks/useAuth";
 import pfp from "../assets/logo.png";
 import PreviousReviews from "../components/PreviousReviews";
 import { motion } from "framer-motion";
+import { updateUserProfile } from "../services/userService";
 
 export default function UserProfile() {
   const [showFullBio, setShowFullBio] = useState(false);
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    location: "",
+    bio: "",
+    // Add other fields as necessary
+  });
+  const [error, setError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    if (user) {
+      setEditData({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+        location: user.location || "",
+        bio: user.bio || "",
+        // Initialize other fields as necessary
+      });
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -63,6 +88,56 @@ export default function UserProfile() {
     return text;
   };
 
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+    setError("");
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    setError("");
+    try {
+      //  check if user is logged in
+      if (!user) {
+        console.log("User not logged in");
+        alert("User not logged in");
+      }
+
+      const response = await updateUserProfile(editData);
+      console.log("Updated user:", response);
+
+      // Update AuthContext and localStorage
+      setUser(response.data);
+
+      // Exit edit mode
+      setIsEditing(false);
+      alert("Profile updated successfully!");
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      setError(err.message || "Failed to update profile.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditData({
+      firstName: user.firstName || "",
+      lastName: user.lastName || "",
+      email: user.email || "",
+      location: user.location || "",
+      bio: user.bio || "",
+      // Reset other fields as necessary
+    });
+    setError("");
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -85,21 +160,64 @@ export default function UserProfile() {
                 </AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle className="text-2xl font-extrabold text-gray-800 sm:text-3xl">
-                  {firstName} {lastName}
-                </CardTitle>
-                <CardDescription className="text-lg text-blue-600">
-                  {role.charAt(0).toUpperCase() + role.slice(1)}
-                </CardDescription>
+                {isEditing ? (
+                  <>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={editData.firstName}
+                      onChange={handleInputChange}
+                      className="block w-full px-3 py-2 mb-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="First Name"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={editData.lastName}
+                      onChange={handleInputChange}
+                      className="block w-full px-3 py-2 mb-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Last Name"
+                      required
+                    />
+                  </>
+                ) : (
+                  <>
+                    <CardTitle className="text-2xl font-extrabold text-gray-800 sm:text-3xl">
+                      {firstName} {lastName}
+                    </CardTitle>
+                    <CardDescription className="text-lg text-blue-600">
+                      {role.charAt(0).toUpperCase() + role.slice(1)}
+                    </CardDescription>
+                  </>
+                )}
               </div>
             </div>
-            <Button
-              variant="outline"
-              className="mt-4 text-white transition-all shadow-lg bg-primary hover:bg-primary-dark sm:mt-0"
-            >
-              <Edit className="w-5 h-5 mr-2" />
-              Edit Profile
-            </Button>
+            {isEditing ? (
+              <div className="flex space-x-2">
+                <Button
+                  variant="primary"
+                  onClick={handleSave}
+                  disabled={isSaving}
+                >
+                  {isSaving ? "Saving..." : <Save className="w-5 h-5 mr-2" />}
+                  Save
+                </Button>
+                <Button variant="secondary" onClick={handleCancel}>
+                  <X className="w-5 h-5 mr-2" />
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                className="mt-4 text-white transition-all shadow-lg bg-primary hover:bg-primary-dark sm:mt-0"
+                onClick={handleEditToggle}
+              >
+                <Edit className="w-5 h-5 mr-2" />
+                Edit Profile
+              </Button>
+            )}
           </div>
         </CardHeader>
         <CardContent className="mt-4 space-y-6">
@@ -110,17 +228,29 @@ export default function UserProfile() {
             className="space-y-2"
           >
             <h3 className="text-xl font-semibold text-gray-700">About Me</h3>
-            <p className="text-gray-600">
-              {showFullBio ? bio : truncateBio(bio, 50)}
-              {bio && bio.split(" ").length > 50 && (
-                <button
-                  className="ml-2 text-blue-500 transition-colors hover:text-blue-700"
-                  onClick={() => setShowFullBio(!showFullBio)}
-                >
-                  {showFullBio ? "Show Less" : "Read More"}
-                </button>
-              )}
-            </p>
+            {isEditing ? (
+              <textarea
+                name="bio"
+                value={editData.bio}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                rows="4"
+                placeholder="Tell us about yourself"
+              />
+            ) : (
+              <p className="text-gray-600">
+                {showFullBio ? bio : truncateBio(bio, 50)}
+                {bio && bio.split(" ").length > 50 && (
+                  <button
+                    className="ml-2 text-blue-500 transition-colors hover:text-blue-700"
+                    onClick={() => setShowFullBio(!showFullBio)}
+                  >
+                    {showFullBio ? "Show Less" : "Read More"}
+                  </button>
+                )}
+              </p>
+            )}
+            {isEditing && error && <div className="text-red-500">{error}</div>}
           </motion.div>
 
           <motion.div
@@ -129,14 +259,42 @@ export default function UserProfile() {
             transition={{ duration: 0.6 }}
             className="grid grid-cols-1 gap-4 sm:grid-cols-2"
           >
-            <div className="flex items-center space-x-3 text-gray-600">
-              <Mail className="w-5 h-5 text-blue-500" />
-              <span>{email}</span>
-            </div>
-            <div className="flex items-center space-x-3 text-gray-600">
-              <MapPin className="w-5 h-5 text-blue-500" />
-              <span>{location}</span>
-            </div>
+            {isEditing ? (
+              <>
+                <div className="flex flex-col">
+                  <label className="mb-1 text-gray-600">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={editData.email}
+                    onChange={handleInputChange}
+                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="mb-1 text-gray-600">Location</label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={editData.location}
+                    onChange={handleInputChange}
+                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center space-x-3 text-gray-600">
+                  <Mail className="w-5 h-5 text-blue-500" />
+                  <span>{email}</span>
+                </div>
+                <div className="flex items-center space-x-3 text-gray-600">
+                  <MapPin className="w-5 h-5 text-blue-500" />
+                  <span>{location}</span>
+                </div>
+              </>
+            )}
             <div className="flex items-center space-x-3 text-gray-600">
               <Calendar className="w-5 h-5 text-blue-500" />
               <span>Member since {new Date(createdAt).getFullYear()}</span>
