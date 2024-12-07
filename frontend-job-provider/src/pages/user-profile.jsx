@@ -145,16 +145,16 @@ export default function UserProfile() {
       transition={{ duration: 0.5 }}
       className="px-4 sm:px-8 lg:px-16"
     >
-      <Card className="w-full p-6 mx-auto my-4 border border-gray-200 rounded-lg shadow-lg max-w-screen-2xl font-custom">
+      <Card className="w-full p-6 mx-auto my-4 border border-gray-200 rounded-lg shadow-lg bg-gradient-to-r from-white to-gray-100 font-custom md:max-w-none">
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Avatar className="w-24 h-24 border-2 border-blue-500 shadow-md">
+              <Avatar className="border-2 border-blue-500 shadow-md w-44 h-44">
                 <AvatarImage
                   src={profilePicture}
                   alt={`${firstName} ${lastName}`}
                 />
-                <AvatarFallback className="text-lg font-bold bg-gray-300">
+                <AvatarFallback className="text-2xl font-bold bg-gray-300">
                   {firstName[0]}
                   {lastName[0]}
                 </AvatarFallback>
@@ -167,7 +167,7 @@ export default function UserProfile() {
                       name="firstName"
                       value={editData.firstName}
                       onChange={handleInputChange}
-                      className="block w-full px-3 py-2 mb-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="block w-full px-3 py-2 mb-2 text-2xl border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       placeholder="First Name"
                       required
                     />
@@ -176,17 +176,17 @@ export default function UserProfile() {
                       name="lastName"
                       value={editData.lastName}
                       onChange={handleInputChange}
-                      className="block w-full px-3 py-2 mb-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="block w-full px-3 py-2 mb-2 text-2xl border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Last Name"
                       required
                     />
                   </>
                 ) : (
                   <>
-                    <CardTitle className="text-2xl font-extrabold text-gray-800 sm:text-3xl">
+                    <CardTitle className="text-5xl font-bold text-gray-800">
                       {firstName} {lastName}
                     </CardTitle>
-                    <CardDescription className="text-lg text-blue-600">
+                    <CardDescription className="text-2xl text-blue-600">
                       {role.charAt(0).toUpperCase() + role.slice(1)}
                     </CardDescription>
                   </>
@@ -199,11 +199,16 @@ export default function UserProfile() {
                   variant="primary"
                   onClick={handleSave}
                   disabled={isSaving}
+                  className="flex items-center px-4 py-2 text-lg"
                 >
                   {isSaving ? "Saving..." : <Save className="w-5 h-5 mr-2" />}
                   Save
                 </Button>
-                <Button variant="secondary" onClick={handleCancel}>
+                <Button
+                  variant="secondary"
+                  onClick={handleCancel}
+                  className="flex items-center px-4 py-2 text-lg"
+                >
                   <X className="w-5 h-5 mr-2" />
                   Cancel
                 </Button>
@@ -211,7 +216,7 @@ export default function UserProfile() {
             ) : (
               <Button
                 variant="outline"
-                className="mt-4 transition-all bg-white shadow-lg border-secondary text-secondary sm:mt-0"
+                className="flex items-center px-4 py-2 mt-4 text-lg transition-all bg-white shadow-lg border-secondary text-secondary sm:mt-0"
                 onClick={handleEditToggle}
               >
                 <Edit className="w-5 h-5 mr-2" />
@@ -227,22 +232,22 @@ export default function UserProfile() {
             transition={{ duration: 0.6 }}
             className="space-y-2"
           >
-            <h3 className="text-xl font-semibold text-gray-700">About Me</h3>
+            <h3 className="text-3xl font-semibold text-gray-700">About Me</h3>
             {isEditing ? (
               <textarea
                 name="bio"
                 value={editData.bio}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 text-xl border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 rows="4"
                 placeholder="Tell us about yourself"
               />
             ) : (
-              <p className="text-gray-600">
+              <p className="text-2xl text-gray-600">
                 {showFullBio ? bio : truncateBio(bio, 50)}
                 {bio && bio.split(" ").length > 50 && (
                   <button
-                    className="ml-2 text-blue-500 transition-colors hover:text-blue-700"
+                    className="ml-2 text-lg text-blue-500 transition-colors hover:text-blue-700"
                     onClick={() => setShowFullBio(!showFullBio)}
                   >
                     {showFullBio ? "Show Less" : "Read More"}
@@ -250,7 +255,9 @@ export default function UserProfile() {
                 )}
               </p>
             )}
-            {isEditing && error && <div className="text-red-500">{error}</div>}
+            {isEditing && error && (
+              <div className="text-lg text-red-500">{error}</div>
+            )}
           </motion.div>
 
           <motion.div
@@ -262,44 +269,44 @@ export default function UserProfile() {
             {isEditing ? (
               <>
                 <div className="flex flex-col">
-                  <label className="mb-1 text-gray-600">Email</label>
+                  <label className="mb-1 text-xl text-gray-600">Email</label>
                   <input
                     type="email"
                     name="email"
                     value={editData.email}
                     onChange={handleInputChange}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="px-3 py-2 text-xl border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="mb-1 text-gray-600">Location</label>
+                  <label className="mb-1 text-xl text-gray-600">Location</label>
                   <input
                     type="text"
                     name="location"
                     value={editData.location}
                     onChange={handleInputChange}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="px-3 py-2 text-xl border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </>
             ) : (
               <>
-                <div className="flex items-center space-x-3 text-gray-600">
+                <div className="flex items-center space-x-3 text-2xl text-gray-600">
                   <Mail className="w-5 h-5 text-blue-500" />
                   <span>{email}</span>
                 </div>
-                <div className="flex items-center space-x-3 text-gray-600">
+                <div className="flex items-center space-x-3 text-2xl text-gray-600">
                   <MapPin className="w-5 h-5 text-blue-500" />
                   <span>{location}</span>
                 </div>
               </>
             )}
-            <div className="flex items-center space-x-3 text-gray-600">
+            <div className="flex items-center space-x-3 text-2xl text-gray-600">
               <Calendar className="w-5 h-5 text-blue-500" />
               <span>Member since {new Date(createdAt).getFullYear()}</span>
             </div>
-            <div className="flex items-center space-x-3 text-gray-600">
+            <div className="flex items-center space-x-3 text-2xl text-gray-600">
               <Star className="w-5 h-5 text-yellow-400" />
               <span>
                 {avgRating.toFixed(1)} ({reviews.length} reviews)
@@ -313,20 +320,20 @@ export default function UserProfile() {
             transition={{ duration: 0.6 }}
             className="space-y-2"
           >
-            <h3 className="text-xl font-semibold text-gray-700">Skills</h3>
+            <h3 className="text-3xl font-semibold text-gray-700">Skills</h3>
             <div className="flex flex-wrap gap-3">
               {skills.length > 0 ? (
                 skills.map((skill, index) => (
                   <Badge
                     key={index}
                     variant="secondary"
-                    className="px-3 py-1 text-blue-800 bg-blue-100 rounded-lg shadow-md"
+                    className="px-4 py-2 text-xl text-blue-800 bg-blue-100 rounded-lg shadow-md"
                   >
                     {skill.name}
                   </Badge>
                 ))
               ) : (
-                <span className="text-gray-600">No skills listed</span>
+                <span className="text-2xl text-gray-600">No skills listed</span>
               )}
             </div>
           </motion.div>
@@ -339,24 +346,24 @@ export default function UserProfile() {
           >
             <Card className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardHeader>
-                <CardTitle className="text-sm font-medium text-gray-500">
+                <CardTitle className="text-lg font-medium text-gray-500">
                   Total Earnings
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-green-500">
+                <div className="text-4xl font-bold text-green-500">
                   ${totalEarnings.toLocaleString()}
                 </div>
               </CardContent>
             </Card>
             <Card className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
               <CardHeader>
-                <CardTitle className="text-sm font-medium text-gray-500">
+                <CardTitle className="text-lg font-medium text-gray-500">
                   Jobs Completed
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-blue-500">
+                <div className="text-4xl font-bold text-blue-500">
                   {totalJobs}
                 </div>
               </CardContent>

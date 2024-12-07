@@ -92,21 +92,21 @@ export default function FreelancerProfilePage() {
       <Card className="w-4/5 p-6 mx-auto mt-6 border border-gray-200 rounded-lg shadow-lg bg-gradient-to-r from-white to-gray-100 font-custom md:max-w-none">
         <CardHeader>
           <div className="flex items-center space-x-4">
-            <Avatar className="w-24 h-24 border-2 shadow-md border-primary">
+            <Avatar className="border-2 shadow-md h-44 w-44 border-primary">
               <AvatarImage
                 src={profilePicture || "/default-avatar.png"}
                 alt={`${firstName} ${lastName}`}
               />
-              <AvatarFallback className="text-lg font-bold bg-muted">
+              <AvatarFallback className="text-xl font-bold bg-muted">
                 {firstName[0]}
                 {lastName[0]}
               </AvatarFallback>
             </Avatar>
             <div>
-              <CardTitle className="text-3xl font-extrabold text-gray-800">
+              <CardTitle className="text-5xl font-bold text-gray-800">
                 {firstName} {lastName}
               </CardTitle>
-              <CardDescription className="text-lg text-primary">
+              <CardDescription className="text-2xl text-primary">
                 Freelance Professional
               </CardDescription>
             </div>
@@ -114,8 +114,8 @@ export default function FreelancerProfilePage() {
         </CardHeader>
         <CardContent className="mt-4 space-y-6">
           <div className="space-y-2">
-            <h3 className="text-xl font-semibold text-gray-700">About Me</h3>
-            <p className="text-gray-600">
+            <h3 className="text-3xl font-semibold text-gray-700">About Me</h3>
+            <p className="text-xl text-gray-600">
               {showFullBio ? bio || "No bio available" : truncateBio(bio, 50)}
               {(bio || "").split(" ").length > 50 && (
                 <button
@@ -133,25 +133,25 @@ export default function FreelancerProfilePage() {
               <Mail className="w-5 h-5 text-primary" />
               <span>{email}</span>
             </div>
-            <div className="flex items-center space-x-3 text-gray-600">
+            <div className="flex items-center space-x-3 text-xl text-gray-600">
               <MapPin className="w-5 h-5 text-primary" />
               <span>{location}</span>
             </div>
-            <div className="flex items-center space-x-3 text-gray-600">
+            <div className="flex items-center space-x-3 text-xl text-gray-600">
               <Calendar className="w-5 h-5 text-primary" />
               <span>Member since {new Date(createdAt).getFullYear()}</span>
             </div>
-            <div className="flex items-center space-x-3 text-gray-600">
+            <div className="flex items-center space-x-3 text-xl text-gray-600">
               <Star className="w-5 h-5 text-yellow-400" />
               <span>
                 {avgRating.toFixed(1)} ({reviews.length} reviews)
               </span>
             </div>
-            <div className="flex items-center space-x-3 text-gray-600">
+            <div className="flex items-center space-x-3 text-xl text-gray-600">
               <DollarSign className="w-5 h-5 text-primary" />
               <span>${hourlyRate}/hour</span>
             </div>
-            <div className="flex items-center space-x-3 text-gray-600">
+            <div className="flex items-center space-x-3 text-xl text-gray-600">
               <Clock className="w-5 h-5 text-primary" />
               <span>{availability}</span>
             </div>
