@@ -41,16 +41,6 @@ router.get("/logout", (req, res) => {
   });
 });
 
-// Callback for Google OAuth
-// router.get(
-//   "/google/callback",
-//   passport.authenticate("google", {
-//     session: false,
-//     failureRedirect: "/login/failed",
-//     successRedirect: "http://localhost:5173/dashboard",
-//   })
-// );
-
 router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),

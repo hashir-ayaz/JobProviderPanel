@@ -2,39 +2,8 @@ import { useEffect, useState } from "react";
 import FreelancerList from "../components/FreelancerList";
 import FilterSheet from "../components/FilterSheet";
 import { Button } from "@/components/ui/button";
-import { Filter } from "lucide-react";
 import { fetchFreelancers } from "../services/freelancerService";
-
-// // Dummy data for freelancers
-// const dummyFreelancers = [
-//   {
-//     id: 1,
-//     firstName: "John",
-//     lastName: "Doe",
-//     skills: [{ name: "React" }, { name: "Node.js" }],
-//     totalJobs: 15,
-//     totalEarnings: 5000,
-//     avgRating: 4.5,
-//     reviews: [1, 2, 3, 4, 5],
-//     profilePicture: "https://via.placeholder.com/150",
-//     bio: "Experienced React and Node.js developer.",
-//     location: "New York, USA",
-//   },
-//   {
-//     id: 2,
-//     firstName: "Jane",
-//     lastName: "Smith",
-//     skills: [{ name: "Python" }, { name: "Data Science" }],
-//     totalJobs: 20,
-//     totalEarnings: 7500,
-//     avgRating: 4.8,
-//     reviews: [1, 2, 3, 4, 5, 6],
-//     profilePicture: "https://via.placeholder.com/150",
-//     bio: "Data scientist with expertise in machine learning.",
-//     location: "London, UK",
-//   },
-//   // Add more dummy freelancers as needed
-// ];
+import { fetchSkills } from "../services/jobService";
 
 function FindTalentPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +12,10 @@ function FindTalentPage() {
     minRating: 0,
     maxBudget: 10000,
   });
+  const [skills, setSkills] = useState([]);
   const [freelancers, setFreelancers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // Define isLoading state
+  const [error, setError] = useState(null); // Define error state
 
   useEffect(() => {
     const loadFreelancers = async () => {
@@ -59,15 +31,33 @@ function FindTalentPage() {
     loadFreelancers();
   }, []);
 
+  useEffect(() => {
+    const loadSkills = async () => {
+      setIsLoading(true); // Use setIsLoading
+      setError(null); // Reset error state
+      try {
+        const response = await fetchSkills();
+        const fetchedSkills = response;
+        console.log("fetchedSkills", fetchedSkills);
+        setSkills(fetchedSkills);
+      } catch (err) {
+        console.error("Error fetching skills:", err);
+        setError("Failed to load skills");
+        setSkills([]);
+      } finally {
+        setIsLoading(false); // Stop loading indicator
+      }
+    };
+    loadSkills();
+  }, []);
+
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  // Function to apply filters to the freelancers list
   const applyFilters = () => {
     let filtered = freelancers;
 
-    // Filter by skills
     if (filters.skills) {
       const skillsArray = filters.skills
         .split(",")
@@ -79,14 +69,12 @@ function FindTalentPage() {
       );
     }
 
-    // Filter by minimum rating
     if (filters.minRating > 0) {
       filtered = filtered.filter(
         (freelancer) => freelancer.avgRating >= filters.minRating
       );
     }
 
-    // Filter by maximum budget
     if (filters.maxBudget < 10000) {
       filtered = filtered.filter(
         (freelancer) => freelancer.totalEarnings <= filters.maxBudget
@@ -107,6 +95,9 @@ function FindTalentPage() {
           setIsOpen={setIsOpen}
           filters={filters}
           handleFilterChange={handleFilterChange}
+          skills={skills}
+          isLoading={isLoading} // Pass isLoading as prop
+          error={error} // Pass error as prop
         />
       </div>
 

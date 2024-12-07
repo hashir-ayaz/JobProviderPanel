@@ -1,7 +1,11 @@
 import FreelancerCard from "../components/FreelancerCard";
 
 const FreelancerList = ({ freelancers }) => {
-  if (!freelancers || freelancers.length === 0) {
+  if (!freelancers) {
+    return <p className="text-center text-gray-600">Loading Freelancers...</p>;
+  }
+
+  if (freelancers.length === 0) {
     return <p className="text-center text-gray-600">No freelancers found.</p>;
   }
 

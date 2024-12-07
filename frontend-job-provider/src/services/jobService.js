@@ -24,6 +24,7 @@ export const postJob = async (formData) => {
 export const fetchSkills = async () => {
   try {
     const response = await api.get("/skills");
+    console.log("Fetched skills in jobservice", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching skills:", error);
@@ -71,3 +72,14 @@ export const editJob = async (jobId, formData) => {
     throw error;
   }
 };
+
+// export const getAllSkills = async () => {
+//   try {
+//     const response = await api.get("/skills");
+//     console.log("Fetched all skills:", response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error fetching all skills:", error);
+//     throw error;
+//   }
+// };

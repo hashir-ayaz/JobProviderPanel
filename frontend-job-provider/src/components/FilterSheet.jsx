@@ -1,7 +1,13 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Sheet,
   SheetContent,
@@ -12,8 +18,17 @@ import {
 } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
 import { Filter } from "lucide-react";
+import { fetchSkills } from "../services/jobService";
 
-const FilterSheet = ({ isOpen, setIsOpen, filters, handleFilterChange }) => {
+const FilterSheet = ({
+  isOpen,
+  setIsOpen,
+  filters,
+  handleFilterChange,
+  skills,
+  isLoading,
+  error, // Accept error as a prop
+}) => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
@@ -29,20 +44,41 @@ const FilterSheet = ({ isOpen, setIsOpen, filters, handleFilterChange }) => {
           </SheetDescription>
         </SheetHeader>
         <div className="grid gap-4 py-4">
-          {/* Skills Filter */}
           <div className="grid items-center grid-cols-4 gap-4">
             <Label htmlFor="skills" className="text-right">
               Skills
             </Label>
-            <Input
-              id="skills"
+            <Select
               value={filters.skills}
-              onChange={(e) => handleFilterChange("skills", e.target.value)}
-              className="col-span-3"
-              placeholder="e.g., React, Node.js"
-            />
+              onValueChange={(value) => handleFilterChange("skills", value)}
+              disabled={isLoading || skills.length === 0}
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue
+                  placeholder={
+                    isLoading
+                      ? "Loading skills..."
+                      : error
+                      ? "Error loading skills"
+                      : "Select a skill"
+                  }
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {skills.length > 0 ? (
+                  skills.map((skill) => (
+                    <SelectItem key={skill._id} value={skill.name}>
+                      {skill.name}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <div className="p-2 text-center text-muted-foreground">
+                    {error || "No skills available"}
+                  </div>
+                )}
+              </SelectContent>
+            </Select>
           </div>
-          {/* Min Rating Filter */}
           <div className="grid items-center grid-cols-4 gap-4">
             <Label htmlFor="minRating" className="text-right">
               Min Rating
@@ -59,7 +95,6 @@ const FilterSheet = ({ isOpen, setIsOpen, filters, handleFilterChange }) => {
               className="col-span-3"
             />
           </div>
-          {/* Max Budget Filter */}
           <div className="grid items-center grid-cols-4 gap-4">
             <Label htmlFor="maxBudget" className="text-right">
               Max Budget

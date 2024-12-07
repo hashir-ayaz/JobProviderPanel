@@ -55,7 +55,7 @@ const FreelancerCard = ({ freelancer = {} }) => {
           </CardTitle>
           <CardDescription className="flex items-center mt-1">
             <MapPin className="w-4 h-4 mr-1" />
-            {location}
+            {location || "No location specified"}
           </CardDescription>
         </div>
       </CardHeader>

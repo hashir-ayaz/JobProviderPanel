@@ -17,6 +17,8 @@ const cookieParser = require("cookie-parser");
 
 dotenv.config();
 
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
+
 connectDB(); // Connect to database
 
 app.use(express.json()); // Body parser
@@ -28,12 +30,13 @@ app.use(
     maxAge: 24 * 60 * 60 * 100,
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(
   CORS({
-    origin: "http://localhost:5173",
+    origin: CLIENT_URL,
     credentials: true,
   })
 );
