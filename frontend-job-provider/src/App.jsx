@@ -13,6 +13,7 @@ import DetailedProposalPage from "./pages/DetailedProposalPage";
 import UserProfile from "./pages/user-profile";
 import FreelancerProfile from "./pages/FreelancerProfile";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import FindTalentPage from "./pages/FindTalentPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/find-talent" element={<FindTalentPage />} />
 
         <Route
           path="/freelancer/:freelancerId"
