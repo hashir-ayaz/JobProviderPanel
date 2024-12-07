@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import FreelancerList from "../components/FreelancerList";
 import FilterSheet from "../components/FilterSheet";
-import { Button } from "@/components/ui/button";
 import { fetchFreelancers } from "../services/freelancerService";
 import { fetchSkills } from "../services/jobService";
 

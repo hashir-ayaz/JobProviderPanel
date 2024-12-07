@@ -51,6 +51,7 @@ export default function Navbar() {
     { name: "Home", href: "/", icon: Home },
     { name: "About", href: "/about", icon: Info },
     { name: "Contact Us", href: "/contactus", icon: Phone },
+    { name: "Dashboard", href: "/dashboard", icon: User },
     { name: "Find Talent", href: "/find-talent", icon: User },
   ];
 

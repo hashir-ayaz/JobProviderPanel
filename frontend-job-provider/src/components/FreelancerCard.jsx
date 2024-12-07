@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardHeader,
@@ -93,7 +92,7 @@ const FreelancerCard = ({ freelancer = {} }) => {
       </CardContent>
       <CardFooter>
         <Link to={`/freelancer/${freelancer._id}`}>
-          <Button className="w-full bg-primary-dark hover:bg-primary">
+          <Button className="w-full rounded bg-primary hover:bg-primary">
             View Profile
           </Button>
         </Link>
