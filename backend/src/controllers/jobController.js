@@ -101,7 +101,7 @@ exports.createJob = async (req, res) => {
       title,
       description,
       budgetType,
-      budgetAmount: budgetType === "Fixed" ? budgetAmount : null,
+      budgetAmount: budgetAmount || null,
       hourlyRate: budgetType === "Hourly" ? hourlyRate : null,
       estimatedTime,
       paymentMilestones,

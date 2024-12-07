@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
+import countries from "../data/countries.json";
 import {
   Select,
   SelectContent,
@@ -309,12 +310,15 @@ const JobForm = ({ skills = [] }) => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem id="location-america" value="America">
-                  America
-                </SelectItem>
-                <SelectItem id="location-pakistan" value="Pakistan">
-                  Pakistan
-                </SelectItem>
+                {countries.map((country) => (
+                  <SelectItem
+                    key={country.code}
+                    id={`location-${country.code.toLowerCase()}`}
+                    value={country.name}
+                  >
+                    {country.name}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -341,11 +345,32 @@ const JobForm = ({ skills = [] }) => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem id="time-1-3-months" value="1-3 months">
-                  1-3 months
+                <SelectItem id="time-1-week" value="1 week">
+                  1 week
+                </SelectItem>
+                <SelectItem id="time-2-weeks" value="2 weeks">
+                  2 weeks
+                </SelectItem>
+                <SelectItem id="time-3-weeks" value="3 weeks">
+                  3 weeks
                 </SelectItem>
                 <SelectItem id="time-1-month" value="1 month">
                   1 month
+                </SelectItem>
+                <SelectItem id="time-1-3-months" value="1-3 months">
+                  1-3 months
+                </SelectItem>
+                <SelectItem id="time-3-6-months" value="3-6 months">
+                  3-6 months
+                </SelectItem>
+                <SelectItem id="time-6-12-months" value="6-12 months">
+                  6-12 months
+                </SelectItem>
+                <SelectItem id="time-1-year" value="1 year">
+                  1 year
+                </SelectItem>
+                <SelectItem id="time-more-than-1-year" value="More than 1 year">
+                  More than 1 year
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
