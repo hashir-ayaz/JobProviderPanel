@@ -89,7 +89,7 @@ export default function FreelancerProfilePage() {
 
   return (
     <>
-      <Card className="w-full max-w-4xl p-6 mx-auto border border-gray-200 rounded-lg shadow-lg bg-gradient-to-r from-white to-gray-100 font-custom">
+      <Card className="w-4/5 p-6 mx-auto mt-6 border border-gray-200 rounded-lg shadow-lg bg-gradient-to-r from-white to-gray-100 font-custom md:max-w-none">
         <CardHeader>
           <div className="flex items-center space-x-4">
             <Avatar className="w-24 h-24 border-2 shadow-md border-primary">

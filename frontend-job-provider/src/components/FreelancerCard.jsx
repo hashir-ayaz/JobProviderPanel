@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 
 const FreelancerCard = ({ freelancer = {} }) => {
   const {
-    firstName = "[Firstname]",
+    firstName = "[Firstname!]",
     lastName = "[Lastname]",
     profilePicture = null,
     bio = "No bio available",
@@ -33,7 +33,7 @@ const FreelancerCard = ({ freelancer = {} }) => {
   };
 
   return (
-    <Card className="w-full max-w-sm transition-all duration-300 hover:shadow-lg max-h-96">
+    <Card className="w-full max-w-lg transition-all duration-300 hover:shadow-lg max-h-96">
       <CardHeader className="flex flex-row items-center gap-4">
         <Avatar className="w-16 h-16">
           {profilePicture ? (
@@ -92,7 +92,7 @@ const FreelancerCard = ({ freelancer = {} }) => {
       </CardContent>
       <CardFooter>
         <Link to={`/freelancer/${freelancer._id}`}>
-          <Button className="w-full rounded bg-primary hover:bg-primary">
+          <Button className="w-full bg-white border rounded text-primary border-primary hover:bg-gray-50 ">
             View Profile
           </Button>
         </Link>

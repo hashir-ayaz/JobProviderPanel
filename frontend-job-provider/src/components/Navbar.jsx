@@ -156,7 +156,7 @@ export default function Navbar() {
                 </Button>
                 <Button
                   asChild
-                  className="hidden text-white rounded-full bg-primary md:inline-flex"
+                  className="hidden text-white rounded-full hover:bg-primary-dark bg-primary md:inline-flex"
                 >
                   <Link to="/signup">
                     <UserPlus className="w-4 h-4 mr-2" />

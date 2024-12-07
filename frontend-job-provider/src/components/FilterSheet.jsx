@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
 import { Filter } from "lucide-react";
-import { fetchSkills } from "../services/jobService";
 
 const FilterSheet = ({
   isOpen,
@@ -81,32 +80,16 @@ const FilterSheet = ({
           </div>
           <div className="grid items-center grid-cols-4 gap-4">
             <Label htmlFor="minRating" className="text-right">
-              Min Rating
+              Min Rating: {filters.minRating}
             </Label>
             <Slider
               id="minRating"
               min={0}
               max={5}
-              step={0.1}
+              step={1}
               value={[filters.minRating]}
               onValueChange={(value) =>
                 handleFilterChange("minRating", value[0])
-              }
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid items-center grid-cols-4 gap-4">
-            <Label htmlFor="maxBudget" className="text-right">
-              Max Budget
-            </Label>
-            <Slider
-              id="maxBudget"
-              min={0}
-              max={10000}
-              step={100}
-              value={[filters.maxBudget]}
-              onValueChange={(value) =>
-                handleFilterChange("maxBudget", value[0])
               }
               className="col-span-3"
             />

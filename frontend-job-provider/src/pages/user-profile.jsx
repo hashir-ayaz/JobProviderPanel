@@ -211,7 +211,7 @@ export default function UserProfile() {
             ) : (
               <Button
                 variant="outline"
-                className="mt-4 text-white transition-all shadow-lg bg-primary hover:bg-primary-dark sm:mt-0"
+                className="mt-4 transition-all bg-white shadow-lg border-secondary text-secondary sm:mt-0"
                 onClick={handleEditToggle}
               >
                 <Edit className="w-5 h-5 mr-2" />
