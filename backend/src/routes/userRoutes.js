@@ -4,6 +4,7 @@ const {
   login,
   register,
   getUserById,
+  getFreelancers,
   updateOwnProfile,
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
@@ -11,6 +12,7 @@ const { protect } = require("../middleware/authMiddleware");
 router.post("/signup", register);
 router.post("/login", login);
 router.patch("/me", protect, updateOwnProfile);
+router.get("/freelancers", protect, getFreelancers);
 
 // this can be viewed by guest and logged in user
 router.get("/profile/:id", getUserById);

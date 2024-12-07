@@ -221,3 +221,19 @@ exports.updateOwnProfile = async (req, res) => {
     handleError(res, error);
   }
 };
+
+exports.getFreelancers = async (req, res) => {
+  try {
+    const freelancers = await User.find({ role: "freelancer" }).populate(
+      "skills"
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: freelancers,
+    });
+  } catch (error) {
+    console.error("Error fetching freelancers:", error);
+    handleError(res, error);
+  }
+};

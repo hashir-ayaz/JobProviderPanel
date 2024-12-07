@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, MapPin, Briefcase, DollarSign } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const FreelancerCard = ({ freelancer = {} }) => {
   const {
@@ -91,9 +92,11 @@ const FreelancerCard = ({ freelancer = {} }) => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full bg-primary-dark hover:bg-primary">
-          View Profile
-        </Button>
+        <Link to={`/freelancer/${freelancer._id}`}>
+          <Button className="w-full bg-primary-dark hover:bg-primary">
+            View Profile
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );
