@@ -14,46 +14,13 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setIsLoggedIn, setUser, user } = useContext(AuthContext);
+  const { setIsLoggedIn, setUser } = useContext(AuthContext);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
-    // Redirect to the backend's Google OAuth endpoint
     window.location.href = "http://localhost:3000/api/v1/auth/google";
   };
-
-  // useEffect(() => {
-  //   const getGoogleAuthData = async () => {
-  //     const params = new URLSearchParams(window.location.search);
-  //     const token = params.get("token");
-  //     const user = params.get("user");
-
-  //     if (token && user) {
-  //       try {
-  //         // Store the JWT and user data in local storage
-  //         localStorage.setItem("jwt", token);
-
-  //         // set jwt in cookie
-  //         document.cookie = `jwt=${token}; path=/`;
-
-  //         localStorage.setItem("user", user);
-
-  //         // Update the context
-  //         setIsLoggedIn(true);
-  //         setUser(JSON.parse(decodeURIComponent(user)));
-
-  //         // Clear the query params and navigate to the dashboard
-  //         window.history.replaceState({}, document.title, "/dashboard");
-  //         navigate("/dashboard");
-  //       } catch (err) {
-  //         console.error("Error parsing user data:", err);
-  //       }
-  //     }
-  //   };
-
-  //   getGoogleAuthData();
-  // }, [setIsLoggedIn, setUser, navigate]);
 
   const handleLogin = async () => {
     try {
@@ -67,17 +34,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen font-custom">
+    <div className="flex flex-col min-h-screen lg:flex-row font-custom">
       {/* Left Column */}
-      <div className="relative flex flex-col justify-between p-12 overflow-hidden lg:flex lg:w-1/2 bg-gradient-to-r from-primary-light to-white">
+      <div className="relative flex flex-col justify-between p-8 lg:p-12 bg-gradient-to-r from-primary-light to-white lg:w-1/2">
         <div>
-          <h1 className="mb-4 text-4xl font-bold text-secondary">
+          <h1 className="text-3xl font-bold lg:text-4xl text-secondary">
             SkillConnect.
           </h1>
-          <h2 className="mb-6 text-5xl font-bold leading-tight text-secondary">
+          <h2 className="mt-4 text-4xl font-bold leading-tight lg:text-5xl text-secondary">
             Welcome back to SkillConnect
           </h2>
-          <p className="text-lg text-gray-600">
+          <p className="mt-4 text-base text-gray-600 lg:text-lg">
             Log in to access your account, manage projects, and connect with
             clients or freelancers.
           </p>
@@ -86,22 +53,24 @@ export default function LoginPage() {
           <img
             src={heroPic}
             alt="Person Illustration"
-            className="object-contain w-full max-w-xs mx-auto md:max-w-md"
+            className="object-contain w-full max-w-xs mx-auto md:max-w-sm lg:max-w-md"
           />
         </div>
-        <div className="text-sm text-gray-500">
+        <div className="mt-8 text-xs text-center text-gray-500 lg:text-sm lg:text-left">
           © 2024 SkillConnect. All rights reserved.
         </div>
       </div>
 
       {/* Right Column */}
-      <div className="flex items-center justify-center w-full p-8 lg:w-1/2">
+      <div className="flex items-center justify-center w-full p-6 bg-white lg:p-12 lg:w-1/2">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
-            <h3 className="mb-2 text-3xl font-bold text-secondary">
+            <h3 className="text-2xl font-bold lg:text-3xl text-secondary">
               Log in to your account
             </h3>
-            <p className="text-gray-600">Access your SkillConnect dashboard</p>
+            <p className="mt-2 text-sm text-gray-600 lg:text-base">
+              Access your SkillConnect dashboard
+            </p>
           </div>
 
           <form
@@ -154,13 +123,13 @@ export default function LoginPage() {
           </form>
           <GoogleLoginButton onClick={handleGoogleLogin} />
 
-          <p className="mt-6 text-sm text-center text-gray-600">
+          <p className="mt-6 text-xs text-center text-gray-600 lg:text-sm">
             Don't have an account?{" "}
             <Link to="/signup" className="text-primary hover:underline">
               Sign up
             </Link>
           </p>
-          <p className="mt-4 text-sm text-center text-gray-600">
+          <p className="mt-4 text-xs text-center text-gray-600 lg:text-sm">
             Forgot your password?{" "}
             <Link
               to="/forgot-password"

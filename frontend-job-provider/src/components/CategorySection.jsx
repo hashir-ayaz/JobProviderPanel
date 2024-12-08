@@ -52,7 +52,7 @@ const CategorySection = () => {
           className="mt-1 text-sm text-muted-foreground"
         >
           Looking for work?{" "}
-          <a href="#" className="text-blue-500 underline">
+          <a href="/find-talent" className="text-blue-500">
             Browse jobs
           </a>
         </motion.p>
