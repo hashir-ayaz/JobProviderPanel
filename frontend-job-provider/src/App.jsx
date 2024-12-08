@@ -15,6 +15,7 @@ import FreelancerProfile from "./pages/FreelancerProfile";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import FindTalentPage from "./pages/FindTalentPage";
 import { Toaster } from "@/components/ui/toaster";
+import ReviewFreelancerPage from "./pages/ReviewFreelancerPage";
 
 function App() {
   return (
@@ -35,6 +36,10 @@ function App() {
 
         {/* protected routes here */}
         <Route element={<ProtectedRoute />}>
+          <Route
+            path="/review/:freelancerId"
+            element={<ReviewFreelancerPage />}
+          />
           <Route
             path="/proposal/:proposalId"
             element={<DetailedProposalPage></DetailedProposalPage>}

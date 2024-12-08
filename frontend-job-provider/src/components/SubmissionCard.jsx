@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { acceptSubmission, rejectSubmission } from "../services/jobService";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -15,7 +15,9 @@ const SubmissionCard = ({ submission, onStatusChange }) => {
     freelancerId,
   } = submission;
 
+  console.log("submission", submission);
   const [status, setStatus] = useState(initialStatus); // Local state for status
+  const navigate = useNavigate(); // Fixed: Removed destructuring
 
   const handleAccept = async () => {
     try {
@@ -113,10 +115,10 @@ const SubmissionCard = ({ submission, onStatusChange }) => {
         <p>
           Submitted by:{" "}
           <Link
-            to={`/user/${freelancerId._id}`}
+            to={`/user/${freelancerId?._id}`}
             className="text-blue-600 hover:underline"
           >
-            {freelancerId.firstName} {freelancerId.lastName}
+            {freelancerId?.firstName} {freelancerId?.lastName}
           </Link>
         </p>
         <p>
@@ -145,6 +147,14 @@ const SubmissionCard = ({ submission, onStatusChange }) => {
             Reject
           </Button>
         </div>
+      )}
+      {status === "Accepted" && (
+        <Button
+          onClick={() => navigate(`/review/${freelancerId}`)} // Fixed: Correct use of navigate
+          className="px-4 py-2 text-sm font-semibold bg-white border rounded hover:bg-gray-50 border-primary text-primary"
+        >
+          Review Freelancer
+        </Button>
       )}
     </div>
   );
