@@ -46,12 +46,14 @@ export default function Navbar() {
     navigate("/");
   };
 
-  // Define navigation items
+  // Filter navItems based on login state
   const navItems = [
     { name: "Home", href: "/", icon: Home },
     { name: "About", href: "/about", icon: Info },
     { name: "Contact Us", href: "/contactus", icon: Phone },
-    { name: "Dashboard", href: "/dashboard", icon: User },
+    ...(isLoggedIn
+      ? [{ name: "Dashboard", href: "/dashboard", icon: User }]
+      : []),
     { name: "Find Talent", href: "/find-talent", icon: User },
   ];
 
@@ -65,9 +67,6 @@ export default function Navbar() {
             className="flex items-center mr-6 space-x-2"
           >
             <img src={logo} alt="Logo" className="h-auto w-36" />
-            {/* <span className="hidden font-bold text-primary sm:inline-block">
-              SkillConnect
-            </span> */}
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             {navItems.map((item) => (
@@ -80,7 +79,7 @@ export default function Navbar() {
                     ? "text-foreground font-bold"
                     : "text-foreground/60"
                 )}
-                onClick={() => setActivePath(item.href)} // Update active path
+                onClick={() => setActivePath(item.href)}
               >
                 {item.name}
               </Link>
@@ -118,8 +117,8 @@ export default function Navbar() {
                       : "text-foreground/60"
                   )}
                   onClick={() => {
-                    setActivePath(item.href); // Update active path
-                    setIsMobileMenuOpen(false); // Close mobile menu
+                    setActivePath(item.href);
+                    setIsMobileMenuOpen(false);
                   }}
                 >
                   <item.icon className="w-4 h-4 mr-2 " />
@@ -132,16 +131,7 @@ export default function Navbar() {
 
         {/* Right Section: Authentication & User Actions */}
         <div className="flex items-center justify-between flex-1 space-x-2 md:justify-end">
-          {/* Mobile Logo */}
-          <div className="flex-1 w-full md:w-auto md:flex-none">
-            <Link to="/" className="flex items-center mr-6 space-x-2 md:hidden">
-              <img src={logo} alt="Logo" className="w-6 h-6" />
-              <span className="font-bold">RehaishKiKhwaish</span>
-            </Link>
-          </div>
-
           <nav className="flex items-center">
-            {/* If the user is NOT logged in */}
             {!isLoggedIn ? (
               <>
                 <Button
@@ -166,7 +156,6 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                {/* If the user IS logged in */}
                 <Button className="bg-primary hover:bg-primary-dark" asChild>
                   <Link to="/post-job">
                     <PlusCircle className="w-4 h-4 mr-2" />
@@ -184,22 +173,12 @@ export default function Navbar() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                      onClick={() => {
-                        navigate("/me");
-                      }}
-                    >
+                    <DropdownMenuItem onClick={() => navigate("/me")}>
                       Profile
                     </DropdownMenuItem>
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => {
-                        navigate("/dashboard");
-                      }}
-                    >
+                    <DropdownMenuItem onClick={() => navigate("/dashboard")}>
                       Dashboard
                     </DropdownMenuItem>
-
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout}>
                       Log out
