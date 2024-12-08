@@ -13,6 +13,7 @@ import {
 import AboutClient from "../components/AboutClient";
 import JobProposalCard from "../components/JobProposalCard";
 import { motion } from "framer-motion";
+import emptyProposalsImg from "../assets/post-job-aunty.png";
 
 const DetailedJobPage = () => {
   const { jobId } = useParams();
@@ -253,8 +254,9 @@ const DetailedJobPage = () => {
               <JobProposalCard key={proposal._id} proposal={proposal} />
             ))
           ) : (
-            <p className="mt-4 text-lg text-gray-600">
+            <p className="min-h-screen mt-4 text-lg text-gray-600">
               No proposals received yet.
+              <img className="w-1/3" src={emptyProposalsImg} />
             </p>
           )}
         </motion.div>

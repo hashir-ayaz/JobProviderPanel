@@ -45,7 +45,7 @@ const SubmissionsList = ({ jobId }) => {
 
   if (!submissions || submissions.length === 0) {
     return (
-      <div className="p-4 text-center text-gray-600">
+      <div className="p-4 text-lg text-center text-gray-600">
         <p>No submissions available for this job.</p>
       </div>
     );

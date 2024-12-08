@@ -43,7 +43,7 @@ const DetailedProposalPage = () => {
       // Call the API to accept the proposal
       const response = acceptProposal(proposalId);
       console.log("Accepted proposal:", response);
-      alert("Proposal accepted");
+      navigate(`/job/${proposal.jobId}`);
     } catch (error) {
       console.error("Error accepting proposal:", error);
       toast({
@@ -63,7 +63,9 @@ const DetailedProposalPage = () => {
       // Call the API to reject the proposal
       const response = rejectProposal(proposalId);
       console.log("Rejected proposal:", response);
-      alert("Proposal rejected");
+
+      // navigate to the job page
+      navigate(`/job/${proposal.jobId}`);
     } catch (error) {
       console.error("Error rejecting proposal:", error);
       toast({
@@ -72,6 +74,10 @@ const DetailedProposalPage = () => {
         variant: "destructive",
       });
     }
+    toast({
+      title: "Proposal Rejected",
+      description: "You have rejected this proposal.",
+    });
   };
 
   const handleViewProfile = () => {
