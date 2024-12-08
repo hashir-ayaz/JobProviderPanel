@@ -23,13 +23,14 @@ connectDB(); // Connect to database
 
 app.use(express.json()); // Body parser
 app.use(cookieParser());
-// app.use(
-//   cookieSession({
-//     name: "session",
-//     keys: [process.env.COOKIE_KEY],
-//     maxAge: 24 * 60 * 60 * 100,
-//   })
-// );
+
+app.use(
+  cookieSession({
+    name: "session",
+    keys: [process.env.COOKIE_KEY],
+    maxAge: 24 * 60 * 60 * 100,
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
