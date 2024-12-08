@@ -50,11 +50,6 @@ const ReviewCard = ({ review }) => {
           Reviewed on {new Date(createdAt).toLocaleDateString("en-US")}
         </span>
       </div>
-      <Link to={`/reviewer/${reviewerId._id}`}>
-        <Badge className="px-3 py-1 mt-4 rounded-md text-primary-foreground bg-primary hover:bg-primary/80">
-          View Reviewer Profile
-        </Badge>
-      </Link>
     </div>
   );
 };

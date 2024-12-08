@@ -113,6 +113,7 @@ exports.getUserById = async (req, res) => {
     const publicInfo = {
       firstName: user.firstName,
       lastName: user.lastName,
+      email: user.email,
       profilePicture: user.profilePicture,
       bio: user.bio,
       skills: user.skills,

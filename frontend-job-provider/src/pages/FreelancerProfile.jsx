@@ -158,7 +158,10 @@ export default function FreelancerProfilePage() {
           </div>
         </CardContent>
       </Card>
-      <PreviousReviews reviews={reviews} />
+      <div className="w-4/5 mx-auto mt-8">
+        <h3 className="mb-4 text-3xl font-semibold text-gray-700">Reviews</h3>
+        <PreviousReviews reviews={reviews} />
+      </div>
     </>
   );
 }
