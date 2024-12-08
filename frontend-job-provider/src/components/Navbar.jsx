@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Menu,
@@ -50,7 +50,6 @@ export default function Navbar() {
   const navItems = [
     { name: "Home", href: "/", icon: Home },
     { name: "About", href: "/about", icon: Info },
-    { name: "Contact Us", href: "/contactus", icon: Phone },
     ...(isLoggedIn
       ? [{ name: "Dashboard", href: "/dashboard", icon: User }]
       : []),

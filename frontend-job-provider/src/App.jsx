@@ -16,6 +16,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import FindTalentPage from "./pages/FindTalentPage";
 import { Toaster } from "@/components/ui/toaster";
 import ReviewFreelancerPage from "./pages/ReviewFreelancerPage";
+import AboutUsPage from "./pages/About";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/find-talent" element={<FindTalentPage />} />
+        <Route path="/about" element={<AboutUsPage />} />
 
         <Route
           path="/freelancer/:freelancerId"
