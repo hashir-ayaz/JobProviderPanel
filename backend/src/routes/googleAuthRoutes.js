@@ -52,14 +52,18 @@ router.get(
     );
 
     // put jwt in cookie
+    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Lax",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
     // Redirect to frontend with token and user data
-    const frontendURL = "http://localhost:5173/dashboard";
+    const frontendURL =
+      `${process.env.CLIENT_URL}/dashboard` ||
+      "http://localhost:5173/dashboard";
     res.redirect(
       `${frontendURL}?token=${encodeURIComponent(
         token
