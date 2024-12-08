@@ -68,6 +68,7 @@ exports.register = async (req, res) => {
       profilePhoto,
       moviePreferences,
       personalWishlist,
+      role: "client",
     });
 
     await newUser.save();
