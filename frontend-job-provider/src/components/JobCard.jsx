@@ -122,7 +122,9 @@ export default function JobCard({ job, onDelete, onMarkCompleted }) {
           <DollarSign className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm text-muted-foreground">Budget:</span>
           <span>
-            {budgetType === "Fixed" ? `$${budgetAmount}` : `$${hourlyRate}/hr`}
+            {budgetType === "Fixed"
+              ? `$${budgetAmount}`
+              : `$${budgetAmount}/hr`}
           </span>
         </div>
 
