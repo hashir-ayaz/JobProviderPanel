@@ -3,6 +3,8 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
 import countries from "../data/countries.json";
+import { useToast } from "@/hooks/use-toast";
+
 import {
   Select,
   SelectContent,
@@ -22,6 +24,17 @@ const estimatedTimeOptions = [
 ];
 
 const JobForm = ({ skills = [] }) => {
+  const { toast } = useToast();
+
+  const showToast = (title, description, status = "success", variant) => {
+    toast({
+      title: title,
+      description: description,
+      status: status,
+      variant: variant,
+    });
+  };
+
   const resetForm = () => {
     setFormData({
       title: "",
@@ -106,9 +119,16 @@ const JobForm = ({ skills = [] }) => {
     try {
       const response = await postJob(formData);
       console.log("Response from API:", response);
+      showToast("Job Posted", "Your job has been posted successfully.");
       resetForm();
     } catch (error) {
       console.error("Failed to post job:", error.message);
+      showToast(
+        "Error",
+        "Failed to post job. Please try again.",
+        "success",
+        "destructive"
+      );
     }
   };
 

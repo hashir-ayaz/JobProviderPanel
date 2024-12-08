@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Mail, MapPin, Star, Calendar, Edit, Save, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Cookies from "js-cookie";
-
+import { useToast } from "@/hooks/use-toast";
 import {
   Card,
   CardHeader,
@@ -26,6 +26,17 @@ import { motion } from "framer-motion";
 import { updateUserProfile } from "../services/userService";
 
 export default function UserProfile() {
+  const { toast } = useToast();
+
+  const showToast = (message, type) => {
+    toast({
+      title: message,
+      status: type,
+      duration: 5000,
+      isClosable: true,
+    });
+  };
+
   const [showFullBio, setShowFullBio] = useState(false);
   const { user, setUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
@@ -116,7 +127,7 @@ export default function UserProfile() {
 
       // Exit edit mode
       setIsEditing(false);
-      alert("Profile updated successfully!");
+      showToast("Profile updated successfully!", "success");
     } catch (err) {
       console.error("Error updating profile:", err);
       setError(err.message || "Failed to update profile.");

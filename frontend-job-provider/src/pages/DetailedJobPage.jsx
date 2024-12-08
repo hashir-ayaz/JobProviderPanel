@@ -77,7 +77,6 @@ const DetailedJobPage = () => {
     status = "Status not specified",
     jobProviderId = {},
     receivedProposals = [],
-    location = "Location not specified",
     freelancerId = null, // Check if a freelancer is assigned
   } = job;
 

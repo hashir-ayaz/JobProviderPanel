@@ -14,10 +14,12 @@ import UserProfile from "./pages/user-profile";
 import FreelancerProfile from "./pages/FreelancerProfile";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import FindTalentPage from "./pages/FindTalentPage";
+import { Toaster } from "@/components/ui/toaster";
 
 function App() {
   return (
     <>
+      <Toaster />
       <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />
