@@ -1,5 +1,6 @@
 const express = require("express");
 const Job = require("../models/Job");
+const Submission = require("../models/Submission");
 
 exports.createJob = async (req, res) => {
   // check if user is client
@@ -325,5 +326,139 @@ exports.getJobsPostedByUser = async (req, res) => {
     res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getAllSubmissionsForJob = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    // Validate if the provided job ID is valid
+    if (!jobId.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid job ID format.",
+      });
+    }
+
+    // Attempt to find all submissions for the job
+    const submissions = await Submission.find({ jobId });
+
+    // Return the submissions
+    res.status(200).json({
+      success: true,
+      submissions,
+    });
+  } catch (error) {
+    // Log the error to the server console
+    console.error(
+      `Error fetching submissions for job with ID ${req.params.jobId}:`,
+      error
+    );
+
+    // Return a 500 Internal Server Error
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while retrieving the submissions.",
+      error: error.message,
+    });
+  }
+};
+
+exports.acceptSubmission = async (req, res) => {
+  try {
+    const { submissionId } = req.params;
+
+    // Validate if the provided submission ID is valid
+    if (!submissionId.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid submission ID format.",
+      });
+    }
+
+    // Find the submission by ID
+    const submission = await Submission.findById(submissionId);
+
+    // If the submission doesn't exist, return a 404 error
+    if (!submission) {
+      return res.status(404).json({
+        success: false,
+        message: "Submission not found.",
+      });
+    }
+
+    // Update the submission status to "Accepted"
+    submission.status = "Accepted";
+    await submission.save();
+
+    // Return a success response
+    res.status(200).json({
+      success: true,
+      message: "Submission accepted successfully.",
+      data: submission,
+    });
+  } catch (error) {
+    // Log the error to the server console
+    console.error(
+      `Error accepting submission with ID ${req.params.submissionId}:`,
+      error
+    );
+
+    // Return a 500 Internal Server Error
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while accepting the submission.",
+      error: error.message,
+    });
+  }
+};
+
+exports.rejectSubmission = async (req, res) => {
+  try {
+    const { submissionId } = req.params;
+
+    // Validate if the provided submission ID is valid
+    if (!submissionId.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid submission ID format.",
+      });
+    }
+
+    // Find the submission by ID
+    const submission = await Submission.findById(submissionId);
+
+    // If the submission doesn't exist, return a 404 error
+    if (!submission) {
+      return res.status(404).json({
+        success: false,
+        message: "Submission not found.",
+      });
+    }
+
+    // Update the submission status to "Rejected"
+    submission.status = "Rejected";
+    await submission.save();
+
+    // Return a success response
+    res.status(200).json({
+      success: true,
+      message: "Submission rejected successfully.",
+      data: submission,
+    });
+  } catch (error) {
+    // Log the error to the server console
+    console.error(
+      `Error rejecting submission with ID ${req.params.submissionId}:`,
+      error
+    );
+
+    // Return a 500 Internal Server Error
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while rejecting the submission.",
+      error: error.message,
+    });
   }
 };

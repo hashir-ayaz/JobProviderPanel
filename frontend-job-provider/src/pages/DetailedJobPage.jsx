@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchJobById } from "../services/jobService";
+import SubmissionsList from "../components/SubmissionsList";
+
 import {
   CalendarIcon,
   ClockIcon,
@@ -16,6 +18,7 @@ const DetailedJobPage = () => {
   const { jobId } = useParams();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("Details"); // New state for active tab
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -77,7 +80,7 @@ const DetailedJobPage = () => {
     status = "Status not specified",
     jobProviderId = {},
     receivedProposals = [],
-    freelancerId = null, // Check if a freelancer is assigned
+    freelancerId = null,
   } = job;
 
   return (
@@ -87,114 +90,134 @@ const DetailedJobPage = () => {
       transition={{ duration: 0.6 }}
       className="container px-4 py-8 mx-auto text-secondary font-custom"
     >
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="overflow-hidden bg-white rounded-lg shadow-sm"
-      >
-        <div className="p-6">
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-2 text-3xl font-bold "
-          >
-            {title}
-          </motion.h1>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex items-center mb-4 "
-          >
-            <CalendarIcon className="w-5 h-5 mr-2" />
-            <span>Posted on {formatDate(createdAt)}</span>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-wrap mb-6 -mx-2"
-          >
-            <div className="w-full px-2 mb-4 md:w-1/2">
-              <div className="flex items-center">
-                <MapPinIcon className="w-5 h-5 mr-2 text-gray-600" />
-                <span className="text-gray-700">{preferredLocation}</span>
-              </div>
-            </div>
-            <div className="w-full px-2 mb-4 md:w-1/2">
-              <div className="flex items-center">
-                <CurrencyDollarIcon className="w-5 h-5 mr-2 text-gray-600" />
-                <span className="text-gray-700">
-                  {budgetAmount} USD ({budgetType})
-                </span>
-              </div>
-            </div>
-            <div className="w-full px-2 mb-4 md:w-1/2">
-              <div className="flex items-center">
-                <UserIcon className="w-5 h-5 mr-2 text-gray-600" />
-                <span className="text-gray-700">{experienceLevel} Level</span>
-              </div>
-            </div>
-            <div className="w-full px-2 mb-4 md:w-1/2">
-              <div className="flex items-center">
-                <ClockIcon className="w-5 h-5 mr-2 text-gray-600" />
-                <span className="text-gray-700">
-                  Est. Time: {estimatedTime}
-                </span>
-              </div>
-            </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="pt-6 border-t border-gray-200"
-          >
-            <h2 className="mb-4 text-xl font-semibold text-gray-800">
-              Job Description
-            </h2>
-            <p className="mb-6 text-gray-600 whitespace-pre-line">
-              {description}
-            </p>
-          </motion.div>
-          <AboutClient jobProviderId={jobProviderId} />
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="px-6 py-4 mb-5 bg-gray-50"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-gray-600">
-              Deadline: {formatDate(deadline)}
-            </span>
-            <span
-              className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                status === "Open"
-                  ? "bg-green-100 text-green-800"
-                  : status === "Closed"
-                  ? "bg-red-100 text-red-800"
-                  : "bg-yellow-100 text-yellow-800"
+      {/* Tabs for navigation */}
+      <div className="mb-6 border-b border-gray-200">
+        <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
+          <li className="mr-2">
+            <button
+              onClick={() => setActiveTab("Details")}
+              className={`inline-block px-4 py-2 border-b-2 ${
+                activeTab === "Details"
+                  ? "text-blue-600 border-blue-600"
+                  : "border-transparent hover:text-gray-600 hover:border-gray-300"
               }`}
             >
-              {status}
-            </span>
-          </div>
-        </motion.div>
-      </motion.div>
+              Job Details
+            </button>
+          </li>
+          <li className="mr-2">
+            <button
+              onClick={() => setActiveTab("Proposals")}
+              className={`inline-block px-4 py-2 border-b-2 ${
+                activeTab === "Proposals"
+                  ? "text-blue-600 border-blue-600"
+                  : "border-transparent hover:text-gray-600 hover:border-gray-300"
+              }`}
+            >
+              Proposals
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => setActiveTab("SubmittedWork")}
+              className={`inline-block px-4 py-2 border-b-2 ${
+                activeTab === "SubmittedWork"
+                  ? "text-blue-600 border-blue-600"
+                  : "border-transparent hover:text-gray-600 hover:border-gray-300"
+              }`}
+            >
+              Submitted Work
+            </button>
+          </li>
+        </ul>
+      </div>
 
-      {/* Render assigned freelancer details if present */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-      >
-        {freelancerId ? (
-          <div className="mt-6 overflow-hidden bg-white rounded-lg shadow-sm">
-            <div className="p-6">
+      {/* Render content based on active tab */}
+      {activeTab === "Details" && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="overflow-hidden bg-white rounded-lg shadow-sm"
+        >
+          <div className="p-6">
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mb-2 text-3xl font-bold "
+            >
+              {title}
+            </motion.h1>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex items-center mb-4 "
+            >
+              <CalendarIcon className="w-5 h-5 mr-2" />
+              <span>Posted on {formatDate(createdAt)}</span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex flex-wrap mb-6 -mx-2"
+            >
+              {/* Job Details */}
+              <div className="w-full px-2 mb-4 md:w-1/2">
+                <div className="flex items-center">
+                  <MapPinIcon className="w-5 h-5 mr-2 text-gray-600" />
+                  <span className="text-gray-700">{preferredLocation}</span>
+                </div>
+              </div>
+              <div className="w-full px-2 mb-4 md:w-1/2">
+                <div className="flex items-center">
+                  <CurrencyDollarIcon className="w-5 h-5 mr-2 text-gray-600" />
+                  <span className="text-gray-700">
+                    {budgetAmount} USD ({budgetType})
+                  </span>
+                </div>
+              </div>
+              <div className="w-full px-2 mb-4 md:w-1/2">
+                <div className="flex items-center">
+                  <UserIcon className="w-5 h-5 mr-2 text-gray-600" />
+                  <span className="text-gray-700">{experienceLevel} Level</span>
+                </div>
+              </div>
+              <div className="w-full px-2 mb-4 md:w-1/2">
+                <div className="flex items-center">
+                  <ClockIcon className="w-5 h-5 mr-2 text-gray-600" />
+                  <span className="text-gray-700">
+                    Est. Time: {estimatedTime}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="pt-6 border-t border-gray-200"
+            >
+              <h2 className="mb-4 text-xl font-semibold text-gray-800">
+                Job Description
+              </h2>
+              <p className="mb-6 text-gray-600 whitespace-pre-line">
+                {description}
+              </p>
+            </motion.div>
+            <AboutClient jobProviderId={jobProviderId} />
+          </div>
+
+          {/* Assigned Freelancer Section */}
+          {freelancerId && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="p-6 mt-6 border-t border-gray-200"
+            >
               <h2 className="mb-4 text-xl font-semibold text-gray-800">
                 Assigned Freelancer
               </h2>
@@ -214,19 +237,16 @@ const DetailedJobPage = () => {
                   <p className="text-gray-600">{freelancerId.location}</p>
                 </div>
               </div>
-            </div>
-          </div>
-        ) : (
-          <p className="mt-6 text-lg text-gray-600">
-            No freelancer has been assigned yet.
-          </p>
-        )}
+            </motion.div>
+          )}
+        </motion.div>
+      )}
 
-        {/* Render proposals */}
+      {activeTab === "Proposals" && (
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
           {receivedProposals.length > 0 ? (
             receivedProposals.map((proposal) => (
@@ -238,7 +258,17 @@ const DetailedJobPage = () => {
             </p>
           )}
         </motion.div>
-      </motion.div>
+      )}
+
+      {activeTab === "SubmittedWork" && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <SubmissionsList jobId={jobId} />
+        </motion.div>
+      )}
     </motion.div>
   );
 };

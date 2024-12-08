@@ -72,13 +72,36 @@ export const editJob = async (jobId, formData) => {
   }
 };
 
-// export const getAllSkills = async () => {
-//   try {
-//     const response = await api.get("/skills");
-//     console.log("Fetched all skills:", response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error fetching all skills:", error);
-//     throw error;
-//   }
-// };
+export const fetchSubmissionsByJobId = async (jobId) => {
+  try {
+    const response = await api.get(`/jobs/${jobId}/submissions`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching submissions by job ID:", error);
+    throw error;
+  }
+};
+
+export const acceptSubmission = async (submissionId) => {
+  try {
+    const response = await api.patch(
+      `/jobs/submissions/${submissionId}/accept`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error accepting submission:", error);
+    throw error;
+  }
+};
+
+export const rejectSubmission = async (submissionId) => {
+  try {
+    const response = await api.patch(
+      `/jobs/submissions/${submissionId}/reject`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error rejecting submission:", error);
+    throw error;
+  }
+};
