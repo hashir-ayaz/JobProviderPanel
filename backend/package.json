@@ -4,7 +4,7 @@
   "description": "The job provider panel for SkillConnect",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
@@ -25,5 +25,12 @@
     "nodemon": "^3.1.5",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0"
+  },
+  "devDependencies": {
+    "globals": "^15.13.0",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.1.2",
+    "mongoose-mock": "^0.4.0",
+    "supertest": "^7.0.0"
   }
 }
