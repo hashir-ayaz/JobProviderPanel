@@ -25,31 +25,32 @@ jobs:
         with:
           node-version: 18
 
-      # Cache dependencies
+      # Cache dependencies for the backend folder
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: backend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('backend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Install dependencies
+      # Navigate to the backend folder and install dependencies
       - name: Install dependencies
+        working-directory: backend
         run: npm install
 
-      # Run tests
+      # Run tests from the backend folder
       - name: Run tests
+        working-directory: backend
         env:
           MONGODB_URI: "mongodb://127.0.0.1:27017/test" # Example if needed
           JWT_SECRET: "yummysecret"
           SENDGRID_API_KEY: "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"
         run: npm test
 
-    #   # Upload coverage reports if available
-    #   - name: Upload Coverage Report
-    #
-    #     uses: actions/upload-artifact@v3
-    #     with:
-    #       name: coverage-report
-    #       path: coverage/lcov-report
+    # Optional: Upload coverage reports if available
+    # - name: Upload Coverage Report
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: coverage-report
+    #     path: backend/coverage/lcov-report
