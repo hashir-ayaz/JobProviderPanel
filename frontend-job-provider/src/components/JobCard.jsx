@@ -162,7 +162,7 @@ export default function JobCard({ job, onDelete, onMarkCompleted }) {
       <CardFooter>
         <Link to={`/job/${job._id}`} className="w-full">
           <Button className="w-full px-4 py-2 text-white rounded bg-primary hover:bg-primary/90">
-            View Proposals
+            View Details
           </Button>
         </Link>
       </CardFooter>
