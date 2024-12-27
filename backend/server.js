@@ -11,6 +11,7 @@ const jobRoutes = require("./src/routes/jobRoutes");
 const skillRoutes = require("./src/routes/skillRoutes");
 const proposalRoutes = require("./src/routes/proposalRoutes");
 const googleAuthRoutes = require("./src/routes/googleAuthRoutes");
+const matchingRoutes = require("./src/routes/matchingRoutes");
 const reviewRoutes = require("./src/routes/reviewRoutes");
 const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
@@ -49,6 +50,7 @@ app.use("/api/v1/jobs", jobRoutes);
 app.use("/api/v1/skills", skillRoutes);
 app.use("/api/v1/proposals", proposalRoutes);
 app.use("/api/v1/review", reviewRoutes);
+app.use("/api/v1/matching", matchingRoutes);
 
 app.use(errorHandler);
 

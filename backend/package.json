@@ -12,8 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@langchain/mongodb": "^0.1.0",
+    "@langchain/openai": "^0.3.16",
     "@sendgrid/mail": "^8.1.4",
     "bcrypt": "^5.1.1",
+    "chromadb": "^1.9.4",
+    "chromadb-default-embed": "^2.13.2",
     "cookie-parser": "^1.4.7",
     "cookie-session": "^2.1.0",
     "cors": "^2.8.5",
@@ -23,6 +27,7 @@
     "mongoose": "^8.8.1",
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.5",
+    "openai": "^4.77.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0"
   }
